@@ -1,0 +1,89 @@
+﻿@model HotelListingSystem.Models.Hotel
+
+@{
+    ViewBag.Title = "Details";
+}
+
+s
+<div>
+    <h4>Hotel Details</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.HotelUser.FirstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HotelUser.FirstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MaxOccupancy)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MaxOccupancy)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PhysicalAddressCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PhysicalAddressCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HotelImageName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HotelImageName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HotelImageContent)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HotelImageContent)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HotelImageContentType)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HotelImageContentType)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.HotelImageFileSize)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.HotelImageFileSize)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.IsVerified)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.IsVerified)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

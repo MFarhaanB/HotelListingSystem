@@ -1,0 +1,71 @@
+﻿@model HotelListingSystem.Models.DiningReservation
+
+@{
+    ViewBag.Title = "Create Dining Reservation";
+}
+
+<h2>Dining Reservation</h2>
+
+@using (Html.BeginForm("Create", "Reservation", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        @Html.LabelFor(model => model.DiningId)
+        @Html.DropDownListFor(model => model.DiningId, new SelectList(ViewBag.DiningList, "Id", "Name"), "Select Dining", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.DiningId)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Name)
+        @Html.TextBoxFor(model => model.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Name)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.IsConfirmed)
+        @Html.DropDownListFor(model => model.IsConfirmed, new SelectList(new[] {
+            new SelectListItem { Text = "Confirmed", Value = "true" },
+            new SelectListItem { Text = "Not Confirmed", Value = "false" },
+            new SelectListItem { Text = "N/A", Value = "" }
+        }, "Value", "Text"), "Select Confirmation", new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.IsConfirmed)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.NoOfPeople)
+        @Html.EditorFor(model => model.NoOfPeople, new { @class = "form-control", @min = 1, @max = 50 })
+        @Html.ValidationMessageFor(model => model.NoOfPeople)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Description)
+        @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.Description)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(model => model.Date)
+        @Html.EditorFor(model => model.Date, new { @class = "form-control datepicker" })
+        @Html.ValidationMessageFor(model => model.Date)
+    </div>
+
+    @*<div class="form-group">
+            @Html.LabelFor(model => model.HotelUserId)
+            @Html.DropDownListFor(model => model.HotelUserId, new SelectList(ViewBag.HotelUserList, "Id", "UserName"), "Select Hotel User", new { @class = "form-control" })
+            @Html.ValidationMessageFor(model => model.HotelUserId)
+        </div>*@
+
+    <input type="submit" value="Create Reservation" class="btn btn-primary" />
+}
+
+@section scripts {
+    <script>
+        // Initialize datepicker
+        $(function () {
+            var currentDate = new Date();
+            $('.datepicker').datepicker({
+                minDate: currentDate
+            });
+        });
+    </script>
+}

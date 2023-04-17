@@ -1,0 +1,57 @@
+﻿@model List<HotelListingSystem.Models.Hotel>
+
+<!-- Search form -->
+<form method="get" action="/Hotels/Search">
+    @Html.ActionLink("Hotel Reservation", "CreateReservation", "Reservations", new { area = "" }, new { @class = "btn-sm btn btn-primary" }) &nbsp;&nbsp;&nbsp;
+
+    <label for="suburb">Suburb:</label>
+    @Html.DropDownList("Suburb", (SelectList)ViewBag.Suburbs, "Select a suburb")
+
+    @*<input type="text" id="suburb" name="suburb" value="@ViewBag.Suburb" />*@
+    <label for="city">City:</label>
+    @*<input type="text" id="city" name="city" value="@ViewBag.City" />*@
+    @*@Html.DropDownList("City")*@
+    @Html.DropDownList("City", (SelectList)ViewBag.Suburbs, "Select a suburb")
+
+    <label for="checkin">Check-in:</label>
+    <input type="date" id="checkin" name="checkin" value="@ViewBag.CheckInDate" /> <!-- Use ViewBag to store the entered check-in date value -->
+    <label for="checkout">Check-out:</label>
+    <input type="date" id="checkout" name="checkout" value="@ViewBag.CheckOutDate" /> <!-- Use ViewBag to store the entered check-out date value -->
+    <button type="submit" class="btn-sm btn btn-info">Search</button>
+</form>
+
+<!-- Display search results -->
+@if (Model != null && Model.Count > 0)
+{
+    <h1>Search Results:</h1>
+        foreach (var hotel in Model)
+        {
+                <div class="col-md-4">
+                    <img src="@Url.Action("DisplayImage", "Hotels", new { hotelId = hotel.Id })" alt="Hotel Image" height="150px" width="150px" />
+                </div>
+                <div class="col-md-7">
+                    <h5>
+                        @hotel.Name - @hotel.Suburb, @hotel.City
+                    </h5>
+                    <br />
+                    <label for="NoOfPeople">No Of People:</label>&nbsp;&nbsp;<input type="number" id="NoOfPeople" name="NoOfPeople" class="form-control" />
+                    <br />
+                    <label for="checkin">Checkin:</label>&nbsp;&nbsp;<input type="date" id="checkin" name="checkin" value="@ViewBag.CheckInDate" readonly="readonly" class="form-control" />
+                    <label for="checkout">Checkout:</label>&nbsp;&nbsp;
+                    <input type="date" id="checkout" name="checkout" value="@ViewBag.CheckOutDate" readonly="readonly" class="form-control" />
+                    <br />
+                    <br />
+                    <button value="Reserve" type="button" class="btn btn-primary">Reserve</button>
+                </div>
+
+            <hr />
+            <br />
+            <br />
+            <!-- Display other hotel details as needed -->
+        }
+}
+else
+{
+    <h1>No results found.</h1>
+}
+
