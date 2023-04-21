@@ -206,6 +206,11 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Data\aspnet-HotelListingSystem-20230408050248.mdf" />
+    <Content Include="App_Data\aspnet-HotelListingSystem-20230408050248_log.ldf">
+      <DependentUpon>aspnet-HotelListingSystem-20230408050248.mdf</DependentUpon>
+    </Content>
+    <Content Include="cdn-cgi\scripts\5c5dd728\cloudflare-static\email-decode.min.js" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
@@ -229,15 +234,88 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Images\backpack.png" />
+    <Content Include="Images\bicycle.png" />
     <Content Include="Images\Breakfast.jpg" />
+    <Content Include="Images\bus.png" />
+    <Content Include="Images\compass.png" />
+    <Content Include="Images\contact.png" />
+    <Content Include="Images\cruise.png" />
+    <Content Include="Images\cta.jpg" />
+    <Content Include="Images\departure.png" />
     <Content Include="Images\Dinner.jpg" />
+    <Content Include="Images\diving.png" />
+    <Content Include="Images\dropdown.png" />
+    <Content Include="Images\footer_blog_1.jpg" />
+    <Content Include="Images\footer_blog_2.jpg" />
+    <Content Include="Images\footer_blog_3.jpg" />
+    <Content Include="Images\ga-audiences %281%29.gif" />
+    <Content Include="Images\ga-audiences.gif" />
+    <Content Include="Images\home_slider.jpg" />
+    <Content Include="Images\intro_1.jpg" />
+    <Content Include="Images\intro_2.jpg" />
+    <Content Include="Images\intro_3.jpg" />
+    <Content Include="Images\island.png" />
+    <Content Include="Images\island_t.png" />
+    <Content Include="Images\kayak.png" />
+    <Content Include="Images\logo %281%29.png" />
+    <Content Include="Images\logo.png" />
     <Content Include="Images\Lunch.jpg" />
+    <Content Include="Images\message.svg" />
+    <Content Include="Images\offer_1.jpg" />
+    <Content Include="Images\offer_2.jpg" />
+    <Content Include="Images\offer_3.jpg" />
+    <Content Include="Images\offer_4.jpg" />
+    <Content Include="Images\phone-call.svg" />
+    <Content Include="Images\placeholder.svg" />
+    <Content Include="Images\planet-earth.svg" />
+    <Content Include="Images\post.png" />
+    <Content Include="Images\sailboat.png" />
+    <Content Include="Images\suitcase.png" />
+    <Content Include="Images\test_1.jpg" />
+    <Content Include="Images\test_2.jpg" />
+    <Content Include="Images\test_3.jpg" />
+    <Content Include="Images\trend_1.png" />
+    <Content Include="Images\trend_2.png" />
+    <Content Include="Images\trend_3.png" />
+    <Content Include="Images\trend_4.png" />
+    <Content Include="Images\trend_5.png" />
+    <Content Include="Images\trend_6.png" />
+    <Content Include="Images\trend_7.png" />
+    <Content Include="Images\trend_8.png" />
+    <Content Include="JavaScript\bootstrap.min.js" />
+    <Content Include="JavaScript\custom.js" />
+    <Content Include="JavaScript\easing.js" />
+    <Content Include="JavaScript\email-decode.min.js" />
+    <Content Include="JavaScript\jquery-3.2.1.min.js" />
+    <Content Include="JavaScript\owl.carousel.js" />
+    <Content Include="JavaScript\popper.js" />
+    <Content Include="JavaScript\s.js" />
+    <Content Include="plugins\font-awesome-4.7.0\css\font-awesome.min.css" />
+    <Content Include="plugins\OwlCarousel2-2.2.1\animate.css" />
+    <Content Include="plugins\OwlCarousel2-2.2.1\owl.carousel.css" />
+    <Content Include="plugins\OwlCarousel2-2.2.1\owl.theme.default.css" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.esm.js" />
     <Content Include="Scripts\bootstrap.esm.min.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="JavaScript\v52afc6f149f6479b8c77fa569edb01181681764108816" />
+    <Content Include="plugins\font-awesome-4.7.0\Fonts\beyond_the_mountains.otf" />
+    <Content Include="plugins\font-awesome-4.7.0\Fonts\fontawesome-webfont.woff2" />
+    <Content Include="plugins\font-awesome-4.7.0\Fonts\memvYaGs126MiZpBA-UvWbX2vVnXBbObj2OVTS-muw.woff2" />
+    <Content Include="Images\contact.png.webp" />
+    <Content Include="Images\cta.jpg.webp" />
+    <Content Include="Images\dropdown.png.webp" />
+    <Content Include="Images\home_slider.jpg.webp" />
+    <Content Include="Images\intro_1.jpg.webp" />
+    <Content Include="Images\intro_2.jpg.webp" />
+    <Content Include="Images\intro_3.jpg.webp" />
+    <Content Include="Images\offer_1.jpg.webp" />
+    <Content Include="Images\offer_2.jpg.webp" />
+    <Content Include="Images\offer_3.jpg.webp" />
+    <Content Include="Images\offer_4.jpg.webp" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\HoldOn.min.js" />
     <Content Include="Scripts\jquery-2.2.0.js" />
@@ -252,6 +330,16 @@
     <Content Include="Scripts\jquery.validate.unobtrusive.js" />
     <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
     <Content Include="Scripts\modernizr-2.8.3.js" />
+    <Content Include="styles\animate.css" />
+    <Content Include="styles\bootstrap.min.css" />
+    <Content Include="styles\bootstrap4\bootstrap.min.css" />
+    <Content Include="styles\bootstrap4\popper.js" />
+    <Content Include="styles\css.css" />
+    <Content Include="styles\font-awesome.min.css" />
+    <Content Include="styles\main_styles.css" />
+    <Content Include="styles\owl.carousel.css" />
+    <Content Include="styles\owl.theme.default.css" />
+    <Content Include="styles\responsive.css" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -335,9 +423,13 @@
     <Content Include="Views\Hotels\FindHotel.cshtml" />
     <Content Include="Views\Hotels\HotelPayment.cshtml" />
     <Content Include="Views\Hotels\MyHotels.cshtml" />
+    <Content Include="Views\Shared\_eLayout.cshtml" />
+    <Content Include="Views\Shared\_eFooter.cshtml" />
+    <Content Include="Views\Shared\_eHead.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="cdn-cgi\rum\" />
+    <Folder Include="js\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />

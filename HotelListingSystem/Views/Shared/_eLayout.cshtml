@@ -1,40 +1,4 @@
-﻿@{
-    ViewBag.Title = "Home Page";
-}
-
-@*<main>
-    <section class="row" aria-labelledby="aspnetTitle">
-        <h1 id="title">Hotel Listings System</h1>
-        <p class="lead">Reserve hotels and dinings</p>
-    </section>
-
-    <div class="row">
-        <section class="col-md-4" aria-labelledby="gettingStartedTitle">
-            <h2 id="gettingStartedTitle">Getting started</h2>
-            <p>
-                ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-                enables a clean separation of concerns and gives you full control over markup
-                for enjoyable, agile development.
-            </p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="librariesTitle">
-            <h2 id="librariesTitle">Get more libraries</h2>
-            <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-        </section>
-        <section class="col-md-4" aria-labelledby="hostingTitle">
-            <h2 id="hostingTitle">Web Hosting</h2>
-            <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-            <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
-        </section>
-    </div>
-</main>*@
-
-<!DOCTYPE html>
-@{
-    Layout = "";
-}
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>Travelix</title>
@@ -43,7 +7,7 @@
     <meta name="description" content="Travelix Project">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="https://preview.colorlib.com/theme/travelix/styles/bootstrap4/bootstrap.min.css">
-    <link href="https://preview.colorlib.com/theme/travelix/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <link href="styles/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="https://preview.colorlib.com/theme/travelix/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
     <link rel="stylesheet" type="text/css" href="https://preview.colorlib.com/theme/travelix/plugins/OwlCarousel2-2.2.1/owl.theme.default.css">
     <link rel="stylesheet" type="text/css" href="https://preview.colorlib.com/theme/travelix/plugins/OwlCarousel2-2.2.1/animate.css">
@@ -51,69 +15,69 @@
     <link rel="stylesheet" type="text/css" href="https://preview.colorlib.com/theme/travelix/styles/responsive.css">
     <script defer="" referrerpolicy="origin" src="https://preview.colorlib.com/cdn-cgi/zaraz/s.js?z=JTdCJTIyZXhlY3V0ZWQlMjIlM0ElNUIlNUQlMkMlMjJ0JTIyJTNBJTIyVHJhdmVsaXglMjIlMkMlMjJ4JTIyJTNBMC45MzA1Mjc0NDk4Mjk3MzE2JTJDJTIydyUyMiUzQTE1MzYlMkMlMjJoJTIyJTNBODY0JTJDJTIyaiUyMiUzQTQ5MiUyQyUyMmUlMjIlM0ExNTM2JTJDJTIybCUyMiUzQSUyMmh0dHBzJTNBJTJGJTJGcHJldmlldy5jb2xvcmxpYi5jb20lMkZ0aGVtZSUyRnRyYXZlbGl4JTJGJTIyJTJDJTIyciUyMiUzQSUyMmh0dHBzJTNBJTJGJTJGcHJldmlldy5jb2xvcmxpYi5jb20lMkYlMjIlMkMlMjJrJTIyJTNBMjQlMkMlMjJuJTIyJTNBJTIyVVRGLTglMjIlMkMlMjJvJTIyJTNBLTEyMCUyQyUyMnElMjIlM0ElNUIlNUQlN0Q="></script>
     <script nonce="c7fcf528-52c2-46a1-8687-57b3181fb929">
-        (function (w, d) {
-            ! function (a, b, c, d) {
-                a[c] = a[c] || {};
-                a[c].executed = [];
-                a.zaraz = {
-                    deferred: [],
-                    listeners: []
-                };
-                a.zaraz.q = [];
-                a.zaraz._f = function (e) {
-                    return function () {
-                        var f = Array.prototype.slice.call(arguments);
-                        a.zaraz.q.push({
-                            m: e,
-                            a: f
-                        })
-                    }
-                };
-                for (const g of ["track", "set", "debug"]) a.zaraz[g] = a.zaraz._f(g);
-                a.zaraz.init = () => {
-                    var h = b.getElementsByTagName(d)[0],
-                        i = b.createElement(d),
-                        j = b.getElementsByTagName("title")[0];
-                    j && (a[c].t = b.getElementsByTagName("title")[0].text);
-                    a[c].x = Math.random();
-                    a[c].w = a.screen.width;
-                    a[c].h = a.screen.height;
-                    a[c].j = a.innerHeight;
-                    a[c].e = a.innerWidth;
-                    a[c].l = a.location.href;
-                    a[c].r = b.referrer;
-                    a[c].k = a.screen.colorDepth;
-                    a[c].n = b.characterSet;
-                    a[c].o = (new Date).getTimezoneOffset();
-                    if (a.dataLayer)
-                        for (const n of Object.entries(Object.entries(dataLayer).reduce(((o, p) => ({
-                            ...o[1],
-                            ...p[1]
-                        }))))) zaraz.set(n[0], n[1], {
-                            scope: "page"
-                        });
-                    a[c].q = [];
-                    for (; a.zaraz.q.length;) {
-                        const q = a.zaraz.q.shift();
-                        a[c].q.push(q)
-                    }
-                    i.defer = !0;
-                    for (const r of [localStorage, sessionStorage]) Object.keys(r || {}).filter((t => t.startsWith("_zaraz_"))).forEach((s => {
-                        try {
-                            a[c]["z_" + s.slice(7)] = JSON.parse(r.getItem(s))
-                        } catch {
-                            a[c]["z_" + s.slice(7)] = r.getItem(s)
-                        }
-                    }));
-                    i.referrerPolicy = "origin";
-                    i.src = "/cdn-cgi/zaraz/s.js?z=" + btoa(encodeURIComponent(JSON.stringify(a[c])));
-                    h.parentNode.insertBefore(i, h)
-                };
-                ["complete", "interactive"].includes(b.readyState) ? zaraz.init() : a.addEventListener("DOMContentLoaded", zaraz.init)
-            }(w, d, "zarazData", "script");
-        })(window, document);
+      (function(w, d) {
+        ! function(a, b, c, d) {
+          a[c] = a[c] || {};
+          a[c].executed = [];
+          a.zaraz = {
+            deferred: [],
+            listeners: []
+          };
+          a.zaraz.q = [];
+          a.zaraz._f = function(e) {
+            return function() {
+              var f = Array.prototype.slice.call(arguments);
+              a.zaraz.q.push({
+                m: e,
+                a: f
+              })
+            }
+          };
+          for (const g of ["track", "set", "debug"]) a.zaraz[g] = a.zaraz._f(g);
+          a.zaraz.init = () => {
+            var h = b.getElementsByTagName(d)[0],
+              i = b.createElement(d),
+              j = b.getElementsByTagName("title")[0];
+            j && (a[c].t = b.getElementsByTagName("title")[0].text);
+            a[c].x = Math.random();
+            a[c].w = a.screen.width;
+            a[c].h = a.screen.height;
+            a[c].j = a.innerHeight;
+            a[c].e = a.innerWidth;
+            a[c].l = a.location.href;
+            a[c].r = b.referrer;
+            a[c].k = a.screen.colorDepth;
+            a[c].n = b.characterSet;
+            a[c].o = (new Date).getTimezoneOffset();
+            if (a.dataLayer)
+              for (const n of Object.entries(Object.entries(dataLayer).reduce(((o, p) => ({
+                  ...o[1],
+                  ...p[1]
+                }))))) zaraz.set(n[0], n[1], {
+                scope: "page"
+              });
+            a[c].q = [];
+            for (; a.zaraz.q.length;) {
+              const q = a.zaraz.q.shift();
+              a[c].q.push(q)
+            }
+            i.defer = !0;
+            for (const r of [localStorage, sessionStorage]) Object.keys(r || {}).filter((t => t.startsWith("_zaraz_"))).forEach((s => {
+              try {
+                a[c]["z_" + s.slice(7)] = JSON.parse(r.getItem(s))
+              } catch {
+                a[c]["z_" + s.slice(7)] = r.getItem(s)
+              }
+            }));
+            i.referrerPolicy = "origin";
+            i.src = "/cdn-cgi/zaraz/s.js?z=" + btoa(encodeURIComponent(JSON.stringify(a[c])));
+            h.parentNode.insertBefore(i, h)
+          };
+          ["complete", "interactive"].includes(b.readyState) ? zaraz.init() : a.addEventListener("DOMContentLoaded", zaraz.init)
+        }(w, d, "zarazData", "script");
+      })(window, document);
     </script>
-
+    </script>
 </head>
 <body>
     <div class="super_container">
@@ -122,7 +86,7 @@
                 <div class="container">
                     <div class="row">
                         <div class="col d-flex flex-row">
-                            <div class="phone">+278 324 56789</div>
+                            <div class="phone">+45 345 3324 56789</div>
                             <div class="social">
                                 <ul class="social_list">
                                     <li class="social_list_item">
@@ -157,30 +121,14 @@
                                     </li>
                                 </ul>
                             </div>
-                            @if (!Request.IsAuthenticated)
-                            {
-                                <div class="user_box ml-auto">
-                                    <div class="user_box_login user_box_link">
-                                        <a href="../account/login">login</a>
-                                    </div>
-                                    <div class="user_box_register user_box_link">
-                                        <a href="../account/register">Sign Up</a>
-                                    </div>
+                            <div class="user_box ml-auto">
+                                <div class="user_box_login user_box_link">
+                                    <a href="#">login</a>
                                 </div>
-                            }
-                            else
-                            {
-                        <div class="user_box ml-auto">
-                            <div class="user_box_login user_box_link">
-                                <a>@User.Identity.Name</a>
-                                
+                                <div class="user_box_register user_box_link">
+                                    <a href="#">register</a>
+                                </div>
                             </div>
-                            <div class="user_box_register user_box_link">
-                                <a href="../Account/LogOff">Log Out</a>
-                            </div>
-                        </div>
-                            }
-
                         </div>
                     </div>
                 </div>
@@ -192,62 +140,27 @@
                             <div class="logo_container">
                                 <div class="logo">
                                     <a href="#">
-                                        <img src="https://preview.colorlib.com/theme/travelix/images/logo.png" alt="">travelix
+                                        <img src="images/logo.png" alt="">travelix
                                     </a>
                                 </div>
                             </div>
                             <div class="main_nav_container ml-auto">
                                 <ul class="main_nav_list">
-                                    @if (!Request.IsAuthenticated || User.IsInRole("Customer"))
-                                    {
-                                        <li class="main_nav_item"><a href="../">home</a></li>
-                                        <li class="main_nav_item"><a href="about.html">about us</a></li>
-                                        <li class="main_nav_item"><a href="offers.html">offers</a></li>
-                                    }
-                                    @if (User.IsInRole("Administrator"))
-                                    {
-                                        <li class="main_nav_item"><a href="../Dinings/Index">Dining</a></li>
-                                        <li class="main_nav_item"><a href="../DiningTableTypes/Index">Tables</a></li>
-                                        <li class="main_nav_item"><a href="../MealTypes/Index">Meals</a></li>
-                                        <li class="main_nav_item"><a href="../Dinings/Index">Dining</a></li>
-                                    }
-                                    @if (User.IsInRole("Receptionist") || User.IsInRole("Administrator"))
-                                    {
-                                        <li class="main_nav_item"><a href="../Hotels/Index">Hotels</a></li>
-                                        <li class="main_nav_item"><a href="../Hotels/HotelPayment">Payments</a></li>
-
-                                        @*<li>@Html.ActionLink("Hotels", "Index", "Hotels", new { area = "" }, new { @class = "nav-link" })</li>
-            <li>@Html.ActionLink("Hotel Payment", "HotelPayment", "Hotels", new { area = "" }, new { @class = "nav-link" })</li>*@
-                                    }
-                                    @if (User.IsInRole("Business Owner") || User.IsInRole("Administrator"))
-                                    {
-                                        <li class="main_nav_item"><a href="../HotelUsers/Details">My Profile</a></li>
-                                        <li class="main_nav_item"><a href="../Hotels/MyHotels">My Hotels</a></li>
-
-                                        @*<li>@Html.ActionLink("My Profile", "Details", "HotelUsers", new { area = "" }, new { @class = "nav-link" })</li>
-            <li>@Html.ActionLink("My Hotels", "MyHotels", "Hotels", new { area = "" }, new { @class = "nav-link" })</li>*@
-                                    }
-                                    @if (User.IsInRole("Customer") || User.IsInRole("Administrator"))
-                                    {
-                                        <li class="main_nav_item"><a href="../Hotels/FindHotel">Find Hotels</a></li>
-                                        <li class="main_nav_item"><a href="../Reservations/CreateReservation">Reservations</a></li>
-                                        <li class="main_nav_item"><a href="../Dinings/FindHotel">Dining</a></li>
-
-                                        @*<li>@Html.ActionLink("Find Hotels", "FindHotel", "Hotels", new { area = "" }, new { @class = "nav-link" })</li>
-            <li>@Html.ActionLink("Hotel Reservation", "CreateReservation", "Reservations", new { area = "" }, new { @class = "nav-link" })</li>
-            <li>@Html.ActionLink("Dining Reservation", "FindHotel", "Dinings", new { area = "" }, new { @class = "nav-link" })</li>*@
-
-                                    }
-                                    @if (!Request.IsAuthenticated || User.IsInRole("Customer"))
-                                    {
-                                        <li class="main_nav_item">
-                                            <a href="blog.html">news</a>
-                                        </li>
-                                        <li class="main_nav_item">
-                                            <a href="contact.html">contact</a>
-                                        </li>
-                                    }
-
+                                    <li class="main_nav_item">
+                                        <a href="#">home</a>
+                                    </li>
+                                    <li class="main_nav_item">
+                                        <a href="about.html">about us</a>
+                                    </li>
+                                    <li class="main_nav_item">
+                                        <a href="offers.html">offers</a>
+                                    </li>
+                                    <li class="main_nav_item">
+                                        <a href="blog.html">news</a>
+                                    </li>
+                                    <li class="main_nav_item">
+                                        <a href="contact.html">contact</a>
+                                    </li>
                                 </ul>
                             </div>
                             <div class="content_search ml-lg-0 ml-auto">
@@ -290,7 +203,7 @@
                 </div>
                 <div class="logo menu_logo">
                     <a href="#">
-                        <img src="https://preview.colorlib.com/theme/travelix/images/logo.png" alt="">
+                        <img src="images/logo.png" alt="">
                     </a>
                 </div>
                 <ul>
@@ -319,14 +232,14 @@
                         <div class="owl-stage" style="transform: translate3d(-3038px, 0px, 0px); transition: all 0s ease 0s; width: 10635px;">
                             <div class="owl-item cloned" style="width: 1519.2px;">
                                 <div class="owl-item home_slider_item">
-                                    <div class="home_slider_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/home_slider.jpg)"></div>
+                                    <div class="home_slider_background" style="background-image:url(images/home_slider.jpg)"></div>
                                     <div class="home_slider_content text-center">
                                         <div class="home_slider_content_inner" data-animation-in="flipInX" data-animation-out="animate-out fadeOut">
                                             <h1>discover</h1>
                                             <h1>the world</h1>
                                             <div class="button home_slider_button">
                                                 <div class="button_bcg"></div>
-                                                <a href="#Intro">
+                                                <a href="#">
                                                     explore now <span></span>
                                                     <span></span>
                                                     <span></span>
@@ -338,15 +251,17 @@
                             </div>
                             <div class="owl-item cloned" style="width: 1519.2px;">
                                 <div class="owl-item home_slider_item">
-                                    <div class="home_slider_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/home_slider.jpg)"></div>
+                                    <div class="home_slider_background" style="background-image:url(images/home_slider.jpg)"></div>
                                     <div class="home_slider_content text-center">
                                         <div class="home_slider_content_inner" data-animation-in="flipInX" data-animation-out="animate-out fadeOut">
                                             <h1>discover</h1>
                                             <h1>the world</h1>
                                             <div class="button home_slider_button">
                                                 <div class="button_bcg"></div>
-                                                <a href="#Intro">
-                                                    explore now <span></span><span></span> <span></span>
+                                                <a href="#">
+                                                    explore now <span></span>
+                                                    <span></span>
+                                                    <span></span>
                                                 </a>
                                             </div>
                                         </div>
@@ -355,14 +270,14 @@
                             </div>
                             <div class="owl-item active" style="width: 1519.2px;">
                                 <div class="owl-item home_slider_item">
-                                    <div class="home_slider_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/home_slider.jpg)"></div>
+                                    <div class="home_slider_background" style="background-image:url(images/home_slider.jpg)"></div>
                                     <div class="home_slider_content text-center">
                                         <div class="home_slider_content_inner" data-animation-in="flipInX" data-animation-out="animate-out fadeOut">
                                             <h1>discover</h1>
                                             <h1>the world</h1>
                                             <div class="button home_slider_button">
                                                 <div class="button_bcg"></div>
-                                                <a href="#Intro">
+                                                <a href="#">
                                                     explore now <span></span>
                                                     <span></span>
                                                     <span></span>
@@ -374,14 +289,14 @@
                             </div>
                             <div class="owl-item" style="width: 1519.2px;">
                                 <div class="owl-item home_slider_item">
-                                    <div class="home_slider_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/home_slider.jpg)"></div>
+                                    <div class="home_slider_background" style="background-image:url(images/home_slider.jpg)"></div>
                                     <div class="home_slider_content text-center">
                                         <div class="home_slider_content_inner" data-animation-in="flipInX" data-animation-out="animate-out fadeOut">
                                             <h1>discover</h1>
                                             <h1>the world</h1>
                                             <div class="button home_slider_button">
                                                 <div class="button_bcg"></div>
-                                                <a href="#Intro">
+                                                <a href="#">
                                                     explore now <span></span>
                                                     <span></span>
                                                     <span></span>
@@ -393,14 +308,14 @@
                             </div>
                             <div class="owl-item" style="width: 1519.2px;">
                                 <div class="owl-item home_slider_item">
-                                    <div class="home_slider_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/home_slider.jpg)"></div>
+                                    <div class="home_slider_background" style="background-image:url(images/home_slider.jpg)"></div>
                                     <div class="home_slider_content text-center">
                                         <div class="home_slider_content_inner" data-animation-in="flipInX" data-animation-out="animate-out fadeOut">
                                             <h1>discover</h1>
                                             <h1>the world</h1>
                                             <div class="button home_slider_button">
                                                 <div class="button_bcg"></div>
-                                                <a href="#Intro">
+                                                <a href="#">
                                                     explore now <span></span>
                                                     <span></span>
                                                     <span></span>
@@ -412,14 +327,14 @@
                             </div>
                             <div class="owl-item cloned" style="width: 1519.2px;">
                                 <div class="owl-item home_slider_item">
-                                    <div class="home_slider_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/home_slider.jpg)"></div>
+                                    <div class="home_slider_background" style="background-image:url(images/home_slider.jpg)"></div>
                                     <div class="home_slider_content text-center">
                                         <div class="home_slider_content_inner" data-animation-in="flipInX" data-animation-out="animate-out fadeOut">
                                             <h1>discover</h1>
                                             <h1>the world</h1>
                                             <div class="button home_slider_button">
                                                 <div class="button_bcg"></div>
-                                                <a href="#Intro">
+                                                <a href="#">
                                                     explore now <span></span>
                                                     <span></span>
                                                     <span></span>
@@ -431,14 +346,14 @@
                             </div>
                             <div class="owl-item cloned" style="width: 1519.2px;">
                                 <div class="owl-item home_slider_item">
-                                    <div class="home_slider_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/home_slider.jpg)"></div>
+                                    <div class="home_slider_background" style="background-image:url(images/home_slider.jpg)"></div>
                                     <div class="home_slider_content text-center">
                                         <div class="home_slider_content_inner" data-animation-in="flipInX" data-animation-out="animate-out fadeOut">
                                             <h1>discover</h1>
                                             <h1>the world</h1>
                                             <div class="button home_slider_button">
                                                 <div class="button_bcg"></div>
-                                                <a href="#Intro">
+                                                <a href="#">
                                                     explore now <span></span>
                                                     <span></span>
                                                     <span></span>
@@ -507,12 +422,12 @@
                         <div class="search_tabs_container">
                             <div class="search_tabs d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-lg-between justify-content-start">
                                 <div class="search_tab active d-flex flex-row align-items-center justify-content-lg-center justify-content-start">
-                                    <img src="https://preview.colorlib.com/theme/travelix/images/suitcase.png" alt="">
+                                    <img src="images/suitcase.png" alt="">
                                     <span>hotels</span>
                                 </div>
 
                                 <div class="search_tab d-flex flex-row align-items-center justify-content-lg-center justify-content-start">
-                                    <img src="https://preview.colorlib.com/theme/travelix/images/island.png" alt="">trips
+                                    <img src="images/island.png" alt="">trips
                                 </div>
 
                             </div>
@@ -525,11 +440,11 @@
                                 </div>
                                 <div class="search_item">
                                     <div>check in</div>
-                                    <input type="date" class="check_in search_input" placeholder="YYYY-MM-DD">
+                                    <input type="text" class="check_in search_input" placeholder="YYYY-MM-DD">
                                 </div>
                                 <div class="search_item">
                                     <div>check out</div>
-                                    <input type="date" class="check_out search_input" placeholder="YYYY-MM-DD">
+                                    <input type="text" class="check_out search_input" placeholder="YYYY-MM-DD">
                                 </div>
                                 <div class="search_item">
                                     <div>adults</div>
@@ -562,11 +477,11 @@
                                 </div>
                                 <div class="search_item">
                                     <div>check in</div>
-                                    <input type="date" class="check_in search_input" placeholder="YYYY-MM-DD">
+                                    <input type="text" class="check_in search_input" placeholder="YYYY-MM-DD">
                                 </div>
                                 <div class="search_item">
                                     <div>check out</div>
-                                    <input type="date" class="check_out search_input" placeholder="YYYY-MM-DD">
+                                    <input type="text" class="check_out search_input" placeholder="YYYY-MM-DD">
                                 </div>
                                 <div class="search_item">
                                     <div>adults</div>
@@ -710,11 +625,11 @@
                                 </div>
                                 <div class="search_item">
                                     <div>check in</div>
-                                    <input type="date" class="check_in search_input" placeholder="YYYY-MM-DD">
+                                    <input type="text" class="check_in search_input" placeholder="YYYY-MM-DD">
                                 </div>
                                 <div class="search_item">
                                     <div>check out</div>
-                                    <input type="date" class="check_out search_input" placeholder="YYYY-MM-DD">
+                                    <input type="text" class="check_out search_input" placeholder="YYYY-MM-DD">
                                 </div>
                                 <div class="search_item">
                                     <div>adults</div>
@@ -743,7 +658,7 @@
                 </div>
             </div>
         </div>
-        <div class="intro" id="Intro">
+        <div class="intro">
             <div class="container">
                 <div class="row">
                     <div class="col">
@@ -761,7 +676,7 @@
                     <div class="col-lg-4 intro_col">
                         <div class="intro_item">
                             <div class="intro_item_overlay"></div>
-                            <div class="intro_item_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/intro_1.jpg)"></div>
+                            <div class="intro_item_background" style="background-image:url(images/intro_1.jpg)"></div>
                             <div class="intro_item_content d-flex flex-column align-items-center justify-content-center">
                                 <div class="intro_date">May 25th - June 01st</div>
                                 <div class="button intro_button">
@@ -789,7 +704,7 @@
                     <div class="col-lg-4 intro_col">
                         <div class="intro_item">
                             <div class="intro_item_overlay"></div>
-                            <div class="intro_item_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/intro_2.jpg)"></div>
+                            <div class="intro_item_background" style="background-image:url(images/intro_2.jpg)"></div>
                             <div class="intro_item_content d-flex flex-column align-items-center justify-content-center">
                                 <div class="intro_date">May 25th - June 01st</div>
                                 <div class="button intro_button">
@@ -817,7 +732,7 @@
                     <div class="col-lg-4 intro_col">
                         <div class="intro_item">
                             <div class="intro_item_overlay"></div>
-                            <div class="intro_item_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/intro_3.jpg)"></div>
+                            <div class="intro_item_background" style="background-image:url(images/intro_3.jpg)"></div>
                             <div class="intro_item_content d-flex flex-column align-items-center justify-content-center">
                                 <div class="intro_date">May 25th - June 01st</div>
                                 <div class="button intro_button">
@@ -846,7 +761,7 @@
             </div>
         </div>
         <div class="cta">
-            <div class="cta_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/cta.jpg)"></div>
+            <div class="cta_background" style="background-image:url(images/cta.jpg)"></div>
             <div class="container">
                 <div class="row">
                     <div class="col">
@@ -1057,7 +972,7 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="offers_image_container">
-                                        <div class="offers_image_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/offer_1.jpg)"></div>
+                                        <div class="offers_image_background" style="background-image:url(images/offer_1.jpg)"></div>
                                         <div class="offer_name">
                                             <a href="#">grand castle</a>
                                         </div>
@@ -1079,16 +994,16 @@
                                         <div class="offers_icons">
                                             <ul class="offers_icons_list">
                                                 <li class="offers_icons_item">
-                                                    <img src="https://preview.colorlib.com/theme/travelix/images/post.png" alt="">
+                                                    <img src="images/post.png" alt="">
                                                 </li>
                                                 <li class="offers_icons_item">
-                                                    <img src="https://preview.colorlib.com/theme/travelix/images/compass.png" alt="">
+                                                    <img src="images/compass.png" alt="">
                                                 </li>
                                                 <li class="offers_icons_item">
-                                                    <img src="https://preview.colorlib.com/theme/travelix/images/bicycle.png" alt="">
+                                                    <img src="images/bicycle.png" alt="">
                                                 </li>
                                                 <li class="offers_icons_item">
-                                                    <img src="https://preview.colorlib.com/theme/travelix/images/sailboat.png" alt="">
+                                                    <img src="images/sailboat.png" alt="">
                                                 </li>
                                             </ul>
                                         </div>
@@ -1105,7 +1020,7 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="offers_image_container">
-                                        <div class="offers_image_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/offer_2.jpg)"></div>
+                                        <div class="offers_image_background" style="background-image:url(images/offer_2.jpg)"></div>
                                         <div class="offer_name">
                                             <a href="#">turkey hills</a>
                                         </div>
@@ -1127,16 +1042,16 @@
                                         <div class="offers_icons">
                                             <ul class="offers_icons_list">
                                                 <li class="offers_icons_item">
-                                                    <img src="https://preview.colorlib.com/theme/travelix/images/post.png" alt="">
+                                                    <img src="images/post.png" alt="">
                                                 </li>
                                                 <li class="offers_icons_item">
-                                                    <img src="https://preview.colorlib.com/theme/travelix/images/compass.png" alt="">
+                                                    <img src="images/compass.png" alt="">
                                                 </li>
                                                 <li class="offers_icons_item">
-                                                    <img src="https://preview.colorlib.com/theme/travelix/images/bicycle.png" alt="">
+                                                    <img src="images/bicycle.png" alt="">
                                                 </li>
                                                 <li class="offers_icons_item">
-                                                    <img src="https://preview.colorlib.com/theme/travelix/images/sailboat.png" alt="">
+                                                    <img src="images/sailboat.png" alt="">
                                                 </li>
                                             </ul>
                                         </div>
@@ -1153,7 +1068,7 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="offers_image_container">
-                                        <div class="offers_image_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/offer_3.jpg)"></div>
+                                        <div class="offers_image_background" style="background-image:url(images/offer_3.jpg)"></div>
                                         <div class="offer_name">
                                             <a href="#">island dream</a>
                                         </div>
@@ -1175,16 +1090,16 @@
                                         <div class="offers_icons">
                                             <ul class="offers_icons_list">
                                                 <li class="offers_icons_item">
-                                                    <img src="https://preview.colorlib.com/theme/travelix/images/post.png" alt="">
+                                                    <img src="images/post.png" alt="">
                                                 </li>
                                                 <li class="offers_icons_item">
-                                                    <img src="https://preview.colorlib.com/theme/travelix/images/compass.png" alt="">
+                                                    <img src="images/compass.png" alt="">
                                                 </li>
                                                 <li class="offers_icons_item">
-                                                    <img src="https://preview.colorlib.com/theme/travelix/images/bicycle.png" alt="">
+                                                    <img src="images/bicycle.png" alt="">
                                                 </li>
                                                 <li class="offers_icons_item">
-                                                    <img src="https://preview.colorlib.com/theme/travelix/images/sailboat.png" alt="">
+                                                    <img src="images/sailboat.png" alt="">
                                                 </li>
                                             </ul>
                                         </div>
@@ -1201,7 +1116,7 @@
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="offers_image_container">
-                                        <div class="offers_image_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/offer_4.jpg)"></div>
+                                        <div class="offers_image_background" style="background-image:url(images/offer_4.jpg)"></div>
                                         <div class="offer_name">
                                             <a href="#">travel light</a>
                                         </div>
@@ -1223,16 +1138,16 @@
                                         <div class="offers_icons">
                                             <ul class="offers_icons_list">
                                                 <li class="offers_icons_item">
-                                                    <img src="https://preview.colorlib.com/theme/travelix/images/post.png" alt="">
+                                                    <img src="images/post.png" alt="">
                                                 </li>
                                                 <li class="offers_icons_item">
-                                                    <img src="https://preview.colorlib.com/theme/travelix/images/compass.png" alt="">
+                                                    <img src="images/compass.png" alt="">
                                                 </li>
                                                 <li class="offers_icons_item">
-                                                    <img src="https://preview.colorlib.com/theme/travelix/images/bicycle.png" alt="">
+                                                    <img src="images/bicycle.png" alt="">
                                                 </li>
                                                 <li class="offers_icons_item">
-                                                    <img src="https://preview.colorlib.com/theme/travelix/images/sailboat.png" alt="">
+                                                    <img src="images/sailboat.png" alt="">
                                                 </li>
                                             </ul>
                                         </div>
@@ -1265,10 +1180,10 @@
                                             <div class="owl-item">
                                                 <div class="test_item">
                                                     <div class="test_image">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/test_2.jpg" alt="">
+                                                        <img src="images/test_2.jpg" alt="">
                                                     </div>
                                                     <div class="test_icon">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/island_t.png" alt="">
+                                                        <img src="images/island_t.png" alt="">
                                                     </div>
                                                     <div class="test_content_container">
                                                         <div class="test_content">
@@ -1287,10 +1202,10 @@
                                             <div class="owl-item">
                                                 <div class="test_item">
                                                     <div class="test_image">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/test_1.jpg" alt="">
+                                                        <img src="images/test_1.jpg" alt="">
                                                     </div>
                                                     <div class="test_icon">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/backpack.png" alt="">
+                                                        <img src="images/backpack.png" alt="">
                                                     </div>
                                                     <div class="test_content_container">
                                                         <div class="test_content">
@@ -1309,10 +1224,10 @@
                                             <div class="owl-item">
                                                 <div class="test_item">
                                                     <div class="test_image">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/test_3.jpg" alt="">
+                                                        <img src="images/test_3.jpg" alt="">
                                                     </div>
                                                     <div class="test_icon">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/kayak.png" alt="">
+                                                        <img src="images/kayak.png" alt="">
                                                     </div>
                                                     <div class="test_content_container">
                                                         <div class="test_content">
@@ -1331,10 +1246,10 @@
                                             <div class="owl-item">
                                                 <div class="test_item">
                                                     <div class="test_image">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/test_1.jpg" alt="https://unsplash.com/anniegray">
+                                                        <img src="images/test_1.jpg" alt="https://unsplash.com/anniegray">
                                                     </div>
                                                     <div class="test_icon">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/backpack.png" alt="">
+                                                        <img src="images/backpack.png" alt="">
                                                     </div>
                                                     <div class="test_content_container">
                                                         <div class="test_content">
@@ -1353,10 +1268,10 @@
                                             <div class="owl-item">
                                                 <div class="test_item">
                                                     <div class="test_image">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/test_2.jpg" alt="https://unsplash.com/tschax">
+                                                        <img src="images/test_2.jpg" alt="https://unsplash.com/tschax">
                                                     </div>
                                                     <div class="test_icon">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/island_t.png" alt="">
+                                                        <img src="images/island_t.png" alt="">
                                                     </div>
                                                     <div class="test_content_container">
                                                         <div class="test_content">
@@ -1375,10 +1290,10 @@
                                             <div class="owl-item">
                                                 <div class="test_item">
                                                     <div class="test_image">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/test_3.jpg" alt="https://unsplash.com/seefromthesky">
+                                                        <img src="images/test_3.jpg" alt="https://unsplash.com/seefromthesky">
                                                     </div>
                                                     <div class="test_icon">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/kayak.png" alt="">
+                                                        <img src="images/kayak.png" alt="">
                                                     </div>
                                                     <div class="test_content_container">
                                                         <div class="test_content">
@@ -1397,10 +1312,10 @@
                                             <div class="owl-item">
                                                 <div class="test_item">
                                                     <div class="test_image">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/test_2.jpg" alt="">
+                                                        <img src="images/test_2.jpg" alt="">
                                                     </div>
                                                     <div class="test_icon">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/island_t.png" alt="">
+                                                        <img src="images/island_t.png" alt="">
                                                     </div>
                                                     <div class="test_content_container">
                                                         <div class="test_content">
@@ -1419,10 +1334,10 @@
                                             <div class="owl-item">
                                                 <div class="test_item">
                                                     <div class="test_image">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/test_1.jpg" alt="">
+                                                        <img src="images/test_1.jpg" alt="">
                                                     </div>
                                                     <div class="test_icon">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/backpack.png" alt="">
+                                                        <img src="images/backpack.png" alt="">
                                                     </div>
                                                     <div class="test_content_container">
                                                         <div class="test_content">
@@ -1441,10 +1356,10 @@
                                             <div class="owl-item">
                                                 <div class="test_item">
                                                     <div class="test_image">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/test_3.jpg" alt="">
+                                                        <img src="images/test_3.jpg" alt="">
                                                     </div>
                                                     <div class="test_icon">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/kayak.png" alt="">
+                                                        <img src="images/kayak.png" alt="">
                                                     </div>
                                                     <div class="test_content_container">
                                                         <div class="test_content">
@@ -1463,10 +1378,10 @@
                                             <div class="owl-item">
                                                 <div class="test_item">
                                                     <div class="test_image">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/test_1.jpg" alt="https://unsplash.com/anniegray">
+                                                        <img src="images/test_1.jpg" alt="https://unsplash.com/anniegray">
                                                     </div>
                                                     <div class="test_icon">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/backpack.png" alt="">
+                                                        <img src="images/backpack.png" alt="">
                                                     </div>
                                                     <div class="test_content_container">
                                                         <div class="test_content">
@@ -1485,10 +1400,10 @@
                                             <div class="owl-item">
                                                 <div class="test_item">
                                                     <div class="test_image">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/test_2.jpg" alt="https://unsplash.com/tschax">
+                                                        <img src="images/test_2.jpg" alt="https://unsplash.com/tschax">
                                                     </div>
                                                     <div class="test_icon">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/island_t.png" alt="">
+                                                        <img src="images/island_t.png" alt="">
                                                     </div>
                                                     <div class="test_content_container">
                                                         <div class="test_content">
@@ -1507,10 +1422,10 @@
                                             <div class="owl-item">
                                                 <div class="test_item">
                                                     <div class="test_image">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/test_3.jpg" alt="https://unsplash.com/seefromthesky">
+                                                        <img src="images/test_3.jpg" alt="https://unsplash.com/seefromthesky">
                                                     </div>
                                                     <div class="test_icon">
-                                                        <img src="https://preview.colorlib.com/theme/travelix/images/kayak.png" alt="">
+                                                        <img src="images/kayak.png" alt="">
                                                     </div>
                                                     <div class="test_content_container">
                                                         <div class="test_content">
@@ -1579,7 +1494,7 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="trending_item clearfix">
                             <div class="trending_image">
-                                <img src="https://preview.colorlib.com/theme/travelix/images/trend_1.png" alt="https://unsplash.com/fransaraco">
+                                <img src="images/trend_1.png" alt="https://unsplash.com/fransaraco">
                             </div>
                             <div class="trending_content">
                                 <div class="trending_title">
@@ -1593,7 +1508,7 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="trending_item clearfix">
                             <div class="trending_image">
-                                <img src="https://preview.colorlib.com/theme/travelix/images/trend_2.png" alt="https://unsplash.com/grovemade">
+                                <img src="images/trend_2.png" alt="https://unsplash.com/grovemade">
                             </div>
                             <div class="trending_content">
                                 <div class="trending_title">
@@ -1607,7 +1522,7 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="trending_item clearfix">
                             <div class="trending_image">
-                                <img src="https://preview.colorlib.com/theme/travelix/images/trend_3.png" alt="https://unsplash.com/jbriscoe">
+                                <img src="images/trend_3.png" alt="https://unsplash.com/jbriscoe">
                             </div>
                             <div class="trending_content">
                                 <div class="trending_title">
@@ -1621,7 +1536,7 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="trending_item clearfix">
                             <div class="trending_image">
-                                <img src="https://preview.colorlib.com/theme/travelix/images/trend_4.png" alt="https://unsplash.com/oowgnuj">
+                                <img src="images/trend_4.png" alt="https://unsplash.com/oowgnuj">
                             </div>
                             <div class="trending_content">
                                 <div class="trending_title">
@@ -1635,7 +1550,7 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="trending_item clearfix">
                             <div class="trending_image">
-                                <img src="https://preview.colorlib.com/theme/travelix/images/trend_5.png" alt="https://unsplash.com/mindaugas">
+                                <img src="images/trend_5.png" alt="https://unsplash.com/mindaugas">
                             </div>
                             <div class="trending_content">
                                 <div class="trending_title">
@@ -1649,7 +1564,7 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="trending_item clearfix">
                             <div class="trending_image">
-                                <img src="https://preview.colorlib.com/theme/travelix/images/trend_6.png" alt="https://unsplash.com/itsnwa">
+                                <img src="images/trend_6.png" alt="https://unsplash.com/itsnwa">
                             </div>
                             <div class="trending_content">
                                 <div class="trending_title">
@@ -1663,7 +1578,7 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="trending_item clearfix">
                             <div class="trending_image">
-                                <img src="https://preview.colorlib.com/theme/travelix/images/trend_7.png" alt="https://unsplash.com/rktkn">
+                                <img src="images/trend_7.png" alt="https://unsplash.com/rktkn">
                             </div>
                             <div class="trending_content">
                                 <div class="trending_title">
@@ -1677,7 +1592,7 @@
                     <div class="col-lg-3 col-sm-6">
                         <div class="trending_item clearfix">
                             <div class="trending_image">
-                                <img src="https://preview.colorlib.com/theme/travelix/images/trend_8.png" alt="https://unsplash.com/thoughtcatalog">
+                                <img src="images/trend_8.png" alt="https://unsplash.com/thoughtcatalog">
                             </div>
                             <div class="trending_content">
                                 <div class="trending_title">
@@ -1692,7 +1607,7 @@
             </div>
         </div>
         <div class="contact">
-            <div class="contact_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/contact.png)"></div>
+            <div class="contact_background" style="background-image:url(images/contact.png)"></div>
             <div class="container">
                 <div class="row">
                     <div class="col-lg-5">
@@ -1720,127 +1635,96 @@
         <footer class="footer">
             <div class="container">
                 <div class="row">
-
                     <div class="col-lg-3 footer_column">
                         <div class="footer_col">
                             <div class="footer_content footer_about">
                                 <div class="logo_container footer_logo">
-                                    <div class="logo"><a href="#"><img src="images/logo.png" alt="">travelix</a></div>
+                                    <div class="logo">
+                                        <a href="#">
+                                            <img src="images/logo.png" alt="">travelix
+                                        </a>
+                                    </div>
                                 </div>
                                 <p class="footer_about_text">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus quis vu lputate eros, iaculis consequat nisl. Nunc et suscipit urna. Integer eleme ntum orci eu vehicula pretium.</p>
                                 <ul class="footer_social_list">
-                                    <li class="footer_social_item"><a href="#"><i class="fa fa-pinterest"></i></a></li>
-                                    <li class="footer_social_item"><a href="#"><i class="fa fa-facebook-f"></i></a></li>
-                                    <li class="footer_social_item"><a href="#"><i class="fa fa-twitter"></i></a></li>
-                                    <li class="footer_social_item"><a href="#"><i class="fa fa-dribbble"></i></a></li>
-                                    <li class="footer_social_item"><a href="#"><i class="fa fa-behance"></i></a></li>
+                                    <li class="footer_social_item">
+                                        <a href="#">
+                                            undefined<i class="fa fa-pinterest"></i>
+                                        </a>
+                                    </li>
+                                    <li class="footer_social_item">
+                                        <a href="#">
+                                            undefined<i class="fa fa-facebook-f"></i>
+                                        </a>
+                                    </li>
+                                    <li class="footer_social_item">
+                                        <a href="#">
+                                            undefined<i class="fa fa-twitter"></i>
+                                        </a>
+                                    </li>
+                                    <li class="footer_social_item">
+                                        <a href="#">
+                                            undefined<i class="fa fa-dribbble"></i>
+                                        </a>
+                                    </li>
+                                    <li class="footer_social_item">
+                                        <a href="#">
+                                            undefined<i class="fa fa-behance"></i>
+                                        </a>
+                                    </li>
                                 </ul>
                             </div>
                         </div>
                     </div>
-
                     <div class="col-lg-3 footer_column">
                         <div class="footer_col">
                             <div class="footer_title">blog posts</div>
                             <div class="footer_content footer_blog">
-
                                 <div class="footer_blog_item clearfix">
-                                    <div class="footer_blog_image"><img src="https://preview.colorlib.com/theme/travelix/images/footer_blog_1.jpg" alt="https://unsplash.com/avidenov"></div>
+                                    <div class="footer_blog_image">
+                                        <img src="images/footer_blog_1.jpg" alt="https://unsplash.com/avidenov">
+                                    </div>
                                     <div class="footer_blog_content">
-                                        <div class="footer_blog_title"><a href="blog.html">Travel with us this year</a></div>
-                                        <div class="footer_blog_date">Nov 29, 2017</div>
+                                        undefined<div class="footer_blog_title">undefined<a href="blog.html">Travel with us this year</a>undefined</div>undefined<div class="footer_blog_date">Nov 29, 2017</div>
                                     </div>
                                 </div>
-
                                 <div class="footer_blog_item clearfix">
-                                    <div class="footer_blog_image"><img src="https://preview.colorlib.com/theme/travelix/images/footer_blog_2.jpg" alt="https://unsplash.com/deannaritchie"></div>
-                                    <div class="footer_blog_content">
-                                        <div class="footer_blog_title"><a href="blog.html">New destinations for you</a></div>
-                                        <div class="footer_blog_date">Nov 29, 2017</div>
-                                    </div>
+                                    <div class="footer_blog_image">undefined<img src="images/footer_blog_2.jpg" alt="https://unsplash.com/deannaritchie">undefined</div>undefined<div class="footer_blog_content">undefined<div class="footer_blog_title">undefined<a href="blog.html">New destinations for you</a>undefined</div>undefined<div class="footer_blog_date">Nov 29, 2017</div>undefined</div>
                                 </div>
-
-                                <div class="footer_blog_item clearfix">
-                                    <div class="footer_blog_image"><img src="https://preview.colorlib.com/theme/travelix/images/footer_blog_3.jpg" alt="https://unsplash.com/bergeryap87"></div>
-                                    <div class="footer_blog_content">
-                                        <div class="footer_blog_title"><a href="blog.html">Travel with us this year</a></div>
-                                        <div class="footer_blog_date">Nov 29, 2017</div>
-                                    </div>
-                                </div>
+                                <div class="footer_blog_item clearfix">undefined<div class="footer_blog_image">undefined<img src="images/footer_blog_3.jpg" alt="https://unsplash.com/bergeryap87">undefined</div>undefined<div class="footer_blog_content">undefined<div class="footer_blog_title">undefined<a href="blog.html">Travel with us this year</a>undefined</div>undefined<div class="footer_blog_date">Nov 29, 2017</div>undefined</div>undefined</div>
                             </div>
                         </div>
                     </div>
-
                     <div class="col-lg-3 footer_column">
                         <div class="footer_col">
                             <div class="footer_title">tags</div>
                             <div class="footer_content footer_tags">
-                                <ul class="tags_list clearfix">
-                                    <li class="tag_item"><a href="#">design</a></li>
-                                    <li class="tag_item"><a href="#">fashion</a></li>
-                                    <li class="tag_item"><a href="#">music</a></li>
-                                    <li class="tag_item"><a href="#">video</a></li>
-                                    <li class="tag_item"><a href="#">party</a></li>
-                                    <li class="tag_item"><a href="#">photography</a></li>
-                                    <li class="tag_item"><a href="#">adventure</a></li>
-                                    <li class="tag_item"><a href="#">travel</a></li>
-                                </ul>
+                                undefined<ul class="tags_list clearfix">undefined<li class="tag_item">undefined<a href="#">design</a>undefined</li>undefined<li class="tag_item">undefined<a href="#">fashion</a>undefined</li>undefined<li class="tag_item">undefined<a href="#">music</a>undefined</li>undefined<li class="tag_item">undefined<a href="#">video</a>undefined</li>undefined<li class="tag_item">undefined<a href="#">party</a>undefined</li>undefined<li class="tag_item">undefined<a href="#">photography</a>undefined</li>undefined<li class="tag_item">undefined<a href="#">adventure</a>undefined</li>undefined<li class="tag_item">undefined<a href="#">travel</a>undefined</li>undefined</ul>
                             </div>
                         </div>
                     </div>
-
                     <div class="col-lg-3 footer_column">
                         <div class="footer_col">
                             <div class="footer_title">contact info</div>
-                            <div class="footer_content footer_contact">
-                                <ul class="contact_info_list">
-                                    <li class="contact_info_item d-flex flex-row">
-                                        <div><div class="contact_info_icon"><img src="images/placeholder.svg" alt=""></div></div>
-                                        <div class="contact_info_text">4127 Raoul Wallenber 45b-c Gibraltar</div>
-                                    </li>
-                                    <li class="contact_info_item d-flex flex-row">
-                                        <div><div class="contact_info_icon"><img src="images/phone-call.svg" alt=""></div></div>
-                                        <div class="contact_info_text">2556-808-8613</div>
-                                    </li>
-                                    <li class="contact_info_item d-flex flex-row">
-                                        <div><div class="contact_info_icon"><img src="images/message.svg" alt=""></div></div>
-                                        <div class="contact_info_text"><a href="mailto:contactme@gmail.com?Subject=Hello" target="_top">contactme@gmail.com</a></div>
-                                    </li>
-                                    <li class="contact_info_item d-flex flex-row">
-                                        <div><div class="contact_info_icon"><img src="images/planet-earth.svg" alt=""></div></div>
-                                        <div class="contact_info_text"><a href="https://colorlib.com">www.colorlib.com</a></div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                            <div class="footer_content footer_contact">undefined<ul class="contact_info_list">undefined<li class="contact_info_item d-flex flex-row">undefined<div>undefined<div class="contact_info_icon">undefined<img src="images/placeholder.svg" alt="">undefined</div>undefined</div>undefined<div class="contact_info_text">4127 Raoul Wallenber 45b-c Gibraltar</div>undefined</li>undefined<li class="contact_info_item d-flex flex-row">undefined<div>undefined<div class="contact_info_icon">undefined<img src="images/phone-call.svg" alt="">undefined</div>undefined</div>undefined<div class="contact_info_text">2556-808-8613</div>undefined</li>undefined<li class="contact_info_item d-flex flex-row">undefined<div>undefined<div class="contact_info_icon">undefined<img src="images/message.svg" alt="">undefined</div>undefined</div>undefined<div class="contact_info_text">undefined<a href="mailto:contactme@gmail.com?Subject=Hello" target="_top">contactme@gmail.com</a>undefined</div>undefined</li>undefined<li class="contact_info_item d-flex flex-row">undefined<div>undefined<div class="contact_info_icon">undefined<img src="images/planet-earth.svg" alt="">undefined</div>undefined</div>undefined<div class="contact_info_text">undefined<a href="https://colorlib.com">www.colorlib.com</a>undefined</div>undefined</li>undefined</ul>undefined</div>undefined
+                        </div>undefined
+                    </div>undefined
                 </div>
             </div>
         </footer>
         <div class="copyright">
             <div class="container">
-                <div class="row">
-                    <div class="col-lg-3 order-lg-1 order-2  ">
-                        <div class="copyright_content d-flex flex-row align-items-center">
-                            <div>
-                                Copyright ©
-                                <script>document.write(new Date().getFullYear());</script>2023 All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-9 order-lg-2 order-1">
-                        <div class="footer_nav_container d-flex flex-row align-items-center justify-content-lg-end">
-                            <div class="footer_nav">
-                                <ul class="footer_nav_list">
-                                    <li class="footer_nav_item"><a href="../">home</a></li>
-                                    <li class="footer_nav_item"><a href="about.html">about us</a></li>
-                                    <li class="footer_nav_item"><a href="offers.html">offers</a></li>
-                                    <li class="footer_nav_item"><a href="blog.html">news</a></li>
-                                    <li class="footer_nav_item"><a href="contact.html">contact</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
+                undefined<div class="row">
+                    undefined<div class="col-lg-3 order-lg-1 order-2  ">
+                        undefined<div class="copyright_content d-flex flex-row align-items-center">
+                            undefined<div>
+                                Copyright ©undefined
+                                <script>
+                    document.write(new Date().getFullYear());
+                                </script>2023 All rights reserved | This template is made with undefined<i class="fa fa-heart-o" aria-hidden="true"></i> by undefined<a href="https://colorlib.com" target="_blank">Colorlib</a>undefined
+                            </div>undefined
+                        </div>undefined
+                    </div>undefined<div class="col-lg-9 order-lg-2 order-1">undefined<div class="footer_nav_container d-flex flex-row align-items-center justify-content-lg-end">undefined<div class="footer_nav">undefined<ul class="footer_nav_list">undefined<li class="footer_nav_item">undefined<a href="#">home</a>undefined</li>undefined<li class="footer_nav_item">undefined<a href="about.html">about us</a>undefined</li>undefined<li class="footer_nav_item">undefined<a href="offers.html">offers</a>undefined</li>undefined<li class="footer_nav_item">undefined<a href="blog.html">news</a>undefined</li>undefined<li class="footer_nav_item">undefined<a href="contact.html">contact</a>undefined</li>undefined</ul>undefined</div>undefined</div>undefined</div>undefined
                 </div>
             </div>
         </div>
