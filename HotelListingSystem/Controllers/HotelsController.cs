@@ -6,7 +6,9 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using System.Xml.Linq;
 using HotelListingSystem.Models;
+using HotelListingSystem.ViewModel;
 
 namespace HotelListingSystem.Controllers
 {
@@ -34,6 +36,39 @@ namespace HotelListingSystem.Controllers
         }
 
         [HttpPost]
+        public JsonResult VerifyHotel(int id)
+        {
+            // Perform the necessary logic to update the hotel row
+            var hotel = db.Hotels.FirstOrDefault(x => x.Id == id);
+            hotel.IsVerified = true;
+            db.Entry(hotel).State = EntityState.Modified;
+            int savechanges = db.SaveChanges();
+
+            var user = db.HotelUsers.FirstOrDefault(x => x.EmailAddress == User.Identity.Name)?.FullName;
+            new Email().SendEmail(User.Identity.Name, user, "verified");
+
+            // Return a JSON response to the AJAX request
+            return Json(new { success = savechanges > 0, message = "Hotel updated successfully" });
+        }
+
+
+        [HttpPost]
+        public JsonResult UnverifyHotel(int id)
+        {
+            // Perform the necessary logic to update the hotel row
+            var hotel = db.Hotels.FirstOrDefault(x => x.Id == id);
+            hotel.IsVerified = false;
+            db.Entry(hotel).State = EntityState.Modified;
+            int savechanges = db.SaveChanges();
+
+            var user = db.HotelUsers.FirstOrDefault(x => x.EmailAddress == User.Identity.Name)?.FullName;
+            new Email().SendEmail(User.Identity.Name, user, "unverified");
+
+            // Return a JSON response to the AJAX request
+            return Json(new { success = savechanges > 0, message = "Hotel updated successfully" });
+        }
+
+        [HttpPost]
         public JsonResult UpdateHotel(int id, string paymentPaid, DateTime dueDate, DateTime paymentDoneDate)
         {
             // Perform the necessary logic to update the hotel row
@@ -57,6 +92,9 @@ namespace HotelListingSystem.Controllers
             db.Entry(hotel).State = EntityState.Modified;
             int savechanges = db.SaveChanges();
 
+            var user = db.HotelUsers.FirstOrDefault(x => x.EmailAddress == User.Identity.Name)?.FullName;
+            new Email().SendEmail(User.Identity.Name, user, "blacklist, due to unsettled debt");
+
             // Return a JSON response to the AJAX request
             return Json(new { success = savechanges > 0, message = "Hotel updated successfully" });
         }
@@ -69,27 +107,44 @@ namespace HotelListingSystem.Controllers
             ViewBag.Suburb = new SelectList(db.Hotels.Select(h => h.Suburb).Distinct().ToList());
 
             var hotels = db.Hotels.Include(h => h.HotelUser);
-            return View(hotels.ToList());
+            return View(Search(string.Empty, string.Empty, null, null));
+        }
+
+        [HttpPost]
+        public ActionResult FindHotel(string suburb, string city, DateTime? checkin, DateTime? checkout)
+        {
+            ViewBag.City = new SelectList(db.Hotels.Select(h => h.City).Distinct().ToList());
+            ViewBag.Suburb = new SelectList(db.Hotels.Select(h => h.Suburb).Distinct().ToList());
+            ViewBag.HotelId = new SelectList(db.Hotels, "Id", "Name");
+            ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName");
+            ViewBag.RoomId = new SelectList(db.Rooms, "Id", "Name");
+
+            //var hotels = db.Hotels.Include(h => h.HotelUser);
+            return View(Search(suburb, city, checkin, checkout));
         }
         // GET: /Hotels/Search
-        public ActionResult Search(string suburb, string city, DateTime? checkin, DateTime? checkout)
+        public List<HotelReservationVM> Search(string suburb, string city, DateTime? checkin, DateTime? checkout)
         {
             // Store the search criteria in ViewBag to pass to the view for display
             ViewBag.Suburb = suburb;
             ViewBag.City = city;
             ViewBag.CheckInDate = checkin;
             ViewBag.CheckOutDate = checkout;
-
+            //FIX
             // Query the database to get hotels based on the search criteria
-            var result = (from hotel in db.Hotels
+            var result = (from rooms in db.Rooms
+                          join hotel in db.Hotels on rooms.HotelId equals hotel.Id
                          join reservation in db.Reservations on hotel.Id equals reservation.HotelId into hotelReservationGroup
                          from reservation in hotelReservationGroup.DefaultIfEmpty()
-                         where hotelReservationGroup != null && hotel.Blacklisted != true
-                         select new
+                         where reservation != null && hotel.Blacklisted != true
+                         select new HotelReservationVM
                          {
                              HotelId = hotel.Id,
                              HotelName = hotel.Name,
                              Suburb = hotel.Suburb,
+                             MaxOccupancy = hotel.MaxOccupancy,
+                             RoomId = rooms.Id,
+                             RoomName = rooms.Name,
                              City = hotel.City,
                              HotelUserId = hotel.HotelUserId == null ? null : hotel.HotelUserId,
                              Rating = hotel.Rating,
@@ -104,11 +159,23 @@ namespace HotelListingSystem.Controllers
                 (string.IsNullOrEmpty(suburb) || h.Suburb.Contains(suburb)) &&
                 (string.IsNullOrEmpty(city) || h.City.Contains(city)) &&
                 (!checkin.HasValue || h.CheckInDate <= checkin.Value) &&
-                (!checkout.HasValue || h.CheckOutDate >= checkout.Value)
-            ).ToList();
+                (!checkout.HasValue || h.CheckOutDate >= checkout.Value)).ToList();
 
-            return View(hotels); // Return the list of hotels to the view for display
+            if ((hotels.Count() != result.Count()) && hotels.Count() > 0)
+            {
+                hotels.FirstOrDefault().IsSearchResults = true;
+            }
+
+            ViewBag.City = new SelectList(db.Hotels.Select(h => h.City).Distinct().ToList());
+            ViewBag.Suburb = new SelectList(db.Hotels.Select(h => h.Suburb).Distinct().ToList());
+            ViewBag.HotelId = new SelectList(db.Hotels, "Id", "Name");
+            ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName");
+            ViewBag.RoomId = new SelectList(db.Rooms, "Id", "Name");
+
+            return hotels; // Return the list of hotels to the view for display
         }
+
+
         public ActionResult DisplayImage(int hotelId, int imageType = 1)
         {
             var hotel = db.Hotels.FirstOrDefault(h => h.Id == hotelId);
@@ -171,7 +238,7 @@ namespace HotelListingSystem.Controllers
             {
                 hotel.HotelUserId = AppHelper.CurrentHotelUser()?.Id;
                 hotel.CreatedOn = DateTime.Now;
-                if (documents.Count() >= 1)
+                if (documents?.Count() >= 1)
                 {
                     var file = documents[0];
                     var fileContent = file.InputStream;
@@ -182,7 +249,7 @@ namespace HotelListingSystem.Controllers
                     fileContent.Read(hotel.HotelImageContent, 0, (int)fileContent.Length);
                     hotel.HotelImageFileSize = (Int64)file.ContentLength;
                 }
-                if (documents.Count() >= 2)
+                if (documents?.Count() >= 2)
                 {
                     var file = documents[1];
                     var fileContent = file.InputStream;
@@ -193,7 +260,7 @@ namespace HotelListingSystem.Controllers
                     fileContent.Read(hotel.CertificateOfOccupancyDocContent, 0, (int)fileContent.Length);
                     hotel.CertificateOfOccupancyDoFileSize = (Int64)file.ContentLength;
                 }
-                if (documents.Count() >= 3)
+                if (documents?.Count() >= 3)
                 {
                     var file = documents[2];
                     var fileContent = file.InputStream;
@@ -207,7 +274,8 @@ namespace HotelListingSystem.Controllers
 
                 db.Hotels.Add(hotel);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                ViewBag.AddRooms = "true";
+                return RedirectToAction("Create", "Rooms", new { hotelId = hotel.Id });
             }
 
             ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName", hotel.HotelUserId);

@@ -1,146 +1,178 @@
-﻿@model IEnumerable<HotelListingSystem.Models.Hotel>
+﻿@model List<HotelListingSystem.Models.Hotel>
 
 @{
     ViewBag.Title = "HotelPayment";
 }
 
-<h2>HotelPayment</h2>
+<h4>Hotel Payment</h4>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.HotelUser.FirstName)
+            Owner FullName
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            Hotel Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.IsVerified)
+            Is Verified
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Rating)
+            Rating
         </th>
 
         <th>
-            @Html.DisplayNameFor(model => model.PaymentPaid)
+            Payment Paid
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DueDate)
+            Due Date
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.PaymentDoneDate)
+            Payment Done Date
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr class="hotel-row">
-        <td>
-            @Html.HiddenFor(model => item.Id)
-            @Html.DisplayFor(modelItem => item.HotelUser.FirstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.MaxOccupancy)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.IsVerified)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Rating)
-        </td>
-        <th>
-            @Html.EditorFor(modelItem => item.PaymentPaid)
-        </th>
-        <th>
-            @Html.EditorFor(modelItem => item.DueDate, new { @class = "datepicker" })
-        </th>
-        <th>
-            @Html.EditorFor(modelItem => item.PaymentDoneDate, new {@class= "datepicker" })
-        </th>
-        <td>
-            <button type="button" class="btn btn-primary" id="hotel_@item.Id" onclick="UpdateHotel(@item.Id)">Update</button>
-            <br />
-            @if (item?.Blacklisted == true)
-            {
-                <button type="button" class="btn btn-danger"> Hotel Blacklisted </button>
-            }
-            else
-            {
-                <button type="button" class="btn btn-primary" id="hotel_@item.Id" onclick="BlacklistHotel(@item.Id)"> Blacklist </button>
-            }
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr class="hotel-row-@item.Id">
+            <td>
+                @Html.HiddenFor(model => item.Id)
+                @Html.DisplayFor(modelItem => item.HotelUser.FullName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.IsVerified)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Rating)
+            </td>
+            <th>
+                @Html.EditorFor(modelItem => item.PaymentPaid)
+            </th>
+            <th>
+                @Html.EditorFor(modelItem => item.DueDate, new { htmlAttributes = new { @class = "datepicker", @type = "date" } })
+            </th>
+            <th>
+                @Html.EditorFor(modelItem => item.PaymentDoneDate, new { htmlAttributes = new { @class = "datepicker", @type= "date" } })
+            </th>
+            <td>
+                <button type="button" class="btn btn-primary" id="hotel_@item.Id" onclick="UpdateHotel(@item.Id)">Update</button>
+                <br />
+                @if (item?.Blacklisted == true)
+                {
+                    <button type="button" class="btn btn-danger"> Hotel Blacklisted </button>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-primary" id="hotel_@item.Id" onclick="BlacklistHotel(@item.Id)"> Blacklist </button>
+                }
+            </td>
+        </tr>
+    }
 
 </table>
 
-<script>
-            // Initialize datepickers
-        $(function () {
-            var currentDate = new Date();
-            $('.datepicker').datepicker({
-                minDate: currentDate // Restrict check-in date to be on or after the current date
+@*@section scripts{*@
+    @*<script src="~/Scripts/jquery-2.2.0.js"></script>*@
+    <script>
+        // Initialize datepickers
+        //$(function () {
+        //    var currentDate = new Date();
+        //    $('.datepicker').datepicker({
+        //        minDate: currentDate // Restrict check-in date to be on or after the current date
+        //    });
+        //});
+
+        function UpdateHotel(hotelId) {
+            // Get the data from the table row
+            // Get the second row element
+            const row = document.querySelector('.hotel-row-' + hotelId);
+
+            // Get the values of each cell in the row
+            const ownerFullName = row.cells[0].textContent.trim();
+            const hotelName = row.cells[1].textContent.trim();
+            const isVerified = row.cells[2].querySelector('select').value;
+            const rating = row.cells[3].textContent.trim();
+            const paymentPaid = row.cells[4].querySelector('select').value;
+            const dueDate = row.cells[5].querySelector('input').value;
+            const paymentDoneDate = row.cells[6].querySelector('input').value;
+
+            // Print the values
+            console.log('Owner FullName:', ownerFullName);
+            console.log('Hotel Name:', hotelName);
+            console.log('Is Verified:', isVerified);
+            console.log('Rating:', rating);
+            console.log('Payment Paid:', paymentPaid);
+            console.log('Due Date:', dueDate);
+            console.log('Payment Done Date:', paymentDoneDate);
+
+
+            if (paymentPaid == '' || paymentPaid == undefined) {
+                alert('Please select Payment Paid');
+                return false;
+            }
+            if (dueDate == '' || dueDate == undefined) {
+                alert('Please select Due Date');
+                return false;
+            }
+            if (paymentDoneDate == '' || paymentDoneDate == undefined) {
+                alert('Please select Payment Done Date');
+                return false;
+            }
+
+
+            // Prepare the data to be sent to the controller
+            var data = {
+                Id: hotelId,
+                PaymentPaid: paymentPaid,
+                DueDate: dueDate,
+                PaymentDoneDate: paymentDoneDate
+            };
+
+            // Send the data to the controller using AJAX
+            $.ajax({
+                url: '/Hotels/UpdateHotel', // Replace with your controller's action method URL
+                type: 'POST', // Use POST or GET depending on your requirements
+                dataType: 'json', // Set the data type to JSON if needed
+                data: data,
+                success: function (response) {
+                    // Handle success response from the controller
+                    // Update UI or perform other actions as needed
+                    console.log(response);
+                    alert(response.message);
+                },
+                error: function (xhr, status, error) {
+                    // Handle error response from the controller
+                    // Display error message or perform other actions as needed
+                    console.error(xhr.responseText);
+                    alert(xhr.responseText);
+                }
             });
-        });
-
-    function UpdateHotel(hotelId) {
-        // Get the data from the table row
-        var paymentPaid = $('.hotel-row[data-hotel-id="' + hotelId + '"] input[name="PaymentPaid"]').val();
-        var dueDate = $('.hotel-row[data-hotel-id="' + hotelId + '"] input[name="DueDate"]').val();
-        var paymentDoneDate = $('.hotel-row[data-hotel-id="' + hotelId + '"] input[name="PaymentDoneDate"]').val();
-
-        // Prepare the data to be sent to the controller
-        var data = {
-            Id: hotelId,
-            PaymentPaid: paymentPaid,
-            DueDate: dueDate,
-            PaymentDoneDate: paymentDoneDate
-        };
-
-        // Send the data to the controller using AJAX
-        $.ajax({
-            url: '/Hotels/UpdateHotel', // Replace with your controller's action method URL
-            type: 'POST', // Use POST or GET depending on your requirements
-            dataType: 'json', // Set the data type to JSON if needed
-            data: data,
-            success: function (response) {
-                // Handle success response from the controller
-                // Update UI or perform other actions as needed
-                console.log(response);
-                alert(response);
-            },
-            error: function (xhr, status, error) {
-                // Handle error response from the controller
-                // Display error message or perform other actions as needed
-                console.error(xhr.responseText);
-                alert(xhr.responseText);
-            }
-        });
-    }
-    function BlacklistHotel(id) {
-        $.ajax({
-            url: '/Hotels/BlacklistHotel', // Replace with your controller's action method URL
-            type: 'POST', // Use POST or GET depending on your requirements
-            dataType: 'json', // Set the data type to JSON if needed
-            data: data,
-            success: function (response) {
-                // Handle success response from the controller
-                // Update UI or perform other actions as needed
-                console.log(response);
-                alert(response);
-            },
-            error: function (xhr, status, error) {
-                // Handle error response from the controller
-                // Display error message or perform other actions as needed
-                console.error(xhr.responseText);
-                alert(xhr.responseText);
-            }
-        });
-    }
-</script>
+        }
+        function BlacklistHotel(id) {
+            $.ajax({
+                url: '/Hotels/BlacklistHotel?id='+id, // Replace with your controller's action method URL
+                type: 'POST', // Use POST or GET depending on your requirements
+                dataType: 'json', // Set the data type to JSON if needed
+                //data: id,
+                success: function (response) {
+                    // Handle success response from the controller
+                    // Update UI or perform other actions as needed
+                    console.log(response);
+                    alert(response.message);
+                    window.location.reload();
+                },
+                error: function (xhr, status, error) {
+                    // Handle error response from the controller
+                    // Display error message or perform other actions as needed
+                    console.error(xhr.responseText);
+                    alert(xhr.responseText);
+                }
+            });
+        }
+    </script>
+@*}*@
