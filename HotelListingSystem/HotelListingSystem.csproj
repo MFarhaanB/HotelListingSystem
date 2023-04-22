@@ -180,6 +180,7 @@
     <Compile Include="Controllers\MealTypesController.cs" />
     <Compile Include="Controllers\PaymentsController.cs" />
     <Compile Include="Controllers\ReservationsController.cs" />
+    <Compile Include="Controllers\RoomsController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -204,6 +205,8 @@
     <Compile Include="Models\TimerViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
+    <Compile Include="ViewModel\Email.cs" />
+    <Compile Include="ViewModel\HotelReservationVM.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\aspnet-HotelListingSystem-20230408050248.mdf" />
@@ -423,9 +426,12 @@
     <Content Include="Views\Hotels\FindHotel.cshtml" />
     <Content Include="Views\Hotels\HotelPayment.cshtml" />
     <Content Include="Views\Hotels\MyHotels.cshtml" />
-    <Content Include="Views\Shared\_eLayout.cshtml" />
-    <Content Include="Views\Shared\_eFooter.cshtml" />
-    <Content Include="Views\Shared\_eHead.cshtml" />
+    <Content Include="Views\Rooms\Create.cshtml" />
+    <Content Include="Views\Rooms\Delete.cshtml" />
+    <Content Include="Views\Rooms\Details.cshtml" />
+    <Content Include="Views\Rooms\Edit.cshtml" />
+    <Content Include="Views\Rooms\Index.cshtml" />
+    <Content Include="Views\Account\AddReceptionist.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="cdn-cgi\rum\" />

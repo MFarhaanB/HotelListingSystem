@@ -29,12 +29,13 @@ namespace HotelListingSystem.Models
         public byte[] RoomImageContent1 { get; set; }
 
         public string RoomImageContentType1 { get; set; }
-        public int? RoomImageFileSize1 { get; set; }
+        public Int64? RoomImageFileSize1 { get; set; }
 
         public string RoomImageName2 { get; set; }
         public byte[] RoomImageContent2 { get; set; }
 
         public string RoomImageContentType2 { get; set; }
-        public int? RoomImageFileSize2 { get; set; }
+        public Int64? RoomImageFileSize2 { get; set; }
+        public DateTime? CreatedOn { get; set; }
     }
 }

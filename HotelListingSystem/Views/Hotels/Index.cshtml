@@ -345,6 +345,7 @@
 
     </tbody>
 
+<<<<<<< HEAD
 
 </table>
 
@@ -358,3 +359,119 @@
         $('#table').DataTable();
     });
 </script>
+=======
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.MaxOccupancy)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StreetNumber)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.StreetName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Suburb)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.City)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.PhysicalAddressCode)
+        </td>
+        <td>
+            <img src="@Url.Action("DisplayImage", "Hotels", new { hotelId = item.Id })" alt="Hotel Image" style="height: 150px;width: 150px;" />
+        </td>
+        <td>
+            <img src="@Url.Action("DisplayImage", "Hotels", new { hotelId = item.Id, imageType = 2 })" alt="Hotel Image" style="height: 150px;width: 150px;" />
+        </td>
+        <td>
+            <img src="@Url.Action("DisplayImage", "Hotels", new { hotelId = item.Id, imageType = 3 })" alt="Hotel Image" style="height: 150px;width: 150px;" />
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.HotelImageFileSize)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.IsVerified)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })  <br /><br />
+            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-primary" })  <br /><br />
+
+
+            @{
+                if (item.IsVerified == true)
+                {
+                    <button type="button" class="btn btn-sm btn-danger" onclick="UnverifyHotel(@item.Id)">
+                        Unverify
+                    </button>
+                }
+                else if (item.IsVerified == false)
+                {
+                    <button type="button" class="btn btn-sm btn-danger" onclick="VerifyHotel(@item.Id)">
+                        Verify
+                    </button>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-sm btn-primary" onclick="VerifyHotel(@item.Id)">Verify Hotel</button>
+                    //Html.ActionLink("Verify", "VerifyHotel", new { id = item.Id }, new { @class = "btn btn-sm btn-info" });
+                }
+            }
+            @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
+        </td>
+    </tr>
+}
+
+</table>
+<script>
+    function VerifyHotel(id) {
+        $.ajax({
+            url: '@Url.Action("VerifyHotel", "Hotels")?id=' + id, // Replace with your controller's action method URL
+            type: 'POST', // Use POST or GET depending on your requirements
+            dataType: 'json', // Set the data type to JSON if needed
+            //data: id,
+            success: function (response) {
+                // Handle success response from the controller
+                // Update UI or perform other actions as needed
+                console.log(response);
+                alert(response.message);
+                window.location.reload();
+            },
+            error: function (xhr, status, error) {
+                // Handle error response from the controller
+                // Display error message or perform other actions as needed
+                console.error(xhr.responseText);
+                alert(xhr.responseText);
+            }
+        });
+    }
+
+    function UnverifyHotel(id) {
+        $.ajax({
+            url: '@Url.Action("UnverifyHotel", "Hotels")?id=' + id, // Replace with your controller's action method URL
+            type: 'POST', // Use POST or GET depending on your requirements
+            dataType: 'json', // Set the data type to JSON if needed
+            //data: id,
+            success: function (response) {
+                // Handle success response from the controller
+                // Update UI or perform other actions as needed
+                console.log(response);
+                alert(response.message);
+                window.location.reload();
+            },
+            error: function (xhr, status, error) {
+                // Handle error response from the controller
+                // Display error message or perform other actions as needed
+                console.error(xhr.responseText);
+                alert(xhr.responseText);
+            }
+        });
+    }
+</script>
+>>>>>>> 6dde6ed3be581d576aff3e807af2ba8077054289

@@ -42,7 +42,8 @@ namespace HotelListingSystem.Controllers
             ViewBag.HotelId = new SelectList(db.Hotels, "Id", "Name");
             ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName");
             ViewBag.RoomId = new SelectList(db.Rooms, "Id", "Name");
-            return View();
+            var reservations = db.Rooms.Include(x => x.Hotel).ToList();
+            return View(reservations);
         }
 
         // POST: Reservations/Create
@@ -63,7 +64,8 @@ namespace HotelListingSystem.Controllers
             ViewBag.HotelId = new SelectList(db.Hotels, "Id", "Name", reservation.HotelId);
             ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName", reservation.HotelUserId);
             ViewBag.RoomId = new SelectList(db.Rooms, "Id", "Name", reservation.RoomId);
-            return View(reservation);
+            var reservations = db.Rooms.Include(x => x.Hotel).ToList();
+            return View(reservations);
         }
 
 
@@ -96,7 +98,8 @@ namespace HotelListingSystem.Controllers
             ViewBag.HotelId = new SelectList(db.Hotels, "Id", "Name", reservation.HotelId);
             ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName", reservation.HotelUserId);
             ViewBag.RoomId = new SelectList(db.Rooms, "Id", "Name", reservation.RoomId);
-            return View(reservation);
+            var reservations = db.Rooms.Include(x => x.Hotel).ToList();
+            return View(reservations);
         }
 
         // GET: Reservations/Edit/5
@@ -171,19 +174,30 @@ namespace HotelListingSystem.Controllers
             base.Dispose(disposing);
         }
 
-        [HttpGet]
-        public ActionResult CheckRoomAvailability(int hotelId, DateTime checkInDate, DateTime checkOutDate, int noOfRooms)
+        [HttpPost]
+        public ActionResult BookReservation(int hotelId, DateTime checkInDate, DateTime checkOutDate, int noOfRooms, int roomId)
         {
 
             int reservationCount = db.Reservations.Where(x => x.HotelId == hotelId).Count();
-            var roomQty = db.Hotels.Where(x=>x.Id == hotelId).Select(x=>x.MaxOccupancy).Count();
+            var roomQty = db.Hotels.FirstOrDefault(x=>x.Id == hotelId)?.MaxOccupancy;
 
             string message = "";
 
             // Check if room quantity is available
-            if (roomQty <= reservationCount)
+            if (roomQty >= reservationCount)
             {
                 // Return success status with empty message
+                Reservation reservation = new Reservation();
+                reservation.HotelId = hotelId;
+                reservation.HotelUserId = AppHelper.CurrentHotelUser()?.Id;
+                reservation.RoomId = roomId;
+                reservation.NoOfRooms = (int)roomQty;
+                reservation.CreatedOn = DateTime.Now;
+                reservation.CheckOutDate = checkOutDate;
+                reservation.CheckInDate = checkInDate;
+                db.Reservations.Add(reservation);
+                db.SaveChanges();
+
                 return Json(new { success = true, message = "" }, JsonRequestBehavior.AllowGet);
             }
             else

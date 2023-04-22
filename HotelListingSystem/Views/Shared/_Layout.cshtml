@@ -39,14 +39,15 @@
                     }
                     @if (User.IsInRole("Business Owner") || User.IsInRole("Administrator"))
                     {
-                        <li>@Html.ActionLink("My Profile", "Details", "HotelUsers", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("My Profile", "Details", "HotelUsers", new { area = "", id = "" }, new { @class = "nav-link" })</li>
                         <li>@Html.ActionLink("My Hotels", "MyHotels", "Hotels", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Add Receptionist", "AddReceptionist", "Account", new { area = "" }, new { @class = "nav-link" })</li>
                     }
                     @if (User.IsInRole("Customer") || User.IsInRole("Administrator"))
                     {
                         <li>@Html.ActionLink("Find Hotels", "FindHotel", "Hotels", new { area = "" }, new { @class = "nav-link" })</li>
                         <li>@Html.ActionLink("Hotel Reservation", "CreateReservation", "Reservations", new { area = "" }, new { @class = "nav-link" })</li>
-                        <li>@Html.ActionLink("Dining Reservation", "FindHotel", "Dinings", new { area = "" }, new { @class = "nav-link" })</li>
+                        <li>@Html.ActionLink("Dining Reservation", "Index", "Dinings", new { area = "" }, new { @class = "nav-link" })</li>
 
                     }
                 </ul>

@@ -178,16 +178,32 @@ namespace HotelListingSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> AddReceptionist([Bind(Include = "Id,FirstName,LastName,UserName,CompanyName,Designation,EmailAddress,HotelUserType,StatusId,IsPasswordReset,IdentificationNumber,MobileNumber,CreatedOn")] HotelUsers hotelUsers)
+        public async Task<ActionResult> AddReceptionist(RegisterViewModel model)
         {
             if (ModelState.IsValid)
             {
-                var user = new SystemUser { UserName = hotelUsers.EmailAddress, Email = hotelUsers.EmailAddress };
+                var identityManager = new IdentityManager();
+
+                var user = new SystemUser { UserName = model.Email, Email = model.Email };
+                user.HotelUser = new HotelUsers
+                {
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    IdentificationNumber = model.IdentificationNumber,
+                    UserName = model.Email,
+                    CompanyName = model?.CompanyName,
+                    EmailAddress = model.Email,
+                    MobileNumber = model?.MobileNumber,
+                    CreatedOn = DateTime.Now,
+                    HotelUserType = model.HotelUserType
+                };
+
                 var password = GenerateProfilePassword();
                 var result = await UserManager.CreateAsync(user, password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    var roleResult = identityManager.AddUserToRole(user.Id, "Receptionist");
+                    //await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
@@ -195,15 +211,11 @@ namespace HotelListingSystem.Controllers
                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     await UserManager.SendEmailAsync(user.Id, $"Confirm your account", $"You have been added as a Receptionist. Your Account credentials are as follows... <br/>Username : {user}, Password: {password}. <br/>Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-
-
-                    db.HotelUsers.Add(hotelUsers);
-                    db.SaveChanges();
-                    return RedirectToAction("Index", "HotelUsers", new { id = User.Identity.GetUserId(), type = "Receptionists" });
+                    return RedirectToAction("MyHotels", "Hotels", new { id = User.Identity.GetUserId(), type = "Receptionists" });
                 }
+                AddErrors(result);
             }
-
-            return View(hotelUsers);
+            return View(model);
         }
 
         public static string GenerateProfilePassword()
@@ -247,17 +259,18 @@ namespace HotelListingSystem.Controllers
                     FirstName = model.FirstName,
                     LastName = model.LastName,
                     IdentificationNumber = model.IdentificationNumber,
-                    UserName = model.EmailAddress,
+                    UserName = model.Email,
                     CompanyName = model?.CompanyName,
-                    EmailAddress = model.EmailAddress,
+                    EmailAddress = model.Email,
                     MobileNumber = model?.MobileNumber,
                     CreatedOn = DateTime.Now,
+                    HotelUserType = model.HotelUserType
                 };
 
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    var roleResult = identityManager.AddUserToRole(user.Id, "Receptionist");
+                    var roleResult = model.HotelUserType == "Business"? identityManager.AddUserToRole(user.Id, "Business Owner") : identityManager.AddUserToRole(user.Id, "Customer");
 
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
                     

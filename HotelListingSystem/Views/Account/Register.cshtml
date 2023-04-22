@@ -56,6 +56,7 @@
                 @Html.LabelFor(model => model.HotelUserType, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-3">
 
+<<<<<<< HEAD
                     @Html.DropDownList("selectedOption",
                    new List<SelectListItem>
                    {
@@ -63,6 +64,15 @@
                        new SelectListItem { Value = "Individual", Text = "Individual" }
                    }
                    , "-- Select Option --", new { @class = "form-control" })
+=======
+                @Html.DropDownList("HotelUserType",
+               new List<SelectListItem>
+               {
+                   new SelectListItem { Value = "Business", Text = "Business" },
+                   new SelectListItem { Value = "Individual", Text = "Individual" }
+               }
+               , "-- Select Option --", new { @class = "form-control" })
+>>>>>>> 6dde6ed3be581d576aff3e807af2ba8077054289
 
                     @Html.ValidationMessageFor(model => model.HotelUserType, "", new { @class = "text-danger" })
                 </div>

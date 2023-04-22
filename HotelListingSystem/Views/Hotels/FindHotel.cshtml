@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 ﻿@model List<HotelListingSystem.Models.Hotel>
 @using HotelListingSystem.Models;
 @{
@@ -746,4 +747,136 @@
 
 
 
+=======
+﻿@model List<HotelListingSystem.ViewModel.HotelReservationVM>
 
+<!-- Search form -->
+<form method="post" action="/Hotels/FindHotel">
+    @*@Html.ActionLink("Hotel Reservation", "CreateReservation", "Reservations", new { area = "" }, new { @class = "btn-sm btn btn-primary" }) &nbsp;&nbsp;&nbsp;*@
+
+    <label for="suburb">Suburb:</label>
+    @Html.DropDownList("Suburb", (SelectList)ViewBag.Suburbs, "Select a suburb")
+
+    @*<input type="text" id="suburb" name="suburb" value="@ViewBag.Suburb" />*@
+    <label for="city">City:</label>
+    @*<input type="text" id="city" name="city" value="@ViewBag.City" />*@
+    @*@Html.DropDownList("City")*@
+    @Html.DropDownList("City", (SelectList)ViewBag.Suburbs, "Select a suburb")
+
+    <label for="checkin">Check-in:</label>
+    <input type="date" id="checkin" name="checkin" value="@ViewBag.CheckInDate" /> <!-- Use ViewBag to store the entered check-in date value -->
+    <label for="checkout">Check-out:</label>
+    <input type="date" id="checkout" name="checkout" value="@ViewBag.CheckOutDate" /> <!-- Use ViewBag to store the entered check-out date value -->
+    <button type="submit" class="btn-sm btn btn-info">Search</button>
+</form>
+
+<!-- Display search results -->
+@if (Model != null && Model.Count > 0)
+{
+    if (Model.Any(x => x.IsSearchResults == true))
+    {
+        <h1>Search Results:</h1>
+    }
+    else
+    {
+        <h1>Available Rooms</h1>
+    }
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Hotel Name</th>
+                <th>Room Name</th>
+                <th>No of beds</th>
+                <th>Check-in</th>
+                <th>Check-out</th>
+                <th>No. of Rooms</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var room in Model)
+            {
+                <tr>
+                    <td>@room.HotelName</td>
+                    <td>@room.RoomName</td>
+                    <td>@room.Suburb</td>
+                    <td>@room.City</td>
+                    <td>
+                        <input type="date" id="checkInDate_@room.HotelId" class="form-control datepicker" />
+                    </td>
+                    <td>
+                        <input type="date" id="checkOutDate_@room.HotelId" class="form-control datepicker" />
+                    </td>
+                    <td>
+                        <input type="number" id="noOfRooms_@room.HotelId" class="form-control hotelroom_@room.HotelId" min="1" max="@room.MaxOccupancy." value="1" />
+                    </td>
+                    <td>
+                        <a href="#" class="btn btn-primary" onclick="reserveRoom(@room.HotelId, '@room.RoomName', @room.RoomId)">Reserve</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <h1>No rooms found.</h1>
+}
+>>>>>>> 6dde6ed3be581d576aff3e807af2ba8077054289
+
+
+@section scripts{
+    <script>
+        // Function to reserve a room with selected check-in and check-out dates and number of rooms
+        function reserveRoom(hotelId, roomName, roomId) {
+            var checkInDate = $('#checkInDate_' + roomId).val();
+            var checkOutDate = $('#checkOutDate_' + roomId).val();
+            var noOfRooms = $('#noOfRooms_' + roomId).val();
+
+            // Perform validation for check-in, check-out dates, and number of rooms
+            if (checkInDate === "" || checkOutDate === "") {
+                alert("Please select check-in and check-out dates.");
+                return;
+            }
+            var roomQty = $('.hotelroom_' + roomId).val();
+            if (noOfRooms < 1 || noOfRooms > roomQty) {
+                alert("Invalid number of rooms. Please select a valid number of rooms.");
+                return;
+            }
+
+            // Perform AJAX call to check room availability
+            $.ajax({
+                url: '@Url.Action("BookReservation", "Reservations")', // Update with your controller and action method names
+                type: 'POST',
+                data: { hotelId: hotelId, checkInDate: checkInDate, checkOutDate: checkOutDate, noOfRooms: noOfRooms, roomId: roomId },
+                success: function (data) {
+                    if (data.success) {
+                        // Room is available, proceed with reservation
+                        // You can implement the reservation logic here
+                        // e.g., send another AJAX request to the server to create a reservation
+                        // with the selected room ID, check-in and check-out dates, number of rooms, etc.
+                        alert("Reservation submitted for Room: " + roomName +
+                            "\nCheck-in Date: " + checkInDate +
+                            "\nCheck-out Date: " + checkOutDate +
+                            "\nNo. of Rooms: " + noOfRooms);
+                    } else {
+                        // Room is not available, show error message
+                        alert(data.message);
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    // Handle error
+                    console.error(errorThrown);
+                }
+            });
+        }
+
+        // Initialize datepickers
+        //$(function () {
+        //    var currentDate = new Date();
+        //    $('.datepicker').datepicker({
+        //        minDate: currentDate // Restrict check-in date to be on or after the current date
+        //    });
+        //});
+    </script>
+}

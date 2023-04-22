@@ -1,4 +1,4 @@
-﻿@model List<HotelListingSystem.Models.Reservation>
+﻿@model List<HotelListingSystem.Models.Room>
 
 <h2>Available Hotel Rooms</h2>
 
@@ -21,19 +21,19 @@
             {
                 <tr>
                     <td>@room.Hotel.Name</td>
-                    <td>@room.Room.Name</td>
-                    <td>@room.Room.NoOfBeds</td>
+                    <td>@room.Name</td>
+                    <td>@room.NoOfBeds</td>
                     <td>
-                        <input type="text" id="checkInDate_@room.Room.Id" class="form-control datepicker" />
+                        <input type="date" id="checkInDate_@room.Id" class="form-control datepicker" />
                     </td>
                     <td>
-                        <input type="text" id="checkOutDate_@room.Room.Id" class="form-control datepicker" />
+                        <input type="date" id="checkOutDate_@room.Id" class="form-control datepicker" />
                     </td>
                     <td>
-                        <input type="number" id="noOfRooms_@room.Room.Id" class="form-control hotelroom_@room.RoomId" min="1" max="@room.Room." value="1" />
+                        <input type="number" id="noOfRooms_@room.Id" class="form-control hotelroom_@room.Id" min="1" max="@room.Sleeps." value="1" />
                     </td>
                     <td>
-                        <a href="#" class="btn btn-primary" onclick="reserveRoom(@room.Room.Id)">Reserve</a>
+                        <a href="#" class="btn btn-primary" onclick="reserveRoom(@room.HotelId, '@room.Name', @room.Id)">Reserve</a>
                     </td>
                 </tr>
             }
@@ -48,7 +48,7 @@ else
 @section scripts{
     <script>
         // Function to reserve a room with selected check-in and check-out dates and number of rooms
-        function reserveRoom(roomId) {
+        function reserveRoom(hotelId, roomName, roomId) {
             var checkInDate = $('#checkInDate_' + roomId).val();
             var checkOutDate = $('#checkOutDate_' + roomId).val();
             var noOfRooms = $('#noOfRooms_' + roomId).val();
@@ -66,16 +66,16 @@ else
 
             // Perform AJAX call to check room availability
             $.ajax({
-                url: '@Url.Action("CheckRoomAvailability", "Reservation")', // Update with your controller and action method names
-                type: 'GET',
-                data: { hotelId: @Model.FirstOrDefault().HotelId, checkInDate: checkInDate, checkOutDate: checkOutDate, noOfRooms: noOfRooms },
+                url: '@Url.Action("CheckRoomAvailability", "Reservations")', // Update with your controller and action method names
+                type: 'POST',
+                data: { hotelId: hotelId, checkInDate: checkInDate, checkOutDate: checkOutDate, noOfRooms: noOfRooms, roomId: roomId },
                 success: function (data) {
                     if (data.success) {
                         // Room is available, proceed with reservation
                         // You can implement the reservation logic here
                         // e.g., send another AJAX request to the server to create a reservation
                         // with the selected room ID, check-in and check-out dates, number of rooms, etc.
-                        alert("Reservation submitted for Room ID: " + roomId +
+                        alert("Reservation submitted for Room: " + roomName +
                             "\nCheck-in Date: " + checkInDate +
                             "\nCheck-out Date: " + checkOutDate +
                             "\nNo. of Rooms: " + noOfRooms);
@@ -92,11 +92,11 @@ else
         }
 
         // Initialize datepickers
-        $(function () {
-            var currentDate = new Date();
-            $('.datepicker').datepicker({
-                minDate: currentDate // Restrict check-in date to be on or after the current date
-            });
-        });
+        //$(function () {
+        //    var currentDate = new Date();
+        //    $('.datepicker').datepicker({
+        //        minDate: currentDate // Restrict check-in date to be on or after the current date
+        //    });
+        //});
     </script>
 }
