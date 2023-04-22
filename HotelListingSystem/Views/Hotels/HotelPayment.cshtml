@@ -312,7 +312,11 @@
     </table>*@
 
 @Html.Partial("_eFooter")
-
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable();
+    });
+</script>
 <script>
     $(document).ready(function () {
         $('#example').DataTable();
