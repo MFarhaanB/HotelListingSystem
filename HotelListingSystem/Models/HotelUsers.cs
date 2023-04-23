@@ -18,16 +18,20 @@ namespace HotelListingSystem.Models
 
         [Column(Order = 10)]
         //[RegularExpression(@"^[a-zA-Z ]+$", ErrorMessage = "The FirstName field should consist of characters only")]
+        [Display(Name ="First Name")]
         public string FirstName { get; set; }
 
         [Column(Order = 11)]
         //[RegularExpression(@"^[a-zA-Z]+$", ErrorMessage =  "The LastName field should consist of characters only")]
+        [Display(Name = "Surname")]
         public string LastName { get; set; }
 
         [Column(Order = 12)]
+        [Display(Name = "Username")]
         public string UserName { get; set; }
 
         [Column(Order = 13)]
+        [Display(Name = "Company")]
         public string CompanyName { get; set; }
 
         [Column(Order = 14)]
@@ -39,9 +43,11 @@ namespace HotelListingSystem.Models
         public string EmailAddress { get; set; }
 
         [Column(Order = 16)]
+        [Display(Name = "Hotel User Type")]
         public string HotelUserType { get; set; }
 
         [Column(Order = 17)]
+        [Display(Name = "Status")]
         public string StatusId { get; set; }
 
         [Column(Order = 18)]
