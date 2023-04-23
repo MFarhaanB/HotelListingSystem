@@ -267,7 +267,7 @@
                                 @Html.EditorFor(modelItem => item.PaymentDoneDate, new { htmlAttributes = new { @class = "datepicker", @type = "date", @style = "width:90%;" } })
                             </th>
                             <td>
-                                <button type="button" class="btn btn-primary" id="hotel_@item.Id" onclick="UpdateHotel(@item.Id)">Update</button> |
+                                <button type="button" class="btn btn-warning" id="hotel_@item.Id" onclick="UpdateHotel(@item.Id)">Update</button> |
 
                                 @if (item?.Blacklisted == true)
                                 {
@@ -275,7 +275,7 @@
                                 }
                                 else
                                 {
-                                    <button type="button" class="btn btn-primary" id="hotel_@item.Id" onclick="BlacklistHotel(@item.Id)"> Blacklist </button>
+                                    <button type="button" class="btn btn-secondary" id="hotel_@item.Id" onclick="BlacklistHotel(@item.Id)"> Blacklist </button>
                                 }
                             </td>
                         </tr>
