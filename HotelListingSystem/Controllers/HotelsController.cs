@@ -25,13 +25,27 @@ namespace HotelListingSystem.Controllers
         // GET: Hotels
         public ActionResult MyHotels()
         {
+            var user = AppHelper.CurrentHotelUser()?.Id;
             var hotels = db.Hotels.Include(h => h.HotelUser).Where(x => x.HotelUser.UserName == User.Identity.Name).ToList();
+            if (User.IsInRole("Receptionist"))
+            {
+                hotels = db.Hotels.Include(h => h.HotelUser).Where(x => x.ReceptionistId == user).ToList();
+            }
             return View(hotels);
         }
 
         public ActionResult HotelPayment()
         {
-            var hotels = db.Hotels.Include(h => h.HotelUser).ToList();
+            var user = AppHelper.CurrentHotelUser()?.Id;
+            var hotels = db.Hotels.Include(h => h.HotelUser).Where(x => x.HotelUser.UserName == User.Identity.Name).ToList();
+            if (User.IsInRole("Receptionist"))
+            {
+                hotels = db.Hotels.Include(h => h.HotelUser).Where(x => x.ReceptionistId == user).ToList();
+            }
+            if (User.IsInRole("Administrator"))
+            {
+                hotels = db.Hotels.Include(h => h.HotelUser).ToList();
+            }
             return View(hotels);
         }
 
@@ -45,7 +59,7 @@ namespace HotelListingSystem.Controllers
             int savechanges = db.SaveChanges();
 
             var user = db.HotelUsers.FirstOrDefault(x => x.EmailAddress == User.Identity.Name)?.FullName;
-            new Email().SendEmail(User.Identity.Name, user, "verified");
+            new Email().SendEmail(User.Identity.Name, "Hotel Validation", user, "verified");
 
             // Return a JSON response to the AJAX request
             return Json(new { success = savechanges > 0, message = "Hotel updated successfully" });
@@ -62,7 +76,7 @@ namespace HotelListingSystem.Controllers
             int savechanges = db.SaveChanges();
 
             var user = db.HotelUsers.FirstOrDefault(x => x.EmailAddress == User.Identity.Name)?.FullName;
-            new Email().SendEmail(User.Identity.Name, user, "unverified");
+            new Email().SendEmail(User.Identity.Name, "Hotel Validation", user, "unverified");
 
             // Return a JSON response to the AJAX request
             return Json(new { success = savechanges > 0, message = "Hotel updated successfully" });
@@ -93,7 +107,7 @@ namespace HotelListingSystem.Controllers
             int savechanges = db.SaveChanges();
 
             var user = db.HotelUsers.FirstOrDefault(x => x.EmailAddress == User.Identity.Name)?.FullName;
-            new Email().SendEmail(User.Identity.Name, user, "blacklist, due to unsettled debt");
+            new Email().SendEmail(User.Identity.Name, "Hotel Validation", user, "blacklisted, due to unsettled debt");
 
             // Return a JSON response to the AJAX request
             return Json(new { success = savechanges > 0, message = "Hotel updated successfully" });
@@ -152,6 +166,7 @@ namespace HotelListingSystem.Controllers
                              CheckOutDate = reservation.CheckOutDate,
                              HotelImageName = hotel.HotelImageName,
                              HotelImageContent = hotel.HotelImageContent,
+                             PricePerRoom = rooms.PricePerRoom,
                          }).ToList();
 
 
@@ -309,7 +324,7 @@ namespace HotelListingSystem.Controllers
             {
                 db.Entry(hotel).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("MyHotels");
             }
             ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName", hotel.HotelUserId);
             return View(hotel);
@@ -338,7 +353,7 @@ namespace HotelListingSystem.Controllers
             Hotel hotel = db.Hotels.Find(id);
             db.Hotels.Remove(hotel);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("MyHotels");
         }
 
         protected override void Dispose(bool disposing)

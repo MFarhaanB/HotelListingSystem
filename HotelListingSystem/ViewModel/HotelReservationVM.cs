@@ -21,5 +21,7 @@ namespace HotelListingSystem.ViewModel
         public string HotelImageName { get; set; }
         public byte[] HotelImageContent { get; set; }
         public bool? IsSearchResults { get; set; }
+        public decimal PricePerRoom { get; set; }
+
     }
 }

@@ -34,5 +34,14 @@ namespace HotelListingSystem.Models
                 //throw ex;
             }
         }
+
+        public static bool? IsVerifiedHotel(string username)
+        {
+            using (ApplicationDbContext context = new ApplicationDbContext())
+            {
+                var check = context.Hotels.Include("HotelUser").FirstOrDefault(x => x.HotelUser.EmailAddress == username && x.HotelUser.HotelUserType == "Business")?.IsVerified ?? true;
+                return check;
+            }
+        }
     }
 }

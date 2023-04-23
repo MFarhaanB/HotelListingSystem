@@ -34,6 +34,35 @@
                     <th>No. Of Tables</th>
                     <th></th>
                 </tr>
+    <p>
+        @Html.ActionLink("Create Meal Type", "Create", "MealTypes", null, htmlAttributes: new { @class = "btn btn-sm btn-primary" }) &nbsp;&nbsp;
+        @Html.ActionLink("Create Dining Table Type", "Create", "DiningTableTypes", null, htmlAttributes: new { @class = "btn btn-sm btn-primary" }) &nbsp;&nbsp;
+        @Html.ActionLink("Create New Dining", "Create", null, htmlAttributes: new { @class = "btn btn-sm btn-primary" }) &nbsp;&nbsp;
+
+    </p>
+    <table class="table">
+        <tr>
+            <th>
+                Dining 
+            </th>
+            <th>
+                Meal Type
+            </th>
+
+            <th>
+                Dining Table Type
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.StartTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.EndTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NoOfTables)
+            </th>
+            <th></th>
+        </tr>
 
                 @foreach (var item in Model)
                 {
@@ -80,6 +109,35 @@
                     <th></th>
                 </tr>
             </tfoot>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.MealTypes.Name)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.DiningTableTypes.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.StartTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EndTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NoOfTables)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
 
             </table>
 

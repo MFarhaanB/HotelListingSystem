@@ -233,6 +233,30 @@
             </tr>
         }
 
+            @{
+                if (item.IsVerified == true)
+                {
+                    <button type="button" class="btn btn-sm btn-danger" onclick="UnverifyHotel(@item.Id)">
+                        Unverify
+                    </button>
+                }
+                else if (item.IsVerified == false)
+                {
+                    <button type="button" class="btn btn-sm btn-primary" onclick="VerifyHotel(@item.Id)">
+                        Verify
+                    </button>
+                }
+                else
+                {
+                    <button type="button" class="btn btn-sm btn-primary" onclick="VerifyHotel(@item.Id)">Verify</button>
+                    //Html.ActionLink("Verify", "VerifyHotel", new { id = item.Id }, new { @class = "btn btn-sm btn-info" });
+                }
+            }
+            @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
+        </td>
+    </tr>
+}
+
 
     </tbody>
 
