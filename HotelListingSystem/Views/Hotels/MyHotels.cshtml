@@ -6,9 +6,12 @@
 
 <h2>My Listed Hotels</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
+@if (!User.IsInRole("Receptionist"))
+{
+    <p>
+        @Html.ActionLink("Create New", "Create")
+    </p>
+}
 <table class="table">
     <tr>
         <th>
@@ -87,7 +90,7 @@
                 @Html.DisplayFor(modelItem => item.IsVerified)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |*@
                 @Html.ActionLink("Details", "Details", new { id = item.Id })
                 @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
             </td>

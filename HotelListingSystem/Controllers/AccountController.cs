@@ -11,6 +11,8 @@ using Microsoft.Owin.Security;
 using HotelListingSystem.Models;
 using System.Text;
 using Microsoft.AspNet.Identity.EntityFramework;
+using HotelListingSystem.ViewModel;
+using System.Net.Http;
 
 namespace HotelListingSystem.Controllers
 {
@@ -180,11 +182,11 @@ namespace HotelListingSystem.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddReceptionist(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 var identityManager = new IdentityManager();
 
-                var user = new SystemUser { UserName = model.Email, Email = model.Email };
+                var user = new SystemUser { UserName = model.Email, Email = model.Email,EmailConfirmed = true };
                 user.HotelUser = new HotelUsers
                 {
                     FirstName = model.FirstName,
@@ -208,15 +210,79 @@ namespace HotelListingSystem.Controllers
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, $"Confirm your account", $"You have been added as a Receptionist. Your Account credentials are as follows... <br/>Username : {user}, Password: {password}. <br/>Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                    //await UserManager.SendEmailAsync(user.Id, $"Confirm your account", $"You have been added as a Receptionist. Your Account credentials are as follows... <br/>Username : {user}, Password: {password}. <br/>Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("MyHotels", "Hotels", new { id = User.Identity.GetUserId(), type = "Receptionists" });
+                    new Email().SendEmail(model.Email, "Receptionist Confirmation", model.FirstName +" "+model.LastName, "Please user the below information to confirm your account <br/> Username: "+model.Email +"<br/>Password"+ password ,false);
+
+
+                    return RedirectToAction("Index", "Home", new { id = User.Identity.GetUserId(), message = "Receptionist added successfully" });
                 }
                 AddErrors(result);
-            }
+            //}
             return View(model);
         }
+
+        public ActionResult AddUserToReceptionist()
+        {
+            var role = db.Roles.FirstOrDefault(x=>x.Name == "Customer").Id;
+            ViewBag.HotelId = new SelectList(db.Hotels, "Id", "Name");
+            var users = (from user in db.Users
+                         where user.Roles.Any(x=>x.RoleId == role)
+                         select new UserVM
+                         {
+                             UserId = user.Id,
+                             UserName = user.UserName,
+                             FullName = user.HotelUser.FirstName +" "+user.HotelUser.LastName, 
+                             Email = user.Email,
+                         }).ToList();
+            return View(users);
+        }
+
+        [HttpPost]
+        public async Task<JsonResult> AddUserToReceptionist(string userId, int hotelId)
+        {
+
+            var user = await UserManager.FindByNameAsync(userId);
+            if (user == null)
+            {
+                // User not found
+                return Json(new { message = "User not found" });
+            }
+
+            var currentRole = (await UserManager.GetRolesAsync(user.Id)).FirstOrDefault();
+            if (currentRole != null)
+            {
+                // Remove user from current role
+                var result = await UserManager.RemoveFromRoleAsync(user.Id, currentRole);
+                if (!result.Succeeded)
+                {
+                    // Failed to remove user from current role
+                    return Json(new { message = "Operation failed" });
+                }
+            }
+
+            // Add user to Receptionist role
+            var receptionistRole = "Receptionist";
+            var addResult = await UserManager.AddToRoleAsync(user.Id, receptionistRole);
+            if (!addResult.Succeeded)
+            {
+                // Failed to add user to Receptionist role
+                return Json(new { message = "Operation failed" });
+            }
+
+            var hotel = db.Hotels.FirstOrDefault(x => x.Id == hotelId);
+            hotel.ReceptionistId = user.HotelUserId;
+            db.Entry(hotel).State = System.Data.Entity.EntityState.Modified;
+            int count = db.SaveChanges();
+
+
+            // User successfully added to Receptionist role
+            return Json(new { message = (count > 0 ? "Success" : "Failed" )});
+            
+        }
+
+
 
         public static string GenerateProfilePassword()
         {
@@ -270,16 +336,19 @@ namespace HotelListingSystem.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    var roleResult = model.HotelUserType == "Business"? identityManager.AddUserToRole(user.Id, "Business Owner") : identityManager.AddUserToRole(user.Id, "Customer");
+                    var roleResult = model.HotelUserType == "Business" ? identityManager.AddUserToRole(user.Id, "Business Owner") : identityManager.AddUserToRole(user.Id, "Customer");
 
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
+                    if (model.HotelUserType == "Business")
+                    {
+                        return RedirectToAction("Create", "Hotels"/*, new {id = user.HotelUserId}*/);
+                    }
                     return RedirectToAction("Index", "Home"/*, new {id = user.HotelUserId}*/);
                 }
                 AddErrors(result);

@@ -15,9 +15,15 @@ namespace HotelListingSystem.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Rooms
-        public ActionResult Index()
+        public ActionResult IndexAll()
         {
             return View(db.Rooms.ToList());
+        }
+        public ActionResult Index()
+        {
+            var user = AppHelper.CurrentHotelUser().Id;
+            var rooms = db.Rooms.Include(x => x.Hotel).Where(x => x.Hotel.HotelUserId == user).ToList();
+            return View(rooms);
         }
 
         // GET: Rooms/Details/5

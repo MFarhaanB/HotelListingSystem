@@ -16,21 +16,22 @@
 </head>
 <body>
     <p>
-        @Html.ActionLink("Create New", "Create")
+        @Html.ActionLink("Create Meal Type", "Create", "MealTypes", null, htmlAttributes: new { @class = "btn btn-sm btn-primary" }) &nbsp;&nbsp;
+        @Html.ActionLink("Create Dining Table Type", "Create", "DiningTableTypes", null, htmlAttributes: new { @class = "btn btn-sm btn-primary" }) &nbsp;&nbsp;
+        @Html.ActionLink("Create New Dining", "Create", null, htmlAttributes: new { @class = "btn btn-sm btn-primary" }) &nbsp;&nbsp;
+
     </p>
     <table class="table">
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.DiningTableTypes.Name)
+                Dining 
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MealTypes.Name)
+                Meal Type
             </th>
+
             <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DiningTableTypeId)
+                Dining Table Type
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.StartTime)
@@ -48,16 +49,14 @@
         {
             <tr>
                 <td>
-                    @Html.DisplayFor(modelItem => item.DiningTableTypes.Name)
+                    @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.MealTypes.Name)
                 </td>
+
                 <td>
-                    @Html.DisplayFor(modelItem => item.Name)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DiningTableTypeId)
+                    @Html.DisplayFor(modelItem => item.DiningTableTypes.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.StartTime)

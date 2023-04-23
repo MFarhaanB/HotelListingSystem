@@ -13,6 +13,7 @@ namespace HotelListingSystem.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
         public string Name { get; set; }
+        public int TableNumber { get; set; }
         public bool? IsConfirmed { get; set; }
         public int NoOfPeople { get; set; }
         public string Description { get; set; }

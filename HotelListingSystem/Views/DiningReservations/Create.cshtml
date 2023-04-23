@@ -4,16 +4,18 @@
     ViewBag.Title = "Create Dining Reservation";
 }
 
-<h2>Dining Reservation</h2>
+<h4>Dining Reservation</h4>
 
-@using (Html.BeginForm("Create", "Reservation", FormMethod.Post))
+@using (Html.BeginForm("Create", "DiningReservations", FormMethod.Post))
 {
     @Html.AntiForgeryToken()
-    <div class="form-group">
-        @Html.LabelFor(model => model.DiningId)
-        @Html.DropDownListFor(model => model.DiningId, new SelectList(ViewBag.DiningList, "Id", "Name"), "Select Dining", new { @class = "form-control" })
-        @Html.ValidationMessageFor(model => model.DiningId)
-    </div>
+<div class="form-group">
+    @Html.LabelFor(model => model.DiningId)
+    @Html.DropDownList("DiningId", null, htmlAttributes: new { @class = "form-control" })
+
+    @*@Html.DropDownListFor(model => model.DiningId, new SelectList(ViewBag.DiningList, "Id", "Name"), "Select Dining", new { @class = "form-control" })*@
+    @Html.ValidationMessageFor(model => model.DiningId)
+</div>
 
     <div class="form-group">
         @Html.LabelFor(model => model.Name)
@@ -33,7 +35,7 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.NoOfPeople)
-        @Html.EditorFor(model => model.NoOfPeople, new { @class = "form-control", @min = 1, @max = 50 })
+        @Html.EditorFor(model => model.NoOfPeople, new { @min = 1, @max = 50, htmlAttributes = new { @class = "form-control" } })
         @Html.ValidationMessageFor(model => model.NoOfPeople)
     </div>
 
@@ -45,7 +47,9 @@
 
     <div class="form-group">
         @Html.LabelFor(model => model.Date)
-        @Html.EditorFor(model => model.Date, new { @class = "form-control datepicker" })
+        <input type="date" id="Date" name="Date" class="form-control datepicker" />
+
+        @*@Html.EditorFor(model => model.Date, new { @class = "form-control" })*@
         @Html.ValidationMessageFor(model => model.Date)
     </div>
 

@@ -100,13 +100,13 @@
                 }
                 else if (item.IsVerified == false)
                 {
-                    <button type="button" class="btn btn-sm btn-danger" onclick="VerifyHotel(@item.Id)">
+                    <button type="button" class="btn btn-sm btn-primary" onclick="VerifyHotel(@item.Id)">
                         Verify
                     </button>
                 }
                 else
                 {
-                    <button type="button" class="btn btn-sm btn-primary" onclick="VerifyHotel(@item.Id)">Verify Hotel</button>
+                    <button type="button" class="btn btn-sm btn-primary" onclick="VerifyHotel(@item.Id)">Verify</button>
                     //Html.ActionLink("Verify", "VerifyHotel", new { id = item.Id }, new { @class = "btn btn-sm btn-info" });
                 }
             }

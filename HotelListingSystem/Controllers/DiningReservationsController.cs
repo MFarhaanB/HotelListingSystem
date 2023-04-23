@@ -15,10 +15,18 @@ namespace HotelListingSystem.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: DiningReservations
-        public ActionResult Index()
+        public ActionResult IndexAll()
         {
             var diningReservations = db.DiningReservations.Include(d => d.Dining).Include(d => d.HotelUsers);
             return View(diningReservations.ToList());
+        }
+
+        public ActionResult Index()
+        {
+            var user = AppHelper.CurrentHotelUser()?.Id;
+
+            var diningReservations = db.DiningReservations.Include(d => d.Dining).Include(d => d.HotelUsers).Where(x=>x.HotelUserId == user).ToList();
+            return View(diningReservations);
         }
 
         // GET: DiningReservations/Details/5
@@ -51,7 +59,15 @@ namespace HotelListingSystem.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Name,IsConfirmed,NoOfPeople,Description,Date,DiningId,HotelUserId")] DiningReservation diningReservation)
         {
+            int totalTables = db.Dinings.Where(x=>x.Id == diningReservation.DiningId).FirstOrDefault().NoOfTables ?? 0;
+            var reservedTables = db.DiningReservations.Select(d => d.TableNumber).ToList();
+
+
+            List<int> availableTables = Enumerable.Range(1, totalTables).Except(reservedTables).ToList();
+
+
             diningReservation.HotelUserId = AppHelper.CurrentHotelUser()?.Id;
+            diningReservation.TableNumber = availableTables.FirstOrDefault();
             diningReservation.CreatedOn = DateTime.Now;
             if (ModelState.IsValid)
             {

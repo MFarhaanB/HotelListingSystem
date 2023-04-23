@@ -36,10 +36,12 @@
             <tr>
                 <th>Hotel Name</th>
                 <th>Room Name</th>
-                <th>No of beds</th>
+                <th>Suburb</th>
+                <th>City</th>
                 <th>Check-in</th>
                 <th>Check-out</th>
                 <th>No. of Rooms</th>
+                <th>Cost</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -61,7 +63,10 @@
                         <input type="number" id="noOfRooms_@room.HotelId" class="form-control hotelroom_@room.HotelId" min="1" max="@room.MaxOccupancy." value="1" />
                     </td>
                     <td>
-                        <a href="#" class="btn btn-primary" onclick="reserveRoom(@room.HotelId, '@room.RoomName', @room.RoomId)">Reserve</a>
+                        <input type="text" id="cost_@room.HotelId" class="form-control hotelroom_@room.HotelId" value="@room.PricePerRoom" readonly="readonly" disabled="disabled" />
+                    </td>
+                    <td>
+                        <a href="#" class="btn btn-primary" onclick="reserveRoomConfirmation(@room.HotelId, '@room.RoomName', @room.RoomId, '@room.PricePerRoom')">Reserve</a>
                     </td>
                 </tr>
             }
@@ -77,6 +82,34 @@ else
 @section scripts{
     <script>
         // Function to reserve a room with selected check-in and check-out dates and number of rooms
+        function reserveRoomConfirmation(hotelId, roomName, roomId, ppp) {
+            var baseRoomQty = $('#noOfRooms_' + hotelId).val();
+            let roomQty = parseInt(baseRoomQty);
+            var cost = roomQty * parseFloat(ppp);
+            var checkInDate = $('#checkInDate_' + roomId).val();
+            var checkOutDate = $('#checkOutDate_' + roomId).val();
+            var noOfRooms = $('#noOfRooms_' + roomId).val();
+            if (confirm("Are you sure you want to proceed with Reservation for \nRoom: " + roomName +
+                                            "\nCheck-in Date: " + checkInDate +
+                                            "\nCheck-out Date: " + checkOutDate +
+                                            "\nNo. of Rooms: " + noOfRooms + "\nat the cost of " +cost+"?"
+
+            )) {
+                // User clicked "OK"
+                    var accountNumber = prompt("Please enter your Bank account number:", "");
+                var password = prompt("Please enter your Bank account password:", "");
+                    if (accountNumber != null && password != null) {
+                        // Perform login action here using accountNumber and password variables
+                        reserveRoom(hotelId, roomName, roomId);
+                    } else {
+                        alert("Reservation cancelled.");
+                    }
+            } else {
+                // User clicked "Cancel"
+                alert("Reservation cancelled.");
+            }
+        }
+
         function reserveRoom(hotelId, roomName, roomId) {
             var checkInDate = $('#checkInDate_' + roomId).val();
             var checkOutDate = $('#checkOutDate_' + roomId).val();

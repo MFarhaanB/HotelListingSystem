@@ -37,5 +37,8 @@ namespace HotelListingSystem.Models
         public string RoomImageContentType2 { get; set; }
         public Int64? RoomImageFileSize2 { get; set; }
         public DateTime? CreatedOn { get; set; }
+
+        public decimal PricePerRoom { get; set; }
+
     }
 }

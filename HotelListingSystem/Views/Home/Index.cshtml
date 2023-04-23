@@ -2,6 +2,12 @@
     ViewBag.Title = "Home Page";
 }
 
+@if (ViewBag.Message != null)
+{
+    <div class="alert alert-info">
+        @ViewBag.Message
+    </div>
+}
 <main>
     <section class="row" aria-labelledby="aspnetTitle">
         <h1 id="title">Hotel Listings System</h1>

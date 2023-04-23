@@ -31,5 +31,8 @@ namespace HotelListingSystem.Models
 
         public int NoOfRooms { get; set; }
         public DateTime? CreatedOn { get; set; }
+
+        public decimal TotalCost { get; set; }
+        public decimal TotalFees { get; set; }
     }
 }
