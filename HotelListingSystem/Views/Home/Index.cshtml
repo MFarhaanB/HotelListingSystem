@@ -231,48 +231,60 @@
                                     }
                                     @if (User.IsInRole("Administrator"))
                                     {
-                                        <li class="main_nav_item"><a href="../Dinings/IndexAll">Dining</a></li>
-                                        <li class="main_nav_item"><a href="../DiningTableTypes/Index">Tables</a></li>
-                                        <li class="main_nav_item"><a href="../MealTypes/Index">Meals</a></li>
-                                        <li class="main_nav_item"><a href="../Dinings/IndexAll">Dining</a></li>
+                                        <li>@Html.ActionLink("Dining", "IndexAll", "Dinings", new { area = "" }, new { @class = "nav-link" })</li>
+                                        <li>@Html.ActionLink("Tables", "Index", "DiningTableTypes", new { area = "" }, new { @class = "nav-link" })</li>
+                                        <li>@Html.ActionLink("Meals", "Index", "MealTypes", new { area = "" }, new { @class = "nav-link" })</li>
+                                        <li>@Html.ActionLink("Dining Reservations", "IndexAll", "DiningReservations", new { area = "" }, new { @class = "nav-link" })</li>
+                                        <li class="main_nav_item">@Html.ActionLink("Hotels", "Index", "Hotels", new { area = "" }, new { @class = "nav-link" })</li>
+                                        <li class="main_nav_item">@Html.ActionLink("Hotel Payment", "HotelPayment", "Hotels", new { area = "" }, new { @class = "nav-link" })</li>
                                     }
-                                    @if (User.IsInRole("Receptionist") || User.IsInRole("Administrator"))
+                                    @if (User.IsInRole("Receptionist"))
                                     {
-                                        <li class="main_nav_item"><a href="../Hotels/Index">Hotels</a></li>
-                                        <li class="main_nav_item"><a href="../Hotels/HotelPayment">Payments</a></li>
+                                        <li class="main_nav_item">@Html.ActionLink("Hotels", "MyHotels", "Hotels", new { area = "" }, new { @class = "nav-link" })</li>
+                                        <li class="main_nav_item">@Html.ActionLink("Hotel Payment", "HotelPayment", "Hotels", new { area = "" }, new { @class = "nav-link" })</li>
 
                                         @*<li>@Html.ActionLink("Hotels", "Index", "Hotels", new { area = "" }, new { @class = "nav-link" })</li>
             <li>@Html.ActionLink("Hotel Payment", "HotelPayment", "Hotels", new { area = "" }, new { @class = "nav-link" })</li>*@
                                     }
+                                    @if (User.IsInRole("Business Owner"))
+                                    {
+                                        <li class="main_nav_item">@Html.ActionLink("Dining", "Index", "Dinings", new { area = "" }, new { @class = "nav-link" })</li>
+                                        <li class="main_nav_item">@Html.ActionLink("Tables", "Index", "DiningTableTypes", new { area = "" }, new { @class = "nav-link" })</li>
+                                        <li class="main_nav_item">@Html.ActionLink("Meals", "Index", "MealTypes", new { area = "" }, new { @class = "nav-link" })</li>
+                                        <li class="main_nav_item">@Html.ActionLink("Dining Reservations", "Index", "DiningReservations", new { area = "" }, new { @class = "nav-link" })</li>
+                                    }
+
                                     @if (User.IsInRole("Business Owner") || User.IsInRole("Administrator"))
                                     {
-                                        <li class="main_nav_item"><a href="../HotelUsers/Details">My Profile</a></li>
-                                        <li class="main_nav_item"><a href="../Hotels/MyHotels">My Hotels</a></li>
+
+
+                                        <li class="main_nav_item">@Html.ActionLink("My Profile", "Details", "HotelUsers", new { area = "", id = "" }, new { @class = "nav-link" })</li>
+                                        <li class="main_nav_item">@Html.ActionLink("My Hotels", "MyHotels", "Hotels", new { area = "" }, new { @class = "nav-link" })</li>
+                                        <li class="main_nav_item">@Html.ActionLink("Add Receptionist", "AddUserToReceptionist", "Account", new { area = "" }, new { @class = "nav-link" })</li>
 
                                         @*<li>@Html.ActionLink("My Profile", "Details", "HotelUsers", new { area = "" }, new { @class = "nav-link" })</li>
             <li>@Html.ActionLink("My Hotels", "MyHotels", "Hotels", new { area = "" }, new { @class = "nav-link" })</li>*@
                                     }
                                     @if (User.IsInRole("Customer") || User.IsInRole("Administrator"))
                                     {
-                                        <li class="main_nav_item"><a href="../Hotels/FindHotel">Find Hotels</a></li>
-                                        <li class="main_nav_item"><a href="../Reservations/CreateReservation">Reservations</a></li>
-                                        <li class="main_nav_item">
-                                            @Html.ActionLink("Dining Reservation", "Index", "DiningReservations", null)
-                                            </li>
+                                        <li class="main_nav_item">@Html.ActionLink("Find Hotels", "FindHotel", "Hotels", new { area = "" }, new { @class = "nav-link" })</li>
+                                        @*<li class="main_nav_item">@Html.ActionLink("Hotel Reservation", "CreateReservation", "Reservations", new { area = "" }, new { @class = "nav-link" })</li>*@
+                                        <li class="main_nav_item">@Html.ActionLink("Dining Reservation", "Index", "DiningReservations", new { area = "" }, new { @class = "nav-link" })</li>
+                                        <li class="main_nav_item">@Html.ActionLink("My Reservations", "MyReservations", "Reservations", new { area = "" }, new { @class = "nav-link" })</li>
                                         @*<li>@Html.ActionLink("Find Hotels", "FindHotel", "Hotels", new { area = "" }, new { @class = "nav-link" })</li>
             <li>@Html.ActionLink("Hotel Reservation", "CreateReservation", "Reservations", new { area = "" }, new { @class = "nav-link" })</li>
             <li>@Html.ActionLink("Dining Reservation", "FindHotel", "Dinings", new { area = "" }, new { @class = "nav-link" })</li>*@
 
-                                        }
-                                        @if (!Request.IsAuthenticated || User.IsInRole("Customer"))
-                                        {
-                                            @*<li class="main_nav_item">
-                    <a href="blog.html">news</a>
-                </li>*@
-                                            @*<li class="main_nav_item">
-                    <a href="contact.html">contact</a>
-                </li>*@
-                                        }
+                                    }
+                                    @if (!Request.IsAuthenticated || User.IsInRole("Customer"))
+                                    {
+                                        @*<li class="main_nav_item">
+                <a href="blog.html">news</a>
+            </li>*@
+                                        @*<li class="main_nav_item">
+                <a href="contact.html">contact</a>
+            </li>*@
+                                    }
 
                                 </ul>
                             </div>

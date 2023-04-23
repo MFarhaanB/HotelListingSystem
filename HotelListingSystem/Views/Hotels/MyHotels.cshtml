@@ -16,12 +16,6 @@
         
     </style>
 </head>
-
-
-
-
-
-
 <body>
     <div class="container_body main">
         <div class="PageBody">
@@ -211,14 +205,14 @@
                 @Html.DisplayFor(modelItem => item.IsVerified)
             </td>
             <td>
-                @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |*@
-                @Html.ActionLink("Details", "Details", new { id = item.Id })
+                @*Html.ActionLink("Edit", "Edit", new { id = item.Id }) |*@
+                @*@Html.ActionLink("Details", "Details", new { id = item.Id })*@
               
-            </td>
+            @*</td>
         </tr>
-    }
+    }*@
 
-</table>*@
+@*</table>*@
 @Html.Partial("_eFooter")
 <script>
     $(document).ready(function () {
