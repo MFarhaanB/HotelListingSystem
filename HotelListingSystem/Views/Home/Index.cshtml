@@ -113,7 +113,12 @@
             }(w, d, "zarazData", "script");
         })(window, document);
     </script>
-
+    <style>
+        .cls_logins {
+            float: none;
+            margin: 0 0 0 530px;
+        }
+    </style>
 </head>
 <body>
     <div class="super_container">
@@ -170,15 +175,29 @@
                             }
                             else
                             {
-                        <div class="user_box ml-auto">
-                            <div class="user_box_login user_box_link">
-                                <a>@User.Identity.Name</a>
-                                
-                            </div>
-                            <div class="user_box_register user_box_link">
-                                <a href="../Account/LogOff">Log Out</a>
+
+
+                                if (Request.IsAuthenticated)
+                                {
+                                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                        <div class="cls_logins">
+                            <div class="user_box ml-auto">
+                                <div class="user_box_login user_box_link">
+                                    <a>@User.Identity.Name</a>
+
+                                </div>
+                                <div class="user_box_register user_box_link">
+                                    <a href="javascript:document.getElementById('logoutForm').submit()">Log Out</a>
+                                </div>
                             </div>
                         </div>
+                                    }
+                                }
+
+
+
                             }
 
                         </div>

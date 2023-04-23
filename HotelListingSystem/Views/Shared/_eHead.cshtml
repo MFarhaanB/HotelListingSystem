@@ -94,6 +94,13 @@
       main {
           margin-top: 200px;
       }
+      .cls_logins {
+          float: none;
+          margin: 0 0 0 530px;
+      }
+      .back_btn {
+          margin: 30px 0 0 50px;
+      }
   </style>
 </head>
 
@@ -152,15 +159,34 @@
                             }
                             else
                             {
-                                <div class="user_box ml-auto">
+                                if (Request.IsAuthenticated)
+                                {
+                                    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+                                    {
+                                        @Html.AntiForgeryToken()
+                        <div class="cls_logins">
+                            <div class="user_box ml-auto" style="float:right;">
+                                <div class="user_box_login user_box_link">
+                                    <a>@User.Identity.Name</a>
+
+                                </div>
+                                <div class="user_box_register user_box_link">
+                                    <a href="javascript:document.getElementById('logoutForm').submit()">Log Out</a>
+                                </div>
+                            </div>
+                        </div>
+                                     
+                                    }
+                                }
+                                @*<div class="user_box ml-auto">
                                     <div class="user_box_login user_box_link">
                                         <a>@User.Identity.Name</a>
 
                                     </div>
                                     <div class="user_box_register user_box_link">
-                                        <a href="~/Account/LogOff">Log Out</a>
+                                        <a href="javascript:document.getElementById('logoutForm').submit()">Log Out</a>
                                     </div>
-                                </div>
+                                </div>*@
                             }
 
                         </div>
@@ -183,7 +209,6 @@
                                     @if (!Request.IsAuthenticated || User.IsInRole("Customer"))
                                     {
                                         <li class="main_nav_item"><a href="~/">home</a></li>
-                                        @*<li class="main_nav_item"><a href="about.html">about us</a></li>*@
                                         <li class="main_nav_item"><a href="offers.html">offers</a></li>
                                     }
                                     @if (User.IsInRole("Administrator"))
@@ -197,27 +222,20 @@
                                     {
                                         <li class="main_nav_item"><a href="~/Hotels/Index">Hotels</a></li>
                                         <li class="main_nav_item"><a href="~/Hotels/HotelPayment">Payments</a></li>
-
-                                        @*<li>@Html.ActionLink("Hotels", "Index", "Hotels", new { area = "" }, new { @class = "nav-link" })</li>
-                                            <li>@Html.ActionLink("Hotel Payment", "HotelPayment", "Hotels", new { area = "" }, new { @class = "nav-link" })</li>*@
                                     }
                                     @if (User.IsInRole("Business Owner") || User.IsInRole("Administrator"))
                                     {
                                         <li class="main_nav_item"><a href="~/HotelUsers/Details">My Profile</a></li>
                                         <li class="main_nav_item"><a href="~/Hotels/MyHotels">My Hotels</a></li>
-
-                                        @*<li>@Html.ActionLink("My Profile", "Details", "HotelUsers", new { area = "" }, new { @class = "nav-link" })</li>
-                                            <li>@Html.ActionLink("My Hotels", "MyHotels", "Hotels", new { area = "" }, new { @class = "nav-link" })</li>*@
+                                        <li class="main_nav_item"><a href="~/Account/AddReceptionist">Add Receptionist</a></li>
+                                      
                                     }
                                     @if (User.IsInRole("Customer") || User.IsInRole("Administrator"))
                                     {
                                         <li class="main_nav_item"><a href="~/Hotels/FindHotel">Find Hotels</a></li>
                                         <li class="main_nav_item"><a href="~/Reservations/CreateReservation">Reservations</a></li>
-                                        <li class="main_nav_item"><a href="~/Dinings/FindHotel">Dining</a></li>
+                                        <li class="main_nav_item"><a href="~/Dinings/Index">Dining</a></li>
 
-                                        @*<li>@Html.ActionLink("Find Hotels", "FindHotel", "Hotels", new { area = "" }, new { @class = "nav-link" })</li>
-                                            <li>@Html.ActionLink("Hotel Reservation", "CreateReservation", "Reservations", new { area = "" }, new { @class = "nav-link" })</li>
-                                            <li>@Html.ActionLink("Dining Reservation", "FindHotel", "Dinings", new { area = "" }, new { @class = "nav-link" })</li>*@
 
                                     }
                                     @if (!Request.IsAuthenticated || User.IsInRole("Customer"))
@@ -226,8 +244,8 @@
                                             <a href="blog.html">news</a>
                                         </li>
                                         @*<li class="main_nav_item">
-                                            <a href="contact.html">contact</a>
-                                        </li>*@
+                <a href="contact.html">contact</a>
+            </li>*@
                                     }
 
                                 </ul>

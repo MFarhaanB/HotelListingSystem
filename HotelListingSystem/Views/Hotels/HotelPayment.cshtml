@@ -5,7 +5,6 @@
     Layout = null;
 }
 
-<<<<<<< HEAD
 
 <head>
     <link rel="stylesheet" type="text/css" href="https://preview.colorlib.com/theme/travelix/styles/bootstrap4/bootstrap.min.css">
@@ -19,81 +18,78 @@
 
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap4.min.css">
-=======
-<h4>Hotel Payment</h4>
 
-<table class="table">
-    <tr>
-        <th>
-            Owner FullName
-        </th>
-        <th>
-            Hotel Name
-        </th>
-        <th>
-            Is Verified
-        </th>
-        <th>
-            Rating
-        </th>
-
-        <th>
-            Payment Paid
-        </th>
-        <th>
-            Due Date
-        </th>
-        <th>
-            Payment Done Date
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr class="hotel-row-@item.Id">
-            <td>
-                @Html.HiddenFor(model => item.Id)
-                @Html.DisplayFor(modelItem => item.HotelUser.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.IsVerified)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rating)
-            </td>
+    @*<table class="table">
+        <tr>
             <th>
-                @Html.EditorFor(modelItem => item.PaymentPaid)
+                Owner FullName
             </th>
             <th>
-                @Html.EditorFor(modelItem => item.DueDate, new { htmlAttributes = new { @class = "datepicker", @type = "date" } })
+                Hotel Name
             </th>
             <th>
-                @Html.EditorFor(modelItem => item.PaymentDoneDate, new { htmlAttributes = new { @class = "datepicker", @type= "date" } })
+                Is Verified
             </th>
-            <td>
-                <button type="button" class="btn btn-primary" id="hotel_@item.Id" onclick="UpdateHotel(@item.Id)">Update</button>
-                <br />
-                @if (item?.Blacklisted == true)
-                {
-                    <button type="button" class="btn btn-danger"> Hotel Blacklisted </button>
-                }
-                else
-                {
-                    <button type="button" class="btn btn-primary" id="hotel_@item.Id" onclick="BlacklistHotel(@item.Id)"> Blacklist </button>
-                }
-            </td>
+            <th>
+                Rating
+            </th>
+
+            <th>
+                Payment Paid
+            </th>
+            <th>
+                Due Date
+            </th>
+            <th>
+                Payment Done Date
+            </th>
+            <th></th>
         </tr>
-    }
->>>>>>> 6dde6ed3be581d576aff3e807af2ba8077054289
 
+        @foreach (var item in Model)
+        {
+            <tr class="hotel-row-@item.Id">
+                <td>
+                    @Html.HiddenFor(model => item.Id)
+                    @Html.DisplayFor(modelItem => item.HotelUser.FullName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
 
-<<<<<<< HEAD
-    <script defer="" referrerpolicy="origin" src="https://preview.colorlib.com/cdn-cgi/zaraz/s.js?z=JTdCJTIyZXhlY3V0ZWQlMjIlM0ElNUIlNUQlMkMlMjJ0JTIyJTNBJTIyVHJhdmVsaXglMjIlMkMlMjJ4JTIyJTNBMC45MzA1Mjc0NDk4Mjk3MzE2JTJDJTIydyUyMiUzQTE1MzYlMkMlMjJoJTIyJTNBODY0JTJDJTIyaiUyMiUzQTQ5MiUyQyUyMmUlMjIlM0ExNTM2JTJDJTIybCUyMiUzQSUyMmh0dHBzJTNBJTJGJTJGcHJldmlldy5jb2xvcmxpYi5jb20lMkZ0aGVtZSUyRnRyYXZlbGl4JTJGJTIyJTJDJTIyciUyMiUzQSUyMmh0dHBzJTNBJTJGJTJGcHJldmlldy5jb2xvcmxpYi5jb20lMkYlMjIlMkMlMjJrJTIyJTNBMjQlMkMlMjJuJTIyJTNBJTIyVVRGLTglMjIlMkMlMjJvJTIyJTNBLTEyMCUyQyUyMnElMjIlM0ElNUIlNUQlN0Q="></script>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsVerified)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rating)
+                </td>
+                <th>
+                    @Html.EditorFor(modelItem => item.PaymentPaid)
+                </th>
+                <th>
+                    @Html.EditorFor(modelItem => item.DueDate, new { htmlAttributes = new { @class = "datepicker", @type = "date" } })
+                </th>
+                <th>
+                    @Html.EditorFor(modelItem => item.PaymentDoneDate, new { htmlAttributes = new { @class = "datepicker", @type = "date" } })
+                </th>
+                <td>
+                    <button type="button" class="btn btn-primary" id="hotel_@item.Id" onclick="UpdateHotel(@item.Id)">Update</button>
+                    <br />
+                    @if (item?.Blacklisted == true)
+                    {
+                        <button type="button" class="btn btn-danger"> Hotel Blacklisted </button>
+                    }
+                    else
+                    {
+                        <button type="button" class="btn btn-primary" id="hotel_@item.Id" onclick="BlacklistHotel(@item.Id)"> Blacklist </button>
+                    }
+                </td>
+            </tr>
+        }
+        </table>*@
+    <script defer="" referrerpolicy="origin" src="https://preview.colorlib.com/cdn-cgi/zaraz/s.js?z=JTdCJTIyZXhlY3V0ZWQlMjIlM0ElNUIlNUQlMkMlMjJ0JTIyJTNBJTIyVHJhdmVsaXglMjIlMkMlMjJ4JTIyJTNBMC45MzA1Mjc0NDk4Mjk3MzE2JTJDJTIydyUyMiUzQTE1MzYlMkMlMjJoJTIyJTNBODY0JTJDJTIyaiUyMiUzQTQ5MiUyQyUyMmUlMjIlM0ExNTM2JTJDJTIybCUyMiUzQSUyMmh0dHBzJTNBJTJGJTJGcHJldmlldy5jb2xvcmxpYi5jb20lMkZ0aGVtZSUyRnRyYXZlbGl4JTJGJTIyJTJDJTIyciUyMiUzQSUyMmh0dHBzJTNBJTJGJTJGcHJldmlldy5jb2xvcmxpYi5jb20lMkYlMjIlMkMlMjJrJTIyJTNBMjQlMkMlMjJuJTIyJTNBJTIyVVRGLTglMjIlMkMlMjJvJTIyJTNBLTEyMCUyQyUyMnElMjIlM0ElNUIlNUQlN0Q=">
+
+    </script>
     <script nonce="c7fcf528-52c2-46a1-8687-57b3181fb929">
         (function (w, d) {
             ! function (a, b, c, d) {
@@ -158,6 +154,54 @@
         })(window, document);
     </script>
     @Html.Partial("_eHead")
+
+    <style>
+        body {
+            background-color: lightgrey;
+            color: black;
+        }
+
+        .PageBody {
+            margin: 200px 0 0 0;
+        }
+
+        .container_body {
+            margin-left: 40px;
+            margin-right: 20px;
+        }
+
+        .control-label {
+            font-weight: 600;
+        }
+
+        .form-control {
+            color: black;
+        }
+
+        .image-text {
+            margin: 0 0 0 20px;
+            height: 37.6px;
+        }
+
+        hr {
+            width: 70%;
+        }
+
+        .table {
+            width: 90%;
+            margin: 0 0 0 40px;
+        }
+
+        h2 {
+            margin: 0 0 0 40px;
+        }
+
+        p {
+            margin: 0 0 20px 40px;
+        }
+    </style>
+
+
 </head>
 <script defer="" src="https://static.cloudflareinsights.com/beacon.min.js/v2b4487d741ca48dcbadcaf954e159fc61680799950996" integrity="sha512-D/jdE0CypeVxFadTejKGTzmwyV10c1pxZk/AqjJuZbaJwGMyNHY3q/mTPWqMUnFACfCTunhZUVcd4cV78dK1pQ==" data-cf-beacon="{&quot;rayId&quot;:&quot;7ba67c59f8dc0392&quot;,&quot;token&quot;:&quot;cd0b4b3a733644fc843ef0b185f98241&quot;,&quot;version&quot;:&quot;2023.3.0&quot;,&quot;si&quot;:100}" crossorigin="anonymous"></script>
 <script src="https://preview.colorlib.com/theme/travelix/js/jquery-3.2.1.min.js"></script>
@@ -171,51 +215,6 @@
 <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap4.min.js"></script>
 
-<style>
-    body {
-        background-color: lightgrey;
-        color: black;
-    }
-
-    .PageBody {
-        margin: 200px 0 0 0;
-    }
-
-    .container_body {
-        margin-left: 40px;
-        margin-right: 20px;
-    }
-
-    .control-label {
-        font-weight: 600;
-    }
-
-    .form-control {
-        color: black;
-    }
-
-    .image-text {
-        margin: 0 0 0 20px;
-        height: 37.6px;
-    }
-
-    hr {
-        width: 70%;
-    }
-
-    .table {
-        width: 90%;
-        margin: 0 0 0 40px;
-    }
-
-    h2 {
-        margin: 0 0 0 40px;
-    }
-
-    p {
-        margin: 0 0 20px 40px;
-    }
-</style>
 
 
 
@@ -262,10 +261,10 @@
                                     @Html.EditorFor(modelItem => item.PaymentPaid)
                                 </th>*@
                             <th>
-                                @Html.EditorFor(modelItem => item.DueDate, new { @class = "datepicker" })
+                                @Html.EditorFor(modelItem => item.DueDate, new { htmlAttributes = new { @class = "datepicker", @type = "date", @style = "width:90%;" } })
                             </th>
                             <th>
-                                @Html.EditorFor(modelItem => item.PaymentDoneDate, new { @class = "datepicker" })
+                                @Html.EditorFor(modelItem => item.PaymentDoneDate, new { htmlAttributes = new { @class = "datepicker", @type = "date", @style = "width:90%;" } })
                             </th>
                             <td>
                                 <button type="button" class="btn btn-primary" id="hotel_@item.Id" onclick="UpdateHotel(@item.Id)">Update</button> |
@@ -460,103 +459,103 @@
 </script>
 =======
 @*@section scripts{*@
-    @*<script src="~/Scripts/jquery-2.2.0.js"></script>*@
-    <script>
-        // Initialize datepickers
-        //$(function () {
-        //    var currentDate = new Date();
-        //    $('.datepicker').datepicker({
-        //        minDate: currentDate // Restrict check-in date to be on or after the current date
-        //    });
-        //});
+@*<script src="~/Scripts/jquery-2.2.0.js"></script>*@
+<script>
+    // Initialize datepickers
+    //$(function () {
+    //    var currentDate = new Date();
+    //    $('.datepicker').datepicker({
+    //        minDate: currentDate // Restrict check-in date to be on or after the current date
+    //    });
+    //});
 
-        function UpdateHotel(hotelId) {
-            // Get the data from the table row
-            // Get the second row element
-            const row = document.querySelector('.hotel-row-' + hotelId);
+    function UpdateHotel(hotelId) {
+        // Get the data from the table row
+        // Get the second row element
+        const row = document.querySelector('.hotel-row-' + hotelId);
 
-            // Get the values of each cell in the row
-            const ownerFullName = row.cells[0].textContent.trim();
-            const hotelName = row.cells[1].textContent.trim();
-            const isVerified = row.cells[2].querySelector('select').value;
-            const rating = row.cells[3].textContent.trim();
-            const paymentPaid = row.cells[4].querySelector('select').value;
-            const dueDate = row.cells[5].querySelector('input').value;
-            const paymentDoneDate = row.cells[6].querySelector('input').value;
+        // Get the values of each cell in the row
+        const ownerFullName = row.cells[0].textContent.trim();
+        const hotelName = row.cells[1].textContent.trim();
+        const isVerified = row.cells[2].querySelector('select').value;
+        const rating = row.cells[3].textContent.trim();
+        const paymentPaid = row.cells[4].querySelector('select').value;
+        const dueDate = row.cells[5].querySelector('input').value;
+        const paymentDoneDate = row.cells[6].querySelector('input').value;
 
-            // Print the values
-            console.log('Owner FullName:', ownerFullName);
-            console.log('Hotel Name:', hotelName);
-            console.log('Is Verified:', isVerified);
-            console.log('Rating:', rating);
-            console.log('Payment Paid:', paymentPaid);
-            console.log('Due Date:', dueDate);
-            console.log('Payment Done Date:', paymentDoneDate);
-
-
-            if (paymentPaid == '' || paymentPaid == undefined) {
-                alert('Please select Payment Paid');
-                return false;
-            }
-            if (dueDate == '' || dueDate == undefined) {
-                alert('Please select Due Date');
-                return false;
-            }
-            if (paymentDoneDate == '' || paymentDoneDate == undefined) {
-                alert('Please select Payment Done Date');
-                return false;
-            }
+        // Print the values
+        console.log('Owner FullName:', ownerFullName);
+        console.log('Hotel Name:', hotelName);
+        console.log('Is Verified:', isVerified);
+        console.log('Rating:', rating);
+        console.log('Payment Paid:', paymentPaid);
+        console.log('Due Date:', dueDate);
+        console.log('Payment Done Date:', paymentDoneDate);
 
 
-            // Prepare the data to be sent to the controller
-            var data = {
-                Id: hotelId,
-                PaymentPaid: paymentPaid,
-                DueDate: dueDate,
-                PaymentDoneDate: paymentDoneDate
-            };
-
-            // Send the data to the controller using AJAX
-            $.ajax({
-                url: '/Hotels/UpdateHotel', // Replace with your controller's action method URL
-                type: 'POST', // Use POST or GET depending on your requirements
-                dataType: 'json', // Set the data type to JSON if needed
-                data: data,
-                success: function (response) {
-                    // Handle success response from the controller
-                    // Update UI or perform other actions as needed
-                    console.log(response);
-                    alert(response.message);
-                },
-                error: function (xhr, status, error) {
-                    // Handle error response from the controller
-                    // Display error message or perform other actions as needed
-                    console.error(xhr.responseText);
-                    alert(xhr.responseText);
-                }
-            });
+        if (paymentPaid == '' || paymentPaid == undefined) {
+            alert('Please select Payment Paid');
+            return false;
         }
-        function BlacklistHotel(id) {
-            $.ajax({
-                url: '/Hotels/BlacklistHotel?id='+id, // Replace with your controller's action method URL
-                type: 'POST', // Use POST or GET depending on your requirements
-                dataType: 'json', // Set the data type to JSON if needed
-                //data: id,
-                success: function (response) {
-                    // Handle success response from the controller
-                    // Update UI or perform other actions as needed
-                    console.log(response);
-                    alert(response.message);
-                    window.location.reload();
-                },
-                error: function (xhr, status, error) {
-                    // Handle error response from the controller
-                    // Display error message or perform other actions as needed
-                    console.error(xhr.responseText);
-                    alert(xhr.responseText);
-                }
-            });
+        if (dueDate == '' || dueDate == undefined) {
+            alert('Please select Due Date');
+            return false;
         }
-    </script>
+        if (paymentDoneDate == '' || paymentDoneDate == undefined) {
+            alert('Please select Payment Done Date');
+            return false;
+        }
+
+
+        // Prepare the data to be sent to the controller
+        var data = {
+            Id: hotelId,
+            PaymentPaid: paymentPaid,
+            DueDate: dueDate,
+            PaymentDoneDate: paymentDoneDate
+        };
+
+        // Send the data to the controller using AJAX
+        $.ajax({
+            url: '/Hotels/UpdateHotel', // Replace with your controller's action method URL
+            type: 'POST', // Use POST or GET depending on your requirements
+            dataType: 'json', // Set the data type to JSON if needed
+            data: data,
+            success: function (response) {
+                // Handle success response from the controller
+                // Update UI or perform other actions as needed
+                console.log(response);
+                alert(response.message);
+            },
+            error: function (xhr, status, error) {
+                // Handle error response from the controller
+                // Display error message or perform other actions as needed
+                console.error(xhr.responseText);
+                alert(xhr.responseText);
+            }
+        });
+    }
+    function BlacklistHotel(id) {
+        $.ajax({
+            url: '/Hotels/BlacklistHotel?id=' + id, // Replace with your controller's action method URL
+            type: 'POST', // Use POST or GET depending on your requirements
+            dataType: 'json', // Set the data type to JSON if needed
+            //data: id,
+            success: function (response) {
+                // Handle success response from the controller
+                // Update UI or perform other actions as needed
+                console.log(response);
+                alert(response.message);
+                window.location.reload();
+            },
+            error: function (xhr, status, error) {
+                // Handle error response from the controller
+                // Display error message or perform other actions as needed
+                console.error(xhr.responseText);
+                alert(xhr.responseText);
+            }
+        });
+    }
+</script>
 @*}*@
 >>>>>>> 6dde6ed3be581d576aff3e807af2ba8077054289

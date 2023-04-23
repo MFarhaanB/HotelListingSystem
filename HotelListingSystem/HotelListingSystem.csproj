@@ -234,6 +234,8 @@
     <Content Include="Content\jquery-ui-timepicker-addon.css" />
     <Content Include="Content\JqueryUI.css" />
     <Content Include="Content\TimePickerAddOn.css" />
+    <Content Include="css\login.css" />
+    <Content Include="css\register.css" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -261,6 +263,8 @@
     <Content Include="Images\island.png" />
     <Content Include="Images\island_t.png" />
     <Content Include="Images\kayak.png" />
+    <Content Include="Images\layer.png" />
+    <Content Include="Images\login2.jpg" />
     <Content Include="Images\logo %281%29.png" />
     <Content Include="Images\logo.png" />
     <Content Include="Images\Lunch.jpg" />
@@ -432,6 +436,9 @@
     <Content Include="Views\Rooms\Edit.cshtml" />
     <Content Include="Views\Rooms\Index.cshtml" />
     <Content Include="Views\Account\AddReceptionist.cshtml" />
+    <Content Include="Views\Shared\_eFooter.cshtml" />
+    <Content Include="Views\Shared\_eHead.cshtml" />
+    <Content Include="Views\Shared\_eLayout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="cdn-cgi\rum\" />

@@ -1,49 +1,64 @@
 ﻿@model List<HotelListingSystem.Models.Room>
+@{
+    Layout = null;
+}
+<head>
+    <style>
+    </style>
+    @Html.Partial("_eHead")
+</head>
+<body>
+    <main>
+        <div class="container_body">
+            <h2>Available Hotel Rooms</h2>
 
-<h2>Available Hotel Rooms</h2>
-
-@if (Model.Count > 0)
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Hotel Name</th>
-                <th>Room Name</th>
-                <th>No of beds</th>
-                <th>Check-in</th>
-                <th>Check-out</th>
-                <th>No. of Rooms</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var room in Model)
+            @if (Model.Count > 0)
             {
-                <tr>
-                    <td>@room.Hotel.Name</td>
-                    <td>@room.Name</td>
-                    <td>@room.NoOfBeds</td>
-                    <td>
-                        <input type="date" id="checkInDate_@room.Id" class="form-control datepicker" />
-                    </td>
-                    <td>
-                        <input type="date" id="checkOutDate_@room.Id" class="form-control datepicker" />
-                    </td>
-                    <td>
-                        <input type="number" id="noOfRooms_@room.Id" class="form-control hotelroom_@room.Id" min="1" max="@room.Sleeps." value="1" />
-                    </td>
-                    <td>
-                        <a href="#" class="btn btn-primary" onclick="reserveRoom(@room.HotelId, '@room.Name', @room.Id)">Reserve</a>
-                    </td>
-                </tr>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Hotel Name</th>
+                            <th>Room Name</th>
+                            <th>No of beds</th>
+                            <th>Check-in</th>
+                            <th>Check-out</th>
+                            <th>No. of Rooms</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var room in Model)
+                        {
+                            <tr>
+                                <td>@room.Hotel.Name</td>
+                                <td>@room.Name</td>
+                                <td>@room.NoOfBeds</td>
+                                <td>
+                                    <input type="date" id="checkInDate_@room.Id" class="form-control datepicker" />
+                                </td>
+                                <td>
+                                    <input type="date" id="checkOutDate_@room.Id" class="form-control datepicker" />
+                                </td>
+                                <td>
+                                    <input type="number" id="noOfRooms_@room.Id" class="form-control hotelroom_@room.Id" min="1" max="@room.Sleeps." value="1" />
+                                </td>
+                                <td>
+                                    <a href="#" class="btn btn-primary" onclick="reserveRoom(@room.HotelId, '@room.Name', @room.Id)">Reserve</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
             }
-        </tbody>
-    </table>
-}
-else
-{
-    <p>No available rooms at the moment.</p>
-}
+            else
+            {
+                <p>No available rooms at the moment.</p>
+            }
+        </div>
+    </main>
+</body>
+
+
 
 @section scripts{
     <script>
@@ -100,3 +115,4 @@ else
         //});
     </script>
 }
+@Html.Partial("_eFooter")
