@@ -1,24 +1,769 @@
 ﻿@model List<HotelListingSystem.ViewModel.HotelReservationVM>
+@using HotelListingSystem.Models;
+@{
+    Layout = null;
+}
 
-<!-- Search form -->
-<form method="post" action="/Hotels/FindHotel">
-    @*@Html.ActionLink("Hotel Reservation", "CreateReservation", "Reservations", new { area = "" }, new { @class = "btn-sm btn btn-primary" }) &nbsp;&nbsp;&nbsp;*@
+<head>
+    @Html.Partial("_eHead")
+    <style>
+        .row {
+            display: -ms-flexbox;
+            display: flex;
+            -ms-flex-wrap: wrap;
+            flex-wrap: wrap;
+            margin-right: -15px;
+            margin-left: -100px;
+            width: 120%;
+        }
 
-    <label for="suburb">Suburb:</label>
-    @Html.DropDownList("Suburb", (SelectList)ViewBag.Suburbs, "Select a suburb")
+        body {
+            /* background-color: lightgrey;*/
+            color: black;
+        }
 
-    @*<input type="text" id="suburb" name="suburb" value="@ViewBag.Suburb" />*@
-    <label for="city">City:</label>
-    @*<input type="text" id="city" name="city" value="@ViewBag.City" />*@
-    @*@Html.DropDownList("City")*@
-    @Html.DropDownList("City", (SelectList)ViewBag.Suburbs, "Select a suburb")
+        .placeholder {
+            width: 300px;
+            height: 200px;
+            background-color: #ccc;
+            margin: 20px 20px 0 86px;
+        }
 
-    <label for="checkin">Check-in:</label>
-    <input type="date" id="checkin" name="checkin" value="@ViewBag.CheckInDate" /> <!-- Use ViewBag to store the entered check-in date value -->
-    <label for="checkout">Check-out:</label>
-    <input type="date" id="checkout" name="checkout" value="@ViewBag.CheckOutDate" /> <!-- Use ViewBag to store the entered check-out date value -->
-    <button type="submit" class="btn-sm btn btn-info">Search</button>
-</form>
+        .description {
+            flex: 1;
+        }
+
+        h2 {
+            margin-top: 0;
+        }
+
+        .image-container {
+            margin-top: 250px;
+            margin-left: 50px;
+            margin-right: 50px;
+            background-color: white;
+            color: black;
+        }
+
+        .image-container {
+            border: solid;
+            border-block-width: 0.5px;
+        }
+
+        .container_s {
+            display: flex;
+            /*    justify-content: space-between;*/
+            align-items: center;
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+        }
+
+        .left-section img {
+            width: 300px;
+            height: 200px;
+            background-color: #ccc;
+            /*    margin: 20px 20px 0 86px;*/
+        }
+
+        .middle-section p {
+            font-size: 10px;
+            font-weight: 500;
+            margin: 0 0 0 0;
+            color: blue;
+        }
+
+        .right-section p {
+            font-size: 16px;
+            color: #ff9800;
+        }
+
+
+        .middle-section {
+            width: 60%;
+            margin: 0 0 0 10px;
+        }
+
+
+        .results_section {
+            margin: 50px 0 0 0;
+        }
+
+        .f4bd0794db:before {
+            color: var(--bui_color_border_alt);
+            content: "\b7";
+            display: inline-block;
+            font-weight: 600;
+            padding: 0 5px;
+            text-decoration: none;
+            transform: scale(1.4);
+        }
+
+        .cb5ebe3ffb {
+            display: inline-block;
+            vertical-align: middle;
+        }
+
+        .af0214f555 {
+            margin-right: var(--bui_spacing_1x);
+            vertical-align: middle;
+        }
+
+        .b6dc9a9e69 svg {
+            display: inline-block;
+            height: 100%;
+            vertical-align: top;
+            width: auto;
+        }
+
+        svg:not(:root) {
+            overflow-clip-margin: content-box;
+            overflow: hidden;
+        }
+
+        .b6dc9a9e69 {
+            fill: currentcolor;
+            display: inline-block;
+        }
+
+        h1 h2 h3 h4 h5 h6 {
+            font-family: 'Bodoni MT Poster';
+        }
+
+        .middle-section h2 {
+            text-transform: capitalize;
+            font-weight: 600;
+            font-size: 30px;
+        }
+
+        strong {
+            color: black;
+        }
+
+        .room {
+            color: black;
+        }
+
+        h7, h8 {
+            color: #008009;
+        }
+
+        h7 {
+            font-weight: 600;
+        }
+
+        h8 {
+            font-size: 12px;
+        }
+
+        .container_right {
+            position: relative;
+            width: 300px;
+            height: 200px;
+            /* background-color: #f0f0f0;*/
+            /*padding: 20px;*/
+        }
+
+        .rating {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #ffcc00;
+            color: white;
+            padding: 5px 10px;
+            font-weight: bold;
+            border-radius: 0 0 0 5px;
+            margin: auto;
+        }
+
+        .reviews {
+            text-align: right;
+            margin-right: 35px;
+            line-height: 0px;
+            font-weight: 100;
+            font-size: small;
+            font-style: oblique;
+        }
+
+        .reviews_2 {
+            text-align: right;
+            margin-right: 5px;
+            line-height: 0px;
+            font-weight: 100;
+            font-size: small;
+            font-style: oblique;
+            margin-top: 50px;
+        }
+
+        .reviews_3 {
+            text-align: right;
+            margin-right: 5px;
+            line-height: 0px;
+            font-weight: 100;
+            font-size: small;
+            /*font-style: oblique;*/
+            /*margin-top: 50px;*/
+        }
+
+        .price_placeholder {
+            text-align: right;
+            font-style: normal;
+            font-family: math;
+        }
+
+        .button_see_holtel {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            background-color: purple;
+            color: white;
+            font-weight: bold;
+            border: 1px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 5px;
+            float: right;
+        }
+
+            .button_see_holtel::after {
+                content: "\2192";
+                font-size: 20px;
+                margin-left: 10px;
+            }
+
+        .right-section {
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            /* border: 1px solid #ccc;*/
+        }
+
+            .right-section::before {
+                content: "";
+                display: block;
+                height: 120px; /* set the height of the line to 60px */
+                width: 1px;
+                background-color: #ccc;
+                margin-right: 10px;
+            }
+
+        .results_section {
+            margin-bottom: 20px;
+        }
+
+        .round_corner {
+            border-radius: 30px;
+        }
+    </style>
+</head>
+
+
+
+
+
+<body>
+    <div class="home">
+        <div class="home_slider_container">
+            <div class="owl-carousel owl-theme home_slider owl-loaded owl-drag">
+                <div class="owl-stage-outer">
+                    <div class="owl-stage" style="transform: translate3d(-3038px, 0px, 0px); transition: all 0s ease 0s; width: 10635px;">
+                        <div class="owl-item cloned" style="width: 1519.2px;">
+                            <div class="owl-item home_slider_item">
+                                <div class="home_slider_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/home_slider.jpg)"></div>
+                                <div class="home_slider_content text-center">
+                                    <div class="home_slider_content_inner" data-animation-in="flipInX" data-animation-out="animate-out fadeOut">
+                                        <h1>discover</h1>
+                                        <h1>your destination</h1>
+                                        <div class="button home_slider_button">
+                                            <div class="button_bcg"></div>
+                                            <a href="#Intro">
+                                                explore now <span></span>
+                                                <span></span>
+                                                <span></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="owl-item cloned" style="width: 1519.2px;">
+                            <div class="owl-item home_slider_item">
+                                <div class="home_slider_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/home_slider.jpg)"></div>
+                                <div class="home_slider_content text-center">
+                                    <div class="home_slider_content_inner" data-animation-in="flipInX" data-animation-out="animate-out fadeOut">
+                                        <h1>discover</h1>
+                                        <h1>the world</h1>
+                                        <div class="button home_slider_button">
+                                            <div class="button_bcg"></div>
+                                            <a href="#Intro">
+                                                explore now <span></span><span></span> <span></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="owl-item active" style="width: 1519.2px;">
+                            <div class="owl-item home_slider_item">
+                                <div class="home_slider_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/home_slider.jpg)"></div>
+                                <div class="home_slider_content text-center">
+                                    <div class="home_slider_content_inner" data-animation-in="flipInX" data-animation-out="animate-out fadeOut">
+                                        <h1>discover</h1>
+                                        <h1>your destination</h1>
+                                        <div class="button home_slider_button" id="explore">
+                                            <div class="button_bcg"></div>
+                                            <a href="#explore">
+                                                explore now <span></span>
+                                                <span></span>
+                                                <span></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="owl-item" style="width: 1519.2px;">
+                            <div class="owl-item home_slider_item">
+                                <div class="home_slider_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/home_slider.jpg)"></div>
+                                <div class="home_slider_content text-center">
+                                    <div class="home_slider_content_inner" data-animation-in="flipInX" data-animation-out="animate-out fadeOut">
+                                        <h1>discover</h1>
+                                        <h1>the world</h1>
+                                        <div class="button home_slider_button">
+                                            <div class="button_bcg"></div>
+                                            <a href="#Intro">
+                                                explore now <span></span>
+                                                <span></span>
+                                                <span></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="owl-item" style="width: 1519.2px;">
+                            <div class="owl-item home_slider_item">
+                                <div class="home_slider_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/home_slider.jpg)"></div>
+                                <div class="home_slider_content text-center">
+                                    <div class="home_slider_content_inner" data-animation-in="flipInX" data-animation-out="animate-out fadeOut">
+                                        <h1>discover</h1>
+                                        <h1>the world</h1>
+                                        <div class="button home_slider_button">
+                                            <div class="button_bcg"></div>
+                                            <a href="#Intro">
+                                                explore now <span></span>
+                                                <span></span>
+                                                <span></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="owl-item cloned" style="width: 1519.2px;">
+                            <div class="owl-item home_slider_item">
+                                <div class="home_slider_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/home_slider.jpg)"></div>
+                                <div class="home_slider_content text-center">
+                                    <div class="home_slider_content_inner" data-animation-in="flipInX" data-animation-out="animate-out fadeOut">
+                                        <h1>discover</h1>
+                                        <h1>the world</h1>
+                                        <div class="button home_slider_button">
+                                            <div class="button_bcg"></div>
+                                            <a href="#Intro">
+                                                explore now <span></span>
+                                                <span></span>
+                                                <span></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="owl-item cloned" style="width: 1519.2px;">
+                            <div class="owl-item home_slider_item">
+                                <div class="home_slider_background" style="background-image:url(https://preview.colorlib.com/theme/travelix/images/home_slider.jpg)"></div>
+                                <div class="home_slider_content text-center">
+                                    <div class="home_slider_content_inner" data-animation-in="flipInX" data-animation-out="animate-out fadeOut">
+                                        <h1>discover</h1>
+                                        <h1>the world</h1>
+                                        <div class="button home_slider_button">
+                                            <div class="button_bcg"></div>
+                                            <a href="#Intro">
+                                                explore now <span></span>
+                                                <span></span>
+                                                <span></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="owl-nav disabled">
+                    <div class="owl-prev">prev</div>
+                    <div class="owl-next">next</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="search" id="search">
+        <div class="container fill_height">
+            <div class="row fill_height">
+                <div class="col fill_height">
+                    <div class="search_tabs_container">
+                        <div class="search_tabs d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-lg-between justify-content-start">
+                            <div class="search_tab active d-flex flex-row align-items-center justify-content-lg-center justify-content-start">
+                                <img src="https://preview.colorlib.com/theme/travelix/images/suitcase.png" alt="">
+                                <span>hotels</span>
+                            </div>
+
+                            @*<div class="search_tab d-flex flex-row align-items-center justify-content-lg-center justify-content-start">
+                                    <img src="https://preview.colorlib.com/theme/travelix/images/island.png" alt="">trips
+                                </div>*@
+
+                        </div>
+                    </div>
+                    <div class="search_panel active">
+                        <form method="get" action="/Hotels/Search" id="search_form_1" class="search_panel_content d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-lg-between justify-content-start">
+                            <button class="button search_button" onclick="window.location.href = '~/Reservations/CreateReservation?area'">Reservations</button>
+
+                            <div class="search_item">
+                                <div>Suburb</div>
+                                <select name="Suburb" id="adults_1" class="dropdown_item_select search_input round_corner">
+                                    <option>Select Surburb</option>
+                                    @foreach (var i in ViewBag.City)
+                                    {
+                                        <option value="@i.Text">@i.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="search_item">
+                                <div>City</div>
+                                <select name="City" id="children_1" class="dropdown_item_select search_input round_corner">
+                                    <option>Select City</option>
+                                    @foreach (var i in ViewBag.City)
+                                    {
+                                        <option value="@i.Text">@i.Text</option>
+                                    }
+                                </select>
+                            </div>
+                            <div class="search_item">
+                                <div>check in</div>
+                                <input type="date" name="checkin" id="checkin" class="check_in search_input round_corner" value="@ViewBag.CheckInDate">
+                            </div>
+                            <div class="search_item">
+                                <div>check out</div>
+                                <input type="date" name="checkout" id="checkout" class="check_out search_input round_corner" value="@ViewBag.CheckOutDate">
+                            </div>
+
+                            <button type="submit" class="button search_button">
+                                search <span></span>
+                                <span></span>
+                                <span></span>
+                            </button>
+
+                            @*<button type="submit" class="btn-sm btn btn-info">Search</button>*@
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+    <div class="results_section" id="ThisId">
+        <div class="srearch_result_header container" style="margin-bottom: 20px;">
+            <h2> Search results for: Durban</h2>
+        </div>
+        <div class="container_s container">
+            <div class="left-section">
+                <img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Image description">
+            </div>
+            <div class="middle-section">
+                <h2>Bayside Hotel 116 West Street</h2>
+                <p>24 Somerset Avenue, Bulwer, Berea <span class="f4bd0794db b4273d69aa"><a href="https://www.google.com/maps/search/?api=1&query=24 somerset avenue">Show Map</a></span></p>
+                <h6><strong>Double Room</strong></h6>
+                <h7 class="room">1 double bed</h7><br />
+
+                <h7>FREE cancellation • No prepayment needed</h7>
+                <br />
+
+                <h8>You can cancel later, so lock in this great price today.</h8>
+
+
+            </div>
+            <div class="right-section">
+                <div class="container_right">
+                    <span class="rating">5</span>
+                    <h6 style="text-align:right; margin-right:35px;"><strong>Review score</strong></h6>
+                    <h6 class="reviews">749 reviews</h6>
+
+
+
+
+                    <h6 class="reviews_2">2 Nights, 2 adults</h6>
+                    <h3 class="price_placeholder">ZAR @string.Format($"{3000}") </h3>
+                    <h6 class="reviews_3">+ ZAR (0) taxes and charges</h6>
+                    <button class="button_see_holtel">See availability</button>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="container_s container">
+            <div class="left-section">
+                <img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Image description">
+            </div>
+            <div class="middle-section">
+                <h2>Bayside Hotel 116 West Street</h2>
+                <p>24 Somerset Avenue, Bulwer, Berea <span class="f4bd0794db b4273d69aa"><a href="https://www.google.com/maps/search/?api=1&query=24 somerset avenue">Show Map</a></span></p>
+                <h6><strong>Double Room</strong></h6>
+                <h7 class="room">1 double bed</h7><br />
+
+                <h7>FREE cancellation • No prepayment needed</h7>
+                <br />
+
+                <h8>You can cancel later, so lock in this great price today.</h8>
+
+
+            </div>
+            <div class="right-section">
+                <div class="container_right">
+                    <span class="rating">5</span>
+                    <h6 style="text-align:right; margin-right:35px;"><strong>Review score</strong></h6>
+                    <h6 class="reviews">749 reviews</h6>
+
+
+
+
+                    <h6 class="reviews_2">2 Nights, 2 adults</h6>
+                    <h3 class="price_placeholder">ZAR @string.Format($"{3000}") </h3>
+                    <h6 class="reviews_3">+ ZAR (0) taxes and charges</h6>
+                    <button class="button_see_holtel">See availability</button>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="container_s container">
+            <div class="left-section">
+                <img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Image description">
+            </div>
+            <div class="middle-section">
+                <h2>Bayside Hotel 116 West Street</h2>
+                <p>24 Somerset Avenue, Bulwer, Berea <span class="f4bd0794db b4273d69aa"><a href="https://www.google.com/maps/search/?api=1&query=24 somerset avenue">Show Map</a></span></p>
+                <h6><strong>Double Room</strong></h6>
+                <h7 class="room">1 double bed</h7><br />
+
+                <h7>FREE cancellation • No prepayment needed</h7>
+                <br />
+
+                <h8>You can cancel later, so lock in this great price today.</h8>
+
+
+            </div>
+            <div class="right-section">
+                <div class="container_right">
+                    <span class="rating">5</span>
+                    <h6 style="text-align:right; margin-right:35px;"><strong>Review score</strong></h6>
+                    <h6 class="reviews">749 reviews</h6>
+
+
+
+
+                    <h6 class="reviews_2">2 Nights, 2 adults</h6>
+                    <h3 class="price_placeholder">ZAR @string.Format($"{3000}") </h3>
+                    <h6 class="reviews_3">+ ZAR (0) taxes and charges</h6>
+                    <button class="button_see_holtel">See availability</button>
+                </div>
+            </div>
+        </div>
+
+
+
+        <div class="container_s container">
+            <div class="left-section">
+                <img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Image description">
+            </div>
+            <div class="middle-section">
+                <h2>Bayside Hotel 116 West Street</h2>
+                <p>24 Somerset Avenue, Bulwer, Berea <span class="f4bd0794db b4273d69aa"><a href="https://www.google.com/maps/search/?api=1&query=24 somerset avenue">Show Map</a></span></p>
+                <h6><strong>Double Room</strong></h6>
+                <h7 class="room">1 double bed</h7><br />
+
+                <h7>FREE cancellation • No prepayment needed</h7>
+                <br />
+
+                <h8>You can cancel later, so lock in this great price today.</h8>
+
+
+            </div>
+            <div class="right-section">
+                <div class="container_right">
+                    <span class="rating">5</span>
+                    <h6 style="text-align:right; margin-right:35px;"><strong>Review score</strong></h6>
+                    <h6 class="reviews">749 reviews</h6>
+
+
+
+
+                    <h6 class="reviews_2">2 Nights, 2 adults</h6>
+                    <h3 class="price_placeholder">ZAR @string.Format($"{3000}") </h3>
+                    <h6 class="reviews_3">+ ZAR (0) taxes and charges</h6>
+                    <button class="button_see_holtel">See availability</button>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+    <main hidden>
+
+        <div class="image-container">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="placeholder">
+                        <img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Image description" width="300" height="200">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="description">
+                        <h2> @*@Html.DisplayFor(model => model.Name).ToString().ToUpperInvariant()*@</h2>
+                        <p>
+                            <stromg>Max-occupancy: </stromg>@*@Html.DisplayFor(model => model.MaxOccupancy)*@<br />
+                            <stromg>Physical Address: </stromg> @*@string.Format($"{Model.StreetNumber} {Model.StreetName} {Model.Suburb}, {Model.City}, {Model.PhysicalAddressCode}")*@<br />
+                        </p>
+                        <p>
+                            @*@Html.ActionLink("Certificate Of Occupancy", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" })*@ |
+                            @*@Html.ActionLink("Certificate Of Occupancy", "Index", new { id = Model.Id }, new { @class = "btn btn-primary" })*@
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-3"></div>
+                <div class="col-md-3">
+                    <p>
+                        @Html.ActionLink("Edit", "Edit"@*, new { id = Model.Id }*@, new { @class = "btn btn-warning" }) |
+                        @*@Html.ActionLink("Back to List", "Index", new { id = Model.Id }, new { @class = "btn btn-success" })*@
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="container_body">
+
+            <!-- Search form -->
+            <form method="get" action="/Hotels/Search">
+                @Html.ActionLink("Hotel Reservation", "CreateReservation", "Reservations", new { area = "" }, new { @class = "btn-sm btn btn-primary" }) &nbsp;&nbsp;&nbsp;
+
+                <label for="suburb">Suburb:</label>
+                @Html.DropDownList("Suburb", (SelectList)ViewBag.Suburbs, "Select a suburb")
+
+                @*<input type="text" id="suburb" name="suburb" value="@ViewBag.Suburb" />*@
+                <label for="city">City:</label>
+                @*<input type="text" id="city" name="city" value="@ViewBag.City" />*@
+                @*@Html.DropDownList("City")*@
+                @Html.DropDownList("City", (SelectList)ViewBag.Suburbs, "Select a suburb")
+
+                <label for="checkin">Check-in:</label>
+                <input type="date" id="checkin" name="checkin" value="@ViewBag.CheckInDate" /> <!-- Use ViewBag to store the entered check-in date value -->
+                <label for="checkout">Check-out:</label>
+                <input type="date" id="checkout" name="checkout" value="@ViewBag.CheckOutDate" /> <!-- Use ViewBag to store the entered check-out date value -->
+                <button type="submit" class="btn-sm btn btn-info">Search</button>
+            </form>
+
+            <!-- Display search results -->
+            @if (Model != null && Model.Count > 0)
+            {
+                <h1>Search Results:</h1>
+                foreach (var hotel in Model)
+                {
+                    <div class="col-md-4">
+                        <img src="@Url.Action("DisplayImage", "Hotels", new { hotelId  = hotel.HotelId })" alt="Hotel Image" height="150px" width="150px" />
+                    </div>
+                    <div class="col-md-7">
+                        <h5>
+                            @hotel.HotelName - @hotel.Suburb, @hotel.City
+                        </h5>
+                        <br />
+                        <label for="NoOfPeople">No Of People:</label>&nbsp;&nbsp;<input type="number" id="NoOfPeople" name="NoOfPeople" class="form-control" />
+                        <br />
+                        <label for="checkin">Checkin:</label>&nbsp;&nbsp;<input type="date" id="checkin" name="checkin" value="@ViewBag.CheckInDate" readonly="readonly" class="form-control" />
+                        <label for="checkout">Checkout:</label>&nbsp;&nbsp;
+                        <input type="date" id="checkout" name="checkout" value="@ViewBag.CheckOutDate" readonly="readonly" class="form-control" />
+                        <br />
+                        <br />
+                        <button value="Reserve" type="button" class="btn btn-primary">Reserve</button>
+                    </div>
+
+                    <hr />
+                    <br />
+                    <br />
+                    <!-- Display other hotel details as needed -->
+                }
+            }
+            else
+            {
+                <h1>No results found.</h1>
+            }
+
+        </div>
+    </main>
+
+
+</body>
+
+@Html.Partial("_eFooter")
+
+
+<div hidden>
+
+    <!-- Search form -->
+    <form method="post" action="/Hotels/FindHotel">
+        @*@Html.ActionLink("Hotel Reservation", "CreateReservation", "Reservations", new { area = "" }, new { @class = "btn-sm btn btn-primary" }) &nbsp;&nbsp;&nbsp;*@
+
+        <label for="suburb">Suburb:</label>
+        @Html.DropDownList("Suburb", (SelectList)ViewBag.Suburbs, "Select a suburb")
+
+        @*<input type="text" id="suburb" name="suburb" value="@ViewBag.Suburb" />*@
+        <label for="city">City:</label>
+        @*<input type="text" id="city" name="city" value="@ViewBag.City" />*@
+        @*@Html.DropDownList("City")*@
+        @Html.DropDownList("City", (SelectList)ViewBag.Suburbs, "Select a suburb")
+
+        <label for="checkin">Check-in:</label>
+        <input type="date" id="checkin" name="checkin" value="@ViewBag.CheckInDate" /> <!-- Use ViewBag to store the entered check-in date value -->
+        <label for="checkout">Check-out:</label>
+        <input type="date" id="checkout" name="checkout" value="@ViewBag.CheckOutDate" /> <!-- Use ViewBag to store the entered check-out date value -->
+        <button type="submit" class="btn-sm btn btn-info">Search</button>
+    </form>
 
 <!-- Display search results -->
 @if (Model != null && Model.Count > 0)
