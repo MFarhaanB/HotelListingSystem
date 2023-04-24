@@ -22,6 +22,11 @@ namespace HotelListingSystem.Controllers
             var hotels = db.Hotels.Include(h => h.HotelUser);
             return View(hotels.ToList());
         }
+        public ActionResult About(int Id)
+        {
+            var hotels = db.Hotels.Find(Id);
+            return View(hotels);
+        }
         // GET: Hotels
         public ActionResult MyHotels()
         {

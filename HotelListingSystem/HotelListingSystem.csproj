@@ -456,6 +456,7 @@
     <Content Include="Views\Shared\_eLayout.cshtml" />
     <Content Include="Views\Payments\PaymentSuccess.cshtml" />
     <Content Include="Views\Payments\Failure.cshtml" />
+    <Content Include="Views\Hotels\About.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="cdn-cgi\rum\" />

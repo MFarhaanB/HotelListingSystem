@@ -258,10 +258,6 @@
     </style>
 </head>
 
-
-
-
-
 <body>
     <div class="home">
         <div class="home_slider_container">
@@ -427,7 +423,7 @@
                         </div>
                     </div>
                     <div class="search_panel active">
-                        <form method="get" action="/Hotels/Search" id="search_form_1" class="search_panel_content d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-lg-between justify-content-start">
+                        <form method="post" action="/Hotels/FindHotel" id="search_form_1" class="search_panel_content d-flex flex-lg-row flex-column align-items-lg-center align-items-start justify-content-lg-between justify-content-start">
                             <button class="button search_button" onclick="window.location.href = '~/Reservations/CreateReservation?area'">Reservations</button>
 
                             <div class="search_item">
@@ -473,172 +469,87 @@
         </div>
     </div>
 
-
-
-
-
-
-
-
-
-
-
     <div class="results_section" id="ThisId">
-        <div class="srearch_result_header container" style="margin-bottom: 20px;">
-            <h2> Search results for: Durban</h2>
-        </div>
-        <div class="container_s container">
-            <div class="left-section">
-                <img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Image description">
+        @if (Model != null && Model.Count > 0)
+        {
+            <div class="srearch_result_header container" style="margin-bottom: 20px;">
+                <h2> Search results for: Durban</h2>
             </div>
-            <div class="middle-section">
-                <h2>Bayside Hotel 116 West Street</h2>
-                <p>24 Somerset Avenue, Bulwer, Berea <span class="f4bd0794db b4273d69aa"><a href="https://www.google.com/maps/search/?api=1&query=24 somerset avenue">Show Map</a></span></p>
-                <h6><strong>Double Room</strong></h6>
-                <h7 class="room">1 double bed</h7><br />
 
-                <h7>FREE cancellation • No prepayment needed</h7>
-                <br />
+            foreach (var hotel in Model)
+            {
+                <div class="container_s container">
+                    <div class="left-section">
+                        <img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Image description">
+                    </div>
+                    <div class="middle-section">
+                        <h2><a href="#" style="color:darkblue;"> @hotel.HotelName 116 West Street</a></h2>
+                        @if (ViewBag.CheckInDate != null)
+                        {
+                            <h6><strong>@ViewBag.CheckInDate</strong> - <strong>@ViewBag.CheckOutDate</strong></h6>
+                        }
+                        <p>24 Somerset Avenue, Bulwer, Berea <span class="f4bd0794db b4273d69aa"><a href="https://www.google.com/maps/search/?api=1&query=24 somerset avenue">Show Map</a></span></p>
+                        <h6><strong>Double Room</strong></h6>
+                        <h7 class="room">1 double bed</h7><br />
 
-                <h8>You can cancel later, so lock in this great price today.</h8>
+                        <h7>FREE cancellation • No prepayment needed</h7>
+                        <br />
 
+                        <h8>You can cancel later, so lock in this great price today.</h8>
 
-            </div>
-            <div class="right-section">
-                <div class="container_right">
-                    <span class="rating">5</span>
-                    <h6 style="text-align:right; margin-right:35px;"><strong>Review score</strong></h6>
-                    <h6 class="reviews">749 reviews</h6>
+                    </div>
+                    <div class="right-section">
+                        <div class="container_right">
+                            <span class="rating">@(hotel.Rating??0)</span>
+                            <h6 style="text-align:right; margin-right:35px;"><strong>Review score</strong></h6>
+                            <h6 class="reviews">749 reviews</h6>
 
-
-
-
-                    <h6 class="reviews_2">2 Nights, 2 adults</h6>
-                    <h3 class="price_placeholder">ZAR @string.Format($"{3000}") </h3>
-                    <h6 class="reviews_3">+ ZAR (0) taxes and charges</h6>
-                    <button class="button_see_holtel">See availability</button>
+                            <h6 class="reviews_2">2 Nights, 2 adults</h6>
+                            <h3 class="price_placeholder">ZAR @string.Format($"{hotel.PricePerRoom}") </h3>
+                            <h6 class="reviews_3">+ ZAR (0) taxes and charges</h6>
+                            <button class="button_see_holtel" onclick="reserveRoomConfirmation(@hotel.HotelId, '@hotel.RoomName', @hotel.RoomId, '@hotel.PricePerRoom')">Reserve Room</button>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
+
+                <div hidden>
+
+                    <div class="col-md-4">
+                        <img src="@Url.Action("DisplayImage", "Hotels", new { hotelId  = hotel.HotelId })" alt="Hotel Image" height="150px" width="150px" />
+                    </div>
+                    <div class="col-md-7">
+                        <h5>
+                            @hotel.HotelName - @hotel.Suburb, @hotel.City
+                        </h5>
+                        <br />
+                        <label for="NoOfPeople">No Of People:</label>&nbsp;&nbsp;<input type="number" id="NoOfPeople" name="NoOfPeople" class="form-control" />
+                        <br />
+                        <label for="checkin">Checkin:</label>&nbsp;&nbsp;<input type="date" id="checkin" name="checkin" value="@ViewBag.CheckInDate" readonly="readonly" class="form-control" />
+                        <label for="checkout">Checkout:</label>&nbsp;&nbsp;
+                        <input type="date" id="checkout" name="checkout" value="@ViewBag.CheckOutDate" readonly="readonly" class="form-control" />
+                        <br />
+                        <br />
+                        <button value="Reserve" type="button" class="btn btn-primary">Reserve</button>
+                    </div>
+
+                    <hr />
+                    <br />
+                    <br />
+                    <!-- Display other hotel details as needed -->
 
 
-        <div class="container_s container">
-            <div class="left-section">
-                <img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Image description">
-            </div>
-            <div class="middle-section">
-                <h2>Bayside Hotel 116 West Street</h2>
-                <p>24 Somerset Avenue, Bulwer, Berea <span class="f4bd0794db b4273d69aa"><a href="https://www.google.com/maps/search/?api=1&query=24 somerset avenue">Show Map</a></span></p>
-                <h6><strong>Double Room</strong></h6>
-                <h7 class="room">1 double bed</h7><br />
-
-                <h7>FREE cancellation • No prepayment needed</h7>
-                <br />
-
-                <h8>You can cancel later, so lock in this great price today.</h8>
-
-
-            </div>
-            <div class="right-section">
-                <div class="container_right">
-                    <span class="rating">5</span>
-                    <h6 style="text-align:right; margin-right:35px;"><strong>Review score</strong></h6>
-                    <h6 class="reviews">749 reviews</h6>
-
-
-
-
-                    <h6 class="reviews_2">2 Nights, 2 adults</h6>
-                    <h3 class="price_placeholder">ZAR @string.Format($"{3000}") </h3>
-                    <h6 class="reviews_3">+ ZAR (0) taxes and charges</h6>
-                    <button class="button_see_holtel">See availability</button>
                 </div>
+
+            }
+        }
+        else
+        {
+            <div class="srearch_result_header container" style="margin-bottom: 20px;">
+                <h2>No results found.</h2>
             </div>
-        </div>
-
-
-
-        <div class="container_s container">
-            <div class="left-section">
-                <img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Image description">
-            </div>
-            <div class="middle-section">
-                <h2>Bayside Hotel 116 West Street</h2>
-                <p>24 Somerset Avenue, Bulwer, Berea <span class="f4bd0794db b4273d69aa"><a href="https://www.google.com/maps/search/?api=1&query=24 somerset avenue">Show Map</a></span></p>
-                <h6><strong>Double Room</strong></h6>
-                <h7 class="room">1 double bed</h7><br />
-
-                <h7>FREE cancellation • No prepayment needed</h7>
-                <br />
-
-                <h8>You can cancel later, so lock in this great price today.</h8>
-
-
-            </div>
-            <div class="right-section">
-                <div class="container_right">
-                    <span class="rating">5</span>
-                    <h6 style="text-align:right; margin-right:35px;"><strong>Review score</strong></h6>
-                    <h6 class="reviews">749 reviews</h6>
-
-
-
-
-                    <h6 class="reviews_2">2 Nights, 2 adults</h6>
-                    <h3 class="price_placeholder">ZAR @string.Format($"{3000}") </h3>
-                    <h6 class="reviews_3">+ ZAR (0) taxes and charges</h6>
-                    <button class="button_see_holtel">See availability</button>
-                </div>
-            </div>
-        </div>
-
-
-
-        <div class="container_s container">
-            <div class="left-section">
-                <img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Image description">
-            </div>
-            <div class="middle-section">
-                <h2>Bayside Hotel 116 West Street</h2>
-                <p>24 Somerset Avenue, Bulwer, Berea <span class="f4bd0794db b4273d69aa"><a href="https://www.google.com/maps/search/?api=1&query=24 somerset avenue">Show Map</a></span></p>
-                <h6><strong>Double Room</strong></h6>
-                <h7 class="room">1 double bed</h7><br />
-
-                <h7>FREE cancellation • No prepayment needed</h7>
-                <br />
-
-                <h8>You can cancel later, so lock in this great price today.</h8>
-
-
-            </div>
-            <div class="right-section">
-                <div class="container_right">
-                    <span class="rating">5</span>
-                    <h6 style="text-align:right; margin-right:35px;"><strong>Review score</strong></h6>
-                    <h6 class="reviews">749 reviews</h6>
-
-
-
-
-                    <h6 class="reviews_2">2 Nights, 2 adults</h6>
-                    <h3 class="price_placeholder">ZAR @string.Format($"{3000}") </h3>
-                    <h6 class="reviews_3">+ ZAR (0) taxes and charges</h6>
-                    <button class="button_see_holtel">See availability</button>
-                </div>
-            </div>
-        </div>
-
-
+        }
 
     </div>
-
-
-
-
-
-
-
-
 
 
 
@@ -765,74 +676,81 @@
         <button type="submit" class="btn-sm btn btn-info">Search</button>
     </form>
 
-<!-- Display search results -->
-@if (Model != null && Model.Count > 0)
-{
-    if (Model.Any(x => x.IsSearchResults == true))
+    <!-- Display search results -->
+    @if (Model != null && Model.Count > 0)
     {
-        <h1>Search Results:</h1>
+        if (Model.Any(x => x.IsSearchResults == true))
+        {
+            <h1>Search Results:</h1>
+        }
+        else
+        {
+            <h1>Available Rooms</h1>
+        }
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Hotel Name</th>
+                    <th>Room Name</th>
+                    <th>Suburb</th>
+                    <th>City</th>
+                    <th>Check-in</th>
+                    <th>Check-out</th>
+                    <th>No. of Rooms</th>
+                    <th>Cost</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var room in Model)
+                {
+                    <tr>
+                        <td>@room.HotelName</td>
+                        <td>@room.RoomName</td>
+                        <td>@room.Suburb</td>
+                        <td>@room.City</td>
+                        <td>
+                            <input type="date" id="checkInDate_@room.HotelId" class="form-control datepicker" />
+                        </td>
+                        <td>
+                            <input type="date" id="checkOutDate_@room.HotelId" class="form-control datepicker" />
+                        </td>
+                        <td>
+                            <input type="number" id="noOfRooms_@room.HotelId" class="form-control hotelroom_@room.HotelId" min="1" max="@room.MaxOccupancy." value="1" />
+                        </td>
+                        <td>
+                            <input type="text" id="cost_@room.HotelId" class="form-control hotelroom_@room.HotelId" value="@room.PricePerRoom" readonly="readonly" disabled="disabled" />
+                        </td>
+                        <td>
+                            <a href="#" class="btn btn-primary" onclick="reserveRoomConfirmation(@room.HotelId, '@room.RoomName', @room.RoomId, '@room.PricePerRoom')">Reserve</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     }
     else
     {
-        <h1>Available Rooms</h1>
+        <h1>No rooms found.</h1>
     }
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Hotel Name</th>
-                <th>Room Name</th>
-                <th>Suburb</th>
-                <th>City</th>
-                <th>Check-in</th>
-                <th>Check-out</th>
-                <th>No. of Rooms</th>
-                <th>Cost</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var room in Model)
-            {
-                <tr>
-                    <td>@room.HotelName</td>
-                    <td>@room.RoomName</td>
-                    <td>@room.Suburb</td>
-                    <td>@room.City</td>
-                    <td>
-                        <input type="date" id="checkInDate_@room.HotelId" class="form-control datepicker" />
-                    </td>
-                    <td>
-                        <input type="date" id="checkOutDate_@room.HotelId" class="form-control datepicker" />
-                    </td>
-                    <td>
-                        <input type="number" id="noOfRooms_@room.HotelId" class="form-control hotelroom_@room.HotelId" min="1" max="@room.MaxOccupancy." value="1" />
-                    </td>
-                    <td>
-                        <input type="text" id="cost_@room.HotelId" class="form-control hotelroom_@room.HotelId" value="@room.PricePerRoom" readonly="readonly" disabled="disabled" />
-                    </td>
-                    <td>
-                        <a href="#" class="btn btn-primary" onclick="reserveRoomConfirmation(@room.HotelId, '@room.RoomName', @room.RoomId, '@room.PricePerRoom')">Reserve</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <h1>No rooms found.</h1>
-}
-
+</div>
 
 @section scripts{
-    <script>
+
+}
+<script>
         // Function to reserve a room with selected check-in and check-out dates and number of rooms
         function reserveRoomConfirmation(hotelId, roomName, roomId, ppp) {
+            debugger;
+            const chkIndt = '@ViewBag.CheckInDate';
+            const chkOutdt = '@ViewBag.CheckOutDate';
             var baseRoomQty = $('#noOfRooms_' + hotelId).val();
             let roomQty = parseInt(baseRoomQty);
             var cost = roomQty * parseFloat(ppp);
             var checkInDate = $('#checkInDate_' + roomId).val();
             var checkOutDate = $('#checkOutDate_' + roomId).val();
+            checkInDate = chkIndt;
+            checkOutDate = chkOutdt;
             var noOfRooms = $('#noOfRooms_' + roomId).val();
             if (confirm("Are you sure you want to proceed with Reservation for \nRoom: " + roomName +
                                             "\nCheck-in Date: " + checkInDate +
@@ -855,11 +773,15 @@ else
             }
         }
 
-        function reserveRoom(hotelId, roomName, roomId) {
+    function reserveRoom(hotelId, roomName, roomId) {
+            const chkIndt = '@ViewBag.CheckInDate';
+            const chkOutdt = '@ViewBag.CheckOutDate';
             var checkInDate = $('#checkInDate_' + roomId).val();
             var checkOutDate = $('#checkOutDate_' + roomId).val();
             var noOfRooms = $('#noOfRooms_' + roomId).val();
-
+            checkInDate = chkIndt;
+            checkOutDate = chkOutdt;
+            debugger;
             // Perform validation for check-in, check-out dates, and number of rooms
             if (checkInDate === "" || checkOutDate === "") {
                 alert("Please select check-in and check-out dates.");
@@ -905,5 +827,4 @@ else
         //        minDate: currentDate // Restrict check-in date to be on or after the current date
         //    });
         //});
-    </script>
-}
+</script>
