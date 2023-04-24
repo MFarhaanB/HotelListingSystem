@@ -450,6 +450,7 @@
     <Content Include="Views\Shared\_eFooter.cshtml" />
     <Content Include="Views\Shared\_eHead.cshtml" />
     <Content Include="Views\Shared\_eLayout.cshtml" />
+    <Content Include="Views\Hotels\About.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="cdn-cgi\rum\" />

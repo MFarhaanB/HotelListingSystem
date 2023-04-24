@@ -11,9 +11,7 @@
     <style>
         .container_body {
             margin: 200px 20px 0 40px;
-           
         }
-        
     </style>
 </head>
 <body>
@@ -60,17 +58,17 @@
                                     @*@Html.DisplayFor(modelItem => item.StreetNumber)*@
                                 </td>
                                 @*<td>
-                                    @Html.DisplayFor(modelItem => item.StreetName)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Suburb)
-                                </td>*@
+                                        @Html.DisplayFor(modelItem => item.StreetName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Suburb)
+                                    </td>*@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.City)
                                 </td>
                                 @*<td>
-                                    @Html.DisplayFor(modelItem => item.PhysicalAddressCode)
-                                </td>*@
+                                        @Html.DisplayFor(modelItem => item.PhysicalAddressCode)
+                                    </td>*@
                                 @*<td>
                                         @Html.DisplayFor(modelItem => item.HotelImageFileSize)
                                     </td>*@
@@ -212,7 +210,8 @@
             </tr>
         }
 
-</table>*@
+    </table>
+</div>
 @Html.Partial("_eFooter")
 <script>
     $(document).ready(function () {
