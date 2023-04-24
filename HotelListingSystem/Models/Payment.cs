@@ -9,12 +9,52 @@ namespace HotelListingSystem.Models
 {
     public class Payment
     {
+        [Column(Order = 1)]
         [Key]
+        [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Display(Name = "Id")]
         public int Id { get; set; }
-        public string Amount { get; set; }
-        public string Reference { get; set; }
-        public DateTime? Date { get; set; }
+
+        [Column(Order = 2)]
+        public int? HotelUserId { get; set; }
+        [ForeignKey("HotelUserId")]
+        public HotelUsers HotelUser { get; set; }
+
+
+        [Column(Order = 3)]
+        public int? ReservationId { get; set; }
+        [ForeignKey("ReservationId")]
+        public Reservation Reservation { get; set; }
+
+        [Column(Order = 4)]
+        public string RefNo { get; set; }
+
+        public bool IsPaid { get; set; }
+
+        [Column(Order = 5)]
+        public decimal Amount { get; set; }
+
+
+        [Column(Order = 100)]
+        [Display(Name = "Is Active")]
+        public bool IsActive { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy/MM/dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Created On")]
+        [Column(Order = 104)]
+        public DateTime? CreatedDateTime { get; set; }
+
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Display(Name = "Modified On")]
+        [Column(Order = 106)]
+        public DateTime? ModifiedDateTime { get; set; }
+
+        [Display(Name = "Payment Method")]
+        public string PaymentMethod { get; set; }
+
+        [Display(Name = "Invoice Number")]
+        public string InvoiceNumber { get; set; }
 
     }
 }

@@ -47,6 +47,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PayPal, Version=1.9.1.0, Culture=neutral, PublicKeyToken=5b4afc1ccaef40fb, processorArchitecture=MSIL">
+      <HintPath>..\packages\PayPal.1.9.1\lib\net451\PayPal.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
@@ -199,6 +202,7 @@
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MealTypes.cs" />
     <Compile Include="Models\Payment.cs" />
+    <Compile Include="Models\PaypalConfiguration.cs" />
     <Compile Include="Models\Reservation.cs" />
     <Compile Include="Models\Room.cs" />
     <Compile Include="Models\SystemUser.cs" />
@@ -450,6 +454,8 @@
     <Content Include="Views\Shared\_eFooter.cshtml" />
     <Content Include="Views\Shared\_eHead.cshtml" />
     <Content Include="Views\Shared\_eLayout.cshtml" />
+    <Content Include="Views\Payments\PaymentSuccess.cshtml" />
+    <Content Include="Views\Payments\Failure.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="cdn-cgi\rum\" />
