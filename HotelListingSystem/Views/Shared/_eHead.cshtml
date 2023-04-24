@@ -239,18 +239,8 @@
                                         <li class="main_nav_item"><a href="~/Hotels/FindHotel">Find Hotels</a></li>
                                         <li class="main_nav_item"><a href="~/Reservations/CreateReservation">Reservations</a></li>
                                         <li class="main_nav_item"><a href="~/Dinings/Index">Dining</a></li>
-
-
                                     }
-                                    @if (!Request.IsAuthenticated || User.IsInRole("Customer"))
-                                    {
-                                        <li class="main_nav_item">
-                                            <a href="blog.html">news</a>
-                                        </li>
-                                        @*<li class="main_nav_item">
-                <a href="contact.html">contact</a>
-            </li>*@
-                                    }
+                                   
 
                                 </ul>
                             </div>

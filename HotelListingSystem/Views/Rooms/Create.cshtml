@@ -2,124 +2,139 @@
 
 @{
     ViewBag.Title = "Create";
+    Layout = null;
 }
+<head>
+    @Html.Partial("_eHead")
+</head>
 
-<h4>Add Room</h4>
+<body>
+    <main>
+        <div class="container_body">
 
-@if (ViewBag.AddRooms != null && !string.IsNullOrEmpty(ViewBag.AddRooms))
-{
-    <div class="col-9 alert alert-info">
-        Please add rooms to your newly created hotel.
-    </div> 
-}
-@using (Html.BeginForm("Create", "Rooms", null, FormMethod.Post, new { enctype = "multipart/form-data", id = "create-form" }))
-{
-    @Html.AntiForgeryToken()
+            <h4>Add Room</h4>
 
-    <div class="form-horizontal">
-        <hr />
-        <input type="text" hidden id="hiddenChecklists" name="hiddenChecklists" />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @if (ViewBag.AddRooms == null && string.IsNullOrEmpty(ViewBag.AddRooms))
-        {
-            <div class="form-group">
-                @Html.LabelFor(model => model.HotelId, "Hotel Name", htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.DropDownList("HotelId", null, htmlAttributes: new { @class = "form-control" })
-                    @Html.ValidationMessageFor(model => model.HotelId, "", new { @class = "text-danger" })
+
+
+            @if (ViewBag.AddRooms != null && !string.IsNullOrEmpty(ViewBag.AddRooms))
+            {
+                <div class="col-9 alert alert-info">
+                    Please add rooms to your newly created hotel.
                 </div>
-            </div>
-        }
-        else
-        {
-            @Html.HiddenFor(model => model.HotelId)
-        }
-        <div class="form-group">
-            @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
-            </div>
-        </div>
+            }
+            @using (Html.BeginForm("Create", "Rooms", null, FormMethod.Post, new { enctype = "multipart/form-data", id = "create-form" }))
+            {
+                @Html.AntiForgeryToken()
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Sleeps, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Sleeps, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Sleeps, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <div class="form-horizontal">
+                    <hr />
+                    <input type="text" hidden id="hiddenChecklists" name="hiddenChecklists" />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    @if (ViewBag.AddRooms == null && string.IsNullOrEmpty(ViewBag.AddRooms))
+                    {
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.HotelId, "Hotel Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                            <div class="col-md-3">
+                                @Html.DropDownList("HotelId", null, htmlAttributes: new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.HotelId, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    }
+                    else
+                    {
+                        @Html.HiddenFor(model => model.HotelId)
+                    }
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.NoOfBeds, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.NoOfBeds, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.NoOfBeds, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Sleeps, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.Sleeps, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Sleeps, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Baths, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Baths, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Baths, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.NoOfBeds, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.NoOfBeds, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.NoOfBeds, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Balcony, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                <div class="checkbox">
-                    @Html.EditorFor(model => model.Balcony)
-                    @Html.ValidationMessageFor(model => model.Balcony, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Baths, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.Baths, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.Baths, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Balcony, htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-3">
+                            <div class="checkbox">
+                                @Html.EditorFor(model => model.Balcony, new { htmlAttributes = new { @class = "form-control" } })
+                                @Html.ValidationMessageFor(model => model.Balcony, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Room Image 1:", new { @class = "control-label col-md-4" })
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <label class="input-group-btn">
+                                    <span class="btn btn-primary">
+                                        Browse&hellip; <input type="file" id="RoomImage1" name="documents" style="display: none;" accept="image/x-png,image/jpg,image/jpeg">
+                                    </span>
+                                </label>
+                                <input type="text" class="form-control col-md-4" id="upload-RoomImage1-info" readonly>
+                            </div>
+                            <span class="text-danger" style="display:none" id="RoomImage1Error"></span>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        @Html.Label("Room Image 2", new { @class = "control-label col-md-4" })
+                        <div class="col-md-7">
+                            <div class="input-group">
+                                <label class="input-group-btn">
+                                    <span class="btn btn-primary">
+                                        Browse&hellip; <input type="file" id="RoomImage2" name="documents" style="display: none;" accept="image/x-png,image/jpg,image/jpeg,application/pdf">
+                                    </span>
+                                </label>
+                                <input type="text" class="form-control col-md-4" id="upload-RoomImage2-info" readonly>
+                            </div>
+                            <span class="text-danger" style="display:none" id="RoomImage2Error"></span>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-3">
+                            @*<input type="submit" value="Create" class="btn btn-default" />*@
+                            <input type="button" onclick="FormValidation()" value="Create" class="btn btn-outline-dark" />
+                        </div>
+                    </div>
                 </div>
+            }
+
+            <div>
+                @Html.ActionLink("Back to List", "Index", new { id = 0 }, new { @class = "btn btn-primary" })
             </div>
         </div>
+    </main>
+</body>
 
-        <div class="form-group">
-            @Html.Label("Room Image 1:", new { @class = "control-label col-md-4" })
-            <div class="col-md-7">
-                <div class="input-group">
-                    <label class="input-group-btn">
-                        <span class="btn btn-primary">
-                            Browse&hellip; <input type="file" id="RoomImage1" name="documents" style="display: none;" accept="image/x-png,image/jpg,image/jpeg">
-                        </span>
-                    </label>
-                    <input type="text" class="form-control" id="upload-RoomImage1-info" readonly>
-                </div>
-                <span class="text-danger" style="display:none" id="RoomImage1Error"></span>
-
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.Label("Room Image 2", new { @class = "control-label col-md-4" })
-            <div class="col-md-7">
-                <div class="input-group">
-                    <label class="input-group-btn">
-                        <span class="btn btn-primary">
-                            Browse&hellip; <input type="file" id="RoomImage2" name="documents" style="display: none;" accept="image/x-png,image/jpg,image/jpeg,application/pdf">
-                        </span>
-                    </label>
-                    <input type="text" class="form-control" id="upload-RoomImage2-info" readonly>
-                </div>
-                <span class="text-danger" style="display:none" id="RoomImage2Error"></span>
-
-            </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                @*<input type="submit" value="Create" class="btn btn-default" />*@
-                <input type="button" onclick="FormValidation()" value="Create" class="btn btn-primary" />
-            </div>
-        </div>
-    </div>
-}
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+@Html.Partial("_eFooter")
 
 <script typeof="text/javascript">
     var docChecklists = [];
