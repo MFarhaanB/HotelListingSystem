@@ -196,17 +196,7 @@
                             </div>
                             <div class="main_nav_container ml-auto">
                                 <ul class="main_nav_list">
-                                    @if (!Request.IsAuthenticated || User.IsInRole("Customer"))
-                                    {
-                                        <li class="main_nav_item"><a href="../">home</a></li>
-                                        @*<li class="main_nav_item"><a href="about.html">about us</a></li>*@
-                                        @*<li class="main_nav_item"><a href="offers.html">offers</a></li>*@
-                                    }
-                                    @if (!Request.IsAuthenticated || User.IsInRole("Customer"))
-                                    {
-                                        <li class="main_nav_item"><a href="~/">home</a></li>
-                                        <li class="main_nav_item"><a href="offers.html">offers</a></li>
-                                    }
+                                    <li class="main_nav_item"><a href="../">home</a></li>
                                     @if (User.IsInRole("Administrator"))
                                     {
                                         <li class="main_nav_item"><a href="~/Dinings/Index">Dining</a></li>
