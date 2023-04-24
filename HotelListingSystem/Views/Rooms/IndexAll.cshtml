@@ -24,6 +24,9 @@
             @Html.DisplayNameFor(model => model.Balcony)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.PricePerRoom)
+        </th>
+        <th>
             Room 1
         </th>
         <th>
@@ -49,6 +52,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Balcony)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PricePerRoom)
             </td>
             <td>
                 <img src="@Url.Action("DisplayImage", "Rooms", new { roomId = item.Id, imageType = 1 })" alt="Hotel Image" style="height: 150px;width: 150px;" />

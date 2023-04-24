@@ -155,7 +155,7 @@ namespace HotelListingSystem.Controllers
                           join hotel in db.Hotels on rooms.HotelId equals hotel.Id
                          join reservation in db.Reservations on hotel.Id equals reservation.HotelId into hotelReservationGroup
                          from reservation in hotelReservationGroup.DefaultIfEmpty()
-                         where reservation != null && hotel.Blacklisted != true
+                         where reservation != null && hotel.Blacklisted != true /*&& hotel.IsVerified == true*/
                          select new HotelReservationVM
                          {
                              HotelId = hotel.Id,
