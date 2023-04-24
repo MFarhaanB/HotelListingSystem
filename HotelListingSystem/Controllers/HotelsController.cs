@@ -265,8 +265,11 @@ namespace HotelListingSystem.Controllers
 
                     hotel.HotelImageName = file.FileName;
                     hotel.HotelImageContentType = file.ContentType;
-                    hotel.HotelImageContent = new byte[fileContent.Length];
-                    fileContent.Read(hotel.HotelImageContent, 0, (int)fileContent.Length);
+
+                    byte[] data;
+                    data = new byte[fileContent.Length];
+                    file.InputStream.Read(data, 0, file.ContentLength);
+                    hotel.HotelImageContent = data;
                     hotel.HotelImageFileSize = (Int64)file.ContentLength;
                 }
                 if (documents?.Count() >= 2)
@@ -276,8 +279,10 @@ namespace HotelListingSystem.Controllers
 
                     hotel.CertificateOfOccupancyDocName = file.FileName;
                     hotel.CertificateOfOccupancyDoContentType = file.ContentType;
-                    hotel.CertificateOfOccupancyDocContent = new byte[fileContent.Length];
-                    fileContent.Read(hotel.CertificateOfOccupancyDocContent, 0, (int)fileContent.Length);
+                    byte[] data;
+                    data = new byte[fileContent.Length];
+                    file.InputStream.Read(data, 0, file.ContentLength);
+                    hotel.HotelImageContent = data;
                     hotel.CertificateOfOccupancyDoFileSize = (Int64)file.ContentLength;
                 }
                 if (documents?.Count() >= 3)
@@ -287,8 +292,10 @@ namespace HotelListingSystem.Controllers
 
                     hotel.COADocName = file.FileName;
                     hotel.COADocContentType = file.ContentType;
-                    hotel.COADocContent = new byte[fileContent.Length];
-                    fileContent.Read(hotel.COADocContent, 0, (int)fileContent.Length);
+                    byte[] data;
+                    data = new byte[fileContent.Length];
+                    file.InputStream.Read(data, 0, file.ContentLength);
+                    hotel.HotelImageContent = data;
                     hotel.COADocFileSize = (Int64)file.ContentLength;
                 }
 

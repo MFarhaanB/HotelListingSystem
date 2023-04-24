@@ -17,7 +17,7 @@ namespace HotelListingSystem.Controllers
         // GET: Rooms
         public ActionResult IndexAll()
         {
-            return View(db.Rooms.ToList());
+            return View(db.Rooms.Include(x => x.Hotel).ToList());
         }
         public ActionResult Index()
         {
@@ -71,8 +71,10 @@ namespace HotelListingSystem.Controllers
 
                     room.RoomImageName1 = file.FileName;
                     room.RoomImageContentType1 = file.ContentType;
-                    room.RoomImageContent1 = new byte[fileContent.Length];
-                    fileContent.Read(room.RoomImageContent1, 0, (int)fileContent.Length);
+                    byte[] data;
+                    data = new byte[fileContent.Length];
+                    file.InputStream.Read(data, 0, file.ContentLength);
+                    room.RoomImageContent1 = data;
                     room.RoomImageFileSize1 = (Int64)file.ContentLength;
                 }
                 if (documents?.Count() >= 2)
@@ -82,8 +84,10 @@ namespace HotelListingSystem.Controllers
 
                     room.RoomImageName2 = file.FileName;
                     room.RoomImageContentType2 = file.ContentType;
-                    room.RoomImageContent2 = new byte[fileContent.Length];
-                    fileContent.Read(room.RoomImageContent2, 0, (int)fileContent.Length);
+                    byte[] data;
+                    data = new byte[fileContent.Length];
+                    file.InputStream.Read(data, 0, file.ContentLength);
+                    room.RoomImageContent2 = data;
                     room.RoomImageFileSize2 = (Int64)file.ContentLength;
                 }
 

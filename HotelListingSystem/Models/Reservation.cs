@@ -21,6 +21,9 @@ namespace HotelListingSystem.Models
         [ForeignKey("HotelId")]
         public Hotel Hotel { get; set; }
 
+        [NotMapped]
+        public string HotelName { get; set; }
+
         public int? RoomId { get; set; }
         [ForeignKey("RoomId")]
         public Room Room { get; set; }
