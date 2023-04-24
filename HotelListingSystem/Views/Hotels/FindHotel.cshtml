@@ -752,25 +752,29 @@
             checkInDate = chkIndt;
             checkOutDate = chkOutdt;
             var noOfRooms = $('#noOfRooms_' + roomId).val();
-            if (confirm("Are you sure you want to proceed with Reservation for \nRoom: " + roomName +
-                                            "\nCheck-in Date: " + checkInDate +
-                                            "\nCheck-out Date: " + checkOutDate +
-                                            "\nNo. of Rooms: " + noOfRooms + "\nat the cost of " +cost+"?"
 
-            )) {
-                // User clicked "OK"
-                    var accountNumber = prompt("Please enter your Bank account number:", "");
-                var password = prompt("Please enter your Bank account password:", "");
-                    if (accountNumber != null && password != null) {
-                        // Perform login action here using accountNumber and password variables
-                        reserveRoom(hotelId, roomName, roomId);
-                    } else {
-                        alert("Reservation cancelled.");
-                    }
-            } else {
-                // User clicked "Cancel"
-                alert("Reservation cancelled.");
-            }
+            var url = '@Url.Action("Create", "Reservations")';
+
+            window.location.href = url + "?id=" + hotelId
+            //if (confirm("Are you sure you want to proceed with Reservation for \nRoom: " + roomName +
+            //                                "\nCheck-in Date: " + checkInDate +
+            //                                "\nCheck-out Date: " + checkOutDate +
+            //                                "\nNo. of Rooms: " + noOfRooms + "\nat the cost of " +cost+"?"
+
+            //)) {
+            //    // User clicked "OK"
+            //        var accountNumber = prompt("Please enter your Bank account number:", "");
+            //    var password = prompt("Please enter your Bank account password:", "");
+            //        if (accountNumber != null && password != null) {
+            //            // Perform login action here using accountNumber and password variables
+            //            reserveRoom(hotelId, roomName, roomId);
+            //        } else {
+            //            alert("Reservation cancelled.");
+            //        }
+            //} else {
+            //    // User clicked "Cancel"
+            //    alert("Reservation cancelled.");
+            //}
         }
 
     function reserveRoom(hotelId, roomName, roomId) {

@@ -87,12 +87,19 @@ namespace HotelListingSystem.Controllers
 
 
         // GET: Reservations/Create
-        public ActionResult Create()
+        public ActionResult Create(int id)
         {
+            Reservation reservation = new Reservation
+            {
+                HotelId = id,
+                HotelName = db.Hotels.AsNoTracking().FirstOrDefault(x=>x.Id == id)?.Name,
+                CheckInDate = DateTime.Now,
+                CheckOutDate = DateTime.Now.AddDays(5),
+            };
             ViewBag.HotelId = new SelectList(db.Hotels, "Id", "Name");
             ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName");
             ViewBag.RoomId = new SelectList(db.Rooms, "Id", "Name");
-            return View();
+            return View(reservation);
         }
 
         // POST: Reservations/Create
@@ -100,7 +107,7 @@ namespace HotelListingSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,CheckInDate,CheckOutDate,HotelId,RoomId,HotelUserId")] Reservation reservation)
+        public ActionResult Create(Reservation reservation)
         {
             reservation.HotelUserId = AppHelper.CurrentHotelUser()?.Id;
             reservation.CreatedOn = DateTime.Now;
@@ -242,6 +249,15 @@ namespace HotelListingSystem.Controllers
                 message = "The requested number of rooms is not available for the selected dates.";
                 return Json(new { success = false, message = message }, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        [HttpPost]
+        public ActionResult GetTotalCost(int roomId, int noOfRooms)
+        {
+            var roomInfo = db.Rooms.Include(x=>x.Hotel).FirstOrDefault(x => x.Id == roomId);
+            var cost = roomInfo.PricePerRoom * noOfRooms;
+            
+            return Json(new { success = true, message = cost }, JsonRequestBehavior.AllowGet);
         }
     }
 }

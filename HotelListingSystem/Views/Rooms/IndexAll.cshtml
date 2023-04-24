@@ -1,16 +1,13 @@
 ﻿@model IEnumerable<HotelListingSystem.Models.Room>
 
 @{
-    ViewBag.Title = "IndexAll";
+    ViewBag.Title = "Index";
 }
 
-<h2> All Rooms</h2>
+<h4>All Rooms</h4>
 
 <table class="table">
     <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Hotel.Name)
-        </th>
         <th>
             @Html.DisplayNameFor(model => model.Name)
         </th>
@@ -27,89 +24,44 @@
             @Html.DisplayNameFor(model => model.Balcony)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RoomImageName1)
+            Room 1
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.RoomImageContent1)
+            Room 2
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RoomImageContentType1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RoomImageFileSize1)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RoomImageName2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RoomImageContent2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RoomImageContentType2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.RoomImageFileSize2)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CreatedOn)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.PricePerRoom)
-        </th>
+        <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Hotel.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Sleeps)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.NoOfBeds)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Baths)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Balcony)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RoomImageName1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RoomImageContent1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RoomImageContentType1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RoomImageFileSize1)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RoomImageName2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RoomImageContent2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RoomImageContentType2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.RoomImageFileSize2)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.CreatedOn)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.PricePerRoom)
-        </td>
-
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Sleeps)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NoOfBeds)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Baths)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Balcony)
+            </td>
+            <td>
+                <img src="@Url.Action("DisplayImage", "Rooms", new { roomId = item.Id, imageType = 1 })" alt="Hotel Image" style="height: 150px;width: 150px;" />
+            </td>
+            <td>
+                <img src="@Url.Action("DisplayImage", "Rooms", new { roomId = item.Id, imageType = 2 })" alt="Hotel Image" style="height: 150px;width: 150px;" />
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+            </td>
+        </tr>
+    }
 
 </table>
