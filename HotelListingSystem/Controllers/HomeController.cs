@@ -1,4 +1,5 @@
-﻿using HotelListingSystem.ViewModel;
+﻿using HotelListingSystem.Models;
+using HotelListingSystem.ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,5 +32,14 @@ namespace HotelListingSystem.Controllers
 
             return View();
         }
+
+        public ActionResult SendMessage(string email, string name, string body, string subject)
+        {
+            string b = "Your enquiry, " + body + " has been submitted and will be attended to by an agent soon.";
+            new Email().SendEmail(email, "Hotel enquiry: " + subject, name, b, false);
+            return Json(new { success = true, message = "Hotel updated successfully" });
+
+        }
+
     }
 }

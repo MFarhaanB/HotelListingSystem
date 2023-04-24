@@ -24,7 +24,7 @@ namespace HotelListingSystem.ViewModel
                 }
                 else
                 {
-                    mail.Body = "Hi  " + Name + status + "<br/><br/>Your's Sincerely<br/><strong>Hotel Listing Team</strong> ";
+                    mail.Body = "Hi  " + Name + "<br/><br/>"+ status + " <br/><br/>Your's Sincerely<br/><strong>Hotel Listing Team</strong> ";
                 }
                 mail.To.Add(Email);
 

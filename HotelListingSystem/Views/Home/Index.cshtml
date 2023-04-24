@@ -1245,7 +1245,7 @@
                                 <input type="text" id="contact_form_email" class="contact_form_email input_field" placeholder="E-mail" required="required" data-error="Email is required.">
                                 <input type="text" id="contact_form_subject" class="contact_form_subject input_field" placeholder="Subject" required="required" data-error="Subject is required.">
                                 <textarea id="contact_form_message" class="text_field contact_form_message" name="message" rows="4" placeholder="Message" required="required" data-error="Please, write us a message."></textarea>
-                                <button type="submit" id="form_submit_button" class="form_submit_button button">
+                                <button type="button" id="contact_form_submit_button" class="form_submit_button button">
                                     send message <span></span>
                                     <span></span>
                                     <span></span>
@@ -1392,3 +1392,34 @@
     <script src="https://preview.colorlib.com/theme/travelix/js/custom.js"></script>
 </body>
 </html>
+
+<script>
+    $('#contact_form_submit_button').on('click', function () {
+        var contact_form_name = $('#contact_form_name').val();
+        var contact_form_email = $('#contact_form_email').val();
+        var contact_form_subject = $('#contact_form_subject').val();
+        var contact_form_message = $('#contact_form_message').val();
+        var contact = $('#contact_form_name').val();
+           $.ajax({
+                url: '@Url.Action("SendMessage", "Home")', // Update with your controller and action method names
+                type: 'POST',
+               data: { email: contact_form_email, name: contact_form_name, body: contact_form_message, subject: contact_form_subject },
+                success: function (data) {
+                    if (data.success) {
+                        // Room is available, proceed with reservation
+                        // You can implement the reservation logic here
+                        // e.g., send another AJAX request to the server to create a reservation
+                        // with the selected room ID, check-in and check-out dates, number of rooms, etc.
+                        alert("Your message has been submitted.");
+                    } else {
+                        // Room is not available, show error message
+                        alert(data.message);
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    // Handle error
+                    console.error(errorThrown);
+                }
+            })
+    })
+</script>
