@@ -101,7 +101,7 @@ namespace HotelListingSystem.Controllers
             return View(room);
         }
 
-        public ActionResult DisplayImage(int roomId, int imageType = 1)
+        public ActionResult DisplayImage(int roomId, int imageType)
         {
             var hotel = db.Rooms.FirstOrDefault(h => h.Id == roomId);
             if (imageType == 1 && hotel != null && hotel.RoomImageContent1 != null)

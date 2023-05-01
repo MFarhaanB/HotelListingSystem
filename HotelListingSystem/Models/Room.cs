@@ -40,5 +40,8 @@ namespace HotelListingSystem.Models
 
         public decimal PricePerRoom { get; set; }
 
+        [NotMapped]
+        public Reservation Reservation { get; set; }
+
     }
 }

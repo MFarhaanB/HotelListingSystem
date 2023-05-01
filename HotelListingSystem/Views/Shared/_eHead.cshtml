@@ -86,25 +86,29 @@
             }(w, d, "zarazData", "script");
         })(window, document);
     </script>
-  <style>
-      .container_body {
-          margin-left: 40px;
-          margin-right: 20px;
-      }
-      main {
-          margin-top: 200px;
-      }
-      .cls_logins {
-          float: none;
-          margin: 0 0 0 530px;
-      }
-      .back_btn {
-          margin: 30px 0 0 50px;
-      }
-      hr {
-          width:30%;
-      }
-  </style>
+    <style>
+        .container_body {
+            margin-left: 40px;
+            margin-right: 20px;
+        }
+
+        main {
+            margin-top: 200px;
+        }
+
+        .cls_logins {
+            float: none;
+            margin: 0 0 0 530px;
+        }
+
+        .back_btn {
+            margin: 30px 0 0 50px;
+        }
+
+        hr {
+            width: 30%;
+        }
+    </style>
 </head>
 
 <body>
@@ -167,29 +171,29 @@
                                     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
                                     {
                                         @Html.AntiForgeryToken()
-                        <div class="cls_logins">
-                            <div class="user_box ml-auto" style="float:right;">
-                                <div class="user_box_login user_box_link">
-                                    <a>@User.Identity.Name</a>
+                                        <div class="cls_logins">
+                                            <div class="user_box ml-auto" style="float:right;">
+                                                <div class="user_box_login user_box_link">
+                                                    <a>@User.Identity.Name</a>
 
-                                </div>
-                                <div class="user_box_register user_box_link">
-                                    <a href="javascript:document.getElementById('logoutForm').submit()">Log Out</a>
-                                </div>
-                            </div>
-                        </div>
-                                     
+                                                </div>
+                                                <div class="user_box_register user_box_link">
+                                                    <a href="javascript:document.getElementById('logoutForm').submit()">Log Out</a>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                     }
                                 }
                                 @*<div class="user_box ml-auto">
-                                    <div class="user_box_login user_box_link">
-                                        <a>@User.Identity.Name</a>
+                                        <div class="user_box_login user_box_link">
+                                            <a>@User.Identity.Name</a>
 
-                                    </div>
-                                    <div class="user_box_register user_box_link">
-                                        <a href="javascript:document.getElementById('logoutForm').submit()">Log Out</a>
-                                    </div>
-                                </div>*@
+                                        </div>
+                                        <div class="user_box_register user_box_link">
+                                            <a href="javascript:document.getElementById('logoutForm').submit()">Log Out</a>
+                                        </div>
+                                    </div>*@
                             }
 
                         </div>
@@ -231,15 +235,20 @@
                                         <li class="main_nav_item"><a href="~/Hotels/MyHotels">My Hotels</a></li>
                                         <li class="main_nav_item"><a href="~/Account/AddReceptionist">Add Receptionist</a></li>
                                         <li class="main_nav_item"><a href="~/Rooms/Index">Rooms</a></li>
-                                      
+
                                     }
                                     @if (User.IsInRole("Customer") || User.IsInRole("Administrator"))
                                     {
                                         <li class="main_nav_item"><a href="~/Hotels/FindHotel">Find Hotels</a></li>
                                         <li class="main_nav_item"><a href="~/Reservations/CreateReservation">Reservations</a></li>
-                                        <li class="main_nav_item"><a href="~/Dinings/Index">Dining</a></li>
+                                        <li class="main_nav_item"><a href="~/DiningReservations/Index">Dining Reservations</a></li>
+
+                                        if (User.IsInRole("Administrator"))
+                                        {
+                                            <li class="main_nav_item"><a href="~/Dinings/Index">Dining</a></li>
+                                        }       
                                     }
-                                   
+
 
                                 </ul>
                             </div>
@@ -316,7 +325,7 @@
     <script src="https://preview.colorlib.com/theme/travelix/styles/bootstrap4/popper.js"></script>
     <script src="https://preview.colorlib.com/theme/travelix/js/custom.js"></script>
 
- 
+
 </body>
 </html>
 <script>

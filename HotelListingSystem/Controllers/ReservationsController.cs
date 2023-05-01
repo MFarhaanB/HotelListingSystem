@@ -120,6 +120,9 @@ namespace HotelListingSystem.Controllers
             {
                 using(ApplicationDbContext core = new ApplicationDbContext())
                 {
+                    var room = core.Rooms.Find(reservation.RoomId);
+                    if (reservation.TotalCost == 0) 
+                        reservation.TotalCost = room.PricePerRoom * reservation.NoOfRooms;
                     core.Reservations.Add(reservation);
                     core.SaveChanges();
                 }
