@@ -41,7 +41,7 @@ namespace HotelListingSystem.Controllers
         {
             ViewBag.DiningTableTypeId = new SelectList(db.DiningTableTypes, "Id", "Name");
             ViewBag.MealTypeId = new SelectList(db.MealTypes, "Id", "Name");
-            return View();
+            return View(); 
         }
 
         // POST: Dinings/Create

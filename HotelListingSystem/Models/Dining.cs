@@ -26,5 +26,7 @@ namespace HotelListingSystem.Models
         public DateTime? EndTime { get; set; }
 
         public int? NoOfTables { get; set; }
+
+        public double CostPerPerson { get; set; }
     }
 }

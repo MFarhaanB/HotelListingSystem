@@ -145,6 +145,59 @@ namespace HotelListingSystem.Controllers
         public List<HotelReservationVM> Search(string suburb, string city, DateTime? checkin, DateTime? checkout)
         {
             // Store the search criteria in ViewBag to pass to the view for display
+
+            ViewBag.Suburb = suburb;
+            ViewBag.City = city;
+            ViewBag.CheckInDate = checkin;
+            ViewBag.CheckOutDate = checkout;
+            //FIX
+            // Query the database to get hotels based on the search criteria
+            var result = (from rooms in db.Rooms
+                          join hotel in db.Hotels on rooms.HotelId equals hotel.Id
+                         join reservation in db.Reservations on hotel.Id equals reservation.HotelId into hotelReservationGroup
+                         from reservation in hotelReservationGroup.DefaultIfEmpty()
+                         where  hotel.Blacklisted != true /*&& hotel.IsVerified == true*/
+                         select new HotelReservationVM
+                         {
+                             HotelId = hotel.Id,
+                             HotelName = hotel.Name,
+                             Suburb = hotel.Suburb,
+                             MaxOccupancy = hotel.MaxOccupancy,
+                             RoomId = rooms.Id,
+                             RoomName = rooms.Name,
+                             City = hotel.City,
+                             HotelUserId = hotel.HotelUserId == null ? null : hotel.HotelUserId,
+                             Rating = hotel.Rating,
+                             CheckInDate = reservation.CheckInDate,
+                             CheckOutDate = reservation.CheckOutDate,
+                             HotelImageName = hotel.HotelImageName,
+                             HotelImageContent = hotel.HotelImageContent,
+                             PricePerRoom = rooms.PricePerRoom,
+                         }).ToList();
+
+
+            var hotels = result.Where(h =>
+                (string.IsNullOrEmpty(suburb) || h.Suburb.Contains(suburb)) &&
+                (string.IsNullOrEmpty(city) || h.City.Contains(city)) &&
+                (!checkin.HasValue || h.CheckInDate <= checkin.Value) &&
+                (!checkout.HasValue || h.CheckOutDate >= checkout.Value)).ToList();
+
+            if ((hotels.Count() != result.Count()) && hotels.Count() > 0)
+            {
+                hotels.FirstOrDefault().IsSearchResults = true;
+            }
+
+            ViewBag.City = new SelectList(db.Hotels.Select(h => h.City).Distinct().ToList());
+            ViewBag.Suburb = new SelectList(db.Hotels.Select(h => h.Suburb).Distinct().ToList());
+            ViewBag.HotelId = new SelectList(db.Hotels, "Id", "Name");
+            ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName");
+            ViewBag.RoomId = new SelectList(db.Rooms, "Id", "Name");
+
+            return hotels; // Return the list of hotels to the view for display
+        }
+        public List<HotelReservationVM> Search2(string suburb, string city, DateTime? checkin, DateTime? checkout)
+        {
+            // Store the search criteria in ViewBag to pass to the view for display
             ViewBag.Suburb = suburb;
             ViewBag.City = city;
             ViewBag.CheckInDate = checkin;

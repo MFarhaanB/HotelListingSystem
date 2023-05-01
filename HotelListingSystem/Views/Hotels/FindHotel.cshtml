@@ -455,7 +455,7 @@
                                 <input type="date" name="checkout" id="checkout" class="check_out search_input round_corner" value="@ViewBag.CheckOutDate">
                             </div>
 
-                            <button type="submit" class="button search_button">
+                            <button type="submit" onclick="reserveRoom(1, 'room 1', 1)" class="button search_button">
                                 search <span></span>
                                 <span></span>
                                 <span></span>
@@ -472,9 +472,13 @@
     <div class="results_section" id="ThisId">
         @if (Model != null && Model.Count > 0)
         {
-            <div class="srearch_result_header container" style="margin-bottom: 20px;">
-                <h2> Search results for: Durban</h2>
-            </div>
+            if (ViewBag.City.ToString() != "{System.Web.Mvc.SelectList}")
+            {
+<div class="srearch_result_header container" style="margin-bottom: 20px;">
+    <h2> Search results for: Durban</h2>
+</div>
+            }
+
 
             foreach (var hotel in Model)
             {
@@ -778,6 +782,7 @@
         }
 
     function reserveRoom(hotelId, roomName, roomId) {
+        debugger;
             const chkIndt = '@ViewBag.CheckInDate';
             const chkOutdt = '@ViewBag.CheckOutDate';
             var checkInDate = $('#checkInDate_' + roomId).val();

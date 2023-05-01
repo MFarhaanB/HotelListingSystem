@@ -39,5 +39,11 @@ namespace HotelListingSystem.Models
         public decimal TotalCost { get; set; }
         public decimal TotalFees { get; set; }
         public bool? Booked { get; set; }
+
+        [NotMapped]
+        public List<Dining> Dinings { get; set; }
+            
+        public int ? AddOnsId { get; set; }
+        public decimal AddOnsCost { get; set; }
     }
 }
