@@ -458,6 +458,7 @@
     <Content Include="Views\Payments\Failure.cshtml" />
     <Content Include="Views\Hotels\About.cshtml" />
     <Content Include="Views\Reservations\AddOns.cshtml" />
+    <Content Include="Views\Shared\_NotVerified.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="cdn-cgi\rum\" />

@@ -45,8 +45,10 @@ namespace HotelListingSystem.Controllers
         public ActionResult Create(int? hotelId)
         {
             Room room = new Room();
-            if (hotelId != null )
+            if (hotelId != null)
             {
+                var hotel = db.Hotels.Find(hotelId);
+                if (hotel.IsVerified == null) return View("_NotVerified");
                 ViewBag.AddRooms = "true";
                 room.HotelId = hotelId;
             }

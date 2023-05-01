@@ -63,8 +63,9 @@ namespace HotelListingSystem.Controllers
             db.Entry(hotel).State = EntityState.Modified;
             int savechanges = db.SaveChanges();
 
-            var user = db.HotelUsers.FirstOrDefault(x => x.EmailAddress == User.Identity.Name)?.FullName;
-            new Email().SendEmail(User.Identity.Name, "Hotel Validation", user, "verified");
+            var user = db.HotelUsers.FirstOrDefault(x => x.EmailAddress == User.Identity.Name);
+            var body = $"Your hotel {hotel.Name} has been verified successfully.";
+            new Email().SendEmail(User.Identity.Name, "Hotel Validation", user.FullName, body);
 
             // Return a JSON response to the AJAX request
             return Json(new { success = savechanges > 0, message = "Hotel updated successfully" });
@@ -80,8 +81,9 @@ namespace HotelListingSystem.Controllers
             db.Entry(hotel).State = EntityState.Modified;
             int savechanges = db.SaveChanges();
 
-            var user = db.HotelUsers.FirstOrDefault(x => x.EmailAddress == User.Identity.Name)?.FullName;
-            new Email().SendEmail(User.Identity.Name, "Hotel Validation", user, "unverified");
+            var user = db.HotelUsers.FirstOrDefault(x => x.EmailAddress == User.Identity.Name);
+            var body = $"Your hotel {hotel.Name} has been unverified, please contaxt administrator if you are not aware of this action.";
+            new Email().SendEmail(User.Identity.Name, "Hotel Validation", user.FullName, body);
 
             // Return a JSON response to the AJAX request
             return Json(new { success = savechanges > 0, message = "Hotel updated successfully" });
