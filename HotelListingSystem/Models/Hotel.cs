@@ -80,5 +80,7 @@ namespace HotelListingSystem.Models
         [ForeignKey("ReceptionistId")]
         public HotelUsers Receptionist { get; set; }
 
+        public string LayoutKeyValue { get; set; }
+
     }
 }

@@ -459,6 +459,10 @@
     <Content Include="Views\Hotels\About.cshtml" />
     <Content Include="Views\Reservations\AddOns.cshtml" />
     <Content Include="Views\Shared\_NotVerified.cshtml" />
+    <Content Include="Views\Hotels\HotelLayout.cshtml" />
+    <Content Include="Views\Shared\_hotelLayout2.cshtml" />
+    <Content Include="Views\Shared\_defaultLayout.cshtml" />
+    <Content Include="Views\Hotels\About2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="cdn-cgi\rum\" />

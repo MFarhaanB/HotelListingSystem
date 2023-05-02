@@ -27,6 +27,23 @@ namespace HotelListingSystem.Controllers
             var hotels = db.Hotels.Find(Id);
             return View(hotels);
         }
+        public ActionResult About2(int Id)
+        {
+            var hotels = db.Hotels.Find(Id);
+            return View(hotels);
+        }
+
+        public ActionResult HotelLayout(int Id)
+        {
+            List<SelectListItem> layouts = new List<SelectListItem>();
+            layouts.Add(new SelectListItem { Text = "Layout 1", Value = "_layout_1" });
+            layouts.Add(new SelectListItem { Text = "Layout 2", Value = "_layout_2" });
+            layouts.Add(new SelectListItem { Text = "Layout 3", Value = "_layout_3" });
+            layouts.Add(new SelectListItem { Value = "_default_", Text = "Default" });
+            ViewBag.Layouts = layouts;
+            return View(db.Hotels.Find(1));
+        }
+
         // GET: Hotels
         public ActionResult MyHotels()
         {
@@ -45,7 +62,7 @@ namespace HotelListingSystem.Controllers
             var hotels = db.Hotels.Include(h => h.HotelUser).Where(x => x.HotelUser.UserName == User.Identity.Name).ToList();
             if (User.IsInRole("Receptionist"))
             {
-                hotels = db.Hotels.Include(h => h.HotelUser).Where(x => x.ReceptionistId == user).ToList();
+                //hotels = db.Hotels.Include(h => h.HotelUser).Where(x => x.ReceptionistId == user).ToList();
             }
             if (User.IsInRole("Administrator"))
             {
@@ -104,6 +121,18 @@ namespace HotelListingSystem.Controllers
             return Json(new { success = savechanges > 0, message = "Hotel updated successfully" });
         }
 
+        public ActionResult UpdateHotelLayout(int Id, string LayoutKey)
+        {
+            using(var db = new ApplicationDbContext())
+            {
+                var hotel = db.Hotels.Find(Id);
+                hotel.LayoutKeyValue = LayoutKey;
+                db.Entry(hotel).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public JsonResult BlacklistHotel(int id)
         {
@@ -152,6 +181,35 @@ namespace HotelListingSystem.Controllers
             ViewBag.City = city;
             ViewBag.CheckInDate = checkin;
             ViewBag.CheckOutDate = checkout;
+
+            if (!String.IsNullOrEmpty(city) && !String.IsNullOrEmpty(suburb) && checkin!=null && checkout != null)
+            {
+                using(var core = new ApplicationDbContext())
+                {
+                    //var User = AppHelper.CurrentHotelUser()?.Id;
+                    //var reserv = core.Reservations.FirstOrDefault(a => a.CheckInDate >= checkin && a.CheckOutDate <= checkout && a.HotelUserId == User);
+                    //if(reserv == null)
+                    //{
+                    //    var hotelsr = core.Hotels.Where(a => a.City == city || a.Suburb == suburb).ToList();
+                    //    foreach (var hotel in hotelsr)
+                    //    {
+                    //        Reservation reservation = new Reservation
+                    //        {
+                    //            HotelId = hotel.Id,
+                    //            HotelName = hotel.Name,
+                    //            CheckInDate = (DateTime)checkin,
+                    //            CheckOutDate = (DateTime)checkout
+                    //        };
+                    //        core.Reservations.Add(reservation);
+                    //        core.SaveChanges();
+                    //    }
+                       
+                    //}
+                }
+            }
+
+
+
             //FIX
             // Query the database to get hotels based on the search criteria
             var result = (from rooms in db.Rooms
