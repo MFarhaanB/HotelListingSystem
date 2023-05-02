@@ -220,8 +220,7 @@
                                     @if (User.IsInRole("Administrator"))
                                     {
                                         <li class="main_nav_item"><a href="~/Dinings/Index">Dining</a></li>
-                                        <li class="main_nav_item"><a href="~/DiningTableTypes/Index">Tables</a></li>
-                                        <li class="main_nav_item"><a href="~/MealTypes/Index">Meals</a></li>
+
                                         <li class="main_nav_item"><a href="~/Dinings/Index">Dining</a></li>
                                     }
                                     @if (User.IsInRole("Receptionist") || User.IsInRole("Administrator"))
@@ -243,10 +242,12 @@
                                         <li class="main_nav_item"><a href="~/Reservations/Index">Reservations</a></li>
                                         <li class="main_nav_item"><a href="~/DiningReservations/Index">Dining Reservations</a></li>
 
-                                        if (User.IsInRole("Administrator"))
-                                        {
-                                            <li class="main_nav_item"><a href="~/Dinings/Index">Dining</a></li>
-                                        }       
+                                    }
+                                    @if (User.IsInRole("Business Owner") || User.IsInRole("Administrator"))
+                                    {
+                                        <li class="main_nav_item"><a href="~/Dinings/Index">Dining</a></li>
+                                        <li class="main_nav_item"><a href="~/DiningTableTypes/Index">Tables</a></li>
+                                        <li class="main_nav_item"><a href="~/MealTypes/Index">Meals</a></li>
                                     }
 
 
