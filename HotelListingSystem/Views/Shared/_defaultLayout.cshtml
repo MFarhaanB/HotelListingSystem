@@ -215,17 +215,46 @@
                     </div>
                 </div>
                 <div class="container_about ">
+                    @{
+                        var db = new HotelListingSystem.Models.ApplicationDbContext();
+                        var room = db.Rooms.FirstOrDefault(a => a.HotelId == Model.Id);
+                    }
+
                     <div class="left-column">
-                        <div class="row_a">
-                            <img class="img_a" src="https://lh4.googleusercontent.com/proxy/zZA09cFACVZPZzJFCXlnC1ieotdcS0sB_xq4_m2gGU9PFOcZyQfwS0h03Q08hCyyzPTBNQxX1pfOQwaBxGimGN4NHUvEs5NM8MKVNy1Ux1VtdLkX_-ses6MbswHuXZ0-7FOV0XlOktAjCeOWRGk6EFQy5OyF7OI=w253-h168-k-no" alt="placeholder image1">
-                        </div>
-                        <div class="row_a">
-                            <img class="img_a" src="https://lh4.googleusercontent.com/proxy/1IXepcM0G_86fzNZx4hXB1KVrC96YKMF_zTz7fWp8lW2dFDBq92XAYGY0qoeFbUhY7sgQ9kcOXgwk9M7jxPdWPZXE90Z8MavReYiCb2Eggbhn86hFOr_CxOQ0jTbDMZKgLWInqUG1Kdw3MSB2HE3PZtNgwlDKg=w253-h168-k-no" alt="placeholder image4">
-                        </div>
+                        @if (room != null)
+                        {
+                            <div class="row_a">
+                                <img class="img_a" src="data::@room.RoomImageContentType1;base64,@room.RoomImageContent1" alt="placeholder image1">
+                            </div>
+                            <div class="row_a">
+                                <img class="img_a" src="data:@room.RoomImageContentType2;base64,@room.RoomImageContent2" alt="placeholder image4">
+                            </div>
+
+                        }
+                        else
+                        {
+                            <div class="row_a">
+                                <img class="img_a" src="https://lh4.googleusercontent.com/proxy/zZA09cFACVZPZzJFCXlnC1ieotdcS0sB_xq4_m2gGU9PFOcZyQfwS0h03Q08hCyyzPTBNQxX1pfOQwaBxGimGN4NHUvEs5NM8MKVNy1Ux1VtdLkX_-ses6MbswHuXZ0-7FOV0XlOktAjCeOWRGk6EFQy5OyF7OI=w253-h168-k-no" alt="placeholder image1">
+                            </div>
+                            <div class="row_a">
+                                <img class="img_a" src="https://lh4.googleusercontent.com/proxy/1IXepcM0G_86fzNZx4hXB1KVrC96YKMF_zTz7fWp8lW2dFDBq92XAYGY0qoeFbUhY7sgQ9kcOXgwk9M7jxPdWPZXE90Z8MavReYiCb2Eggbhn86hFOr_CxOQ0jTbDMZKgLWInqUG1Kdw3MSB2HE3PZtNgwlDKg=w253-h168-k-no" alt="placeholder image4">
+                            </div>
+                        }
+
                     </div>
-                    <div class="right-column">
-                        <img class="img_a" src="https://waterfallcity.co.za/wp-content/uploads/CITY-LODGE-HOTEL-1.jpg" alt="placeholder image5">
-                    </div>
+                    @if (Model.HotelImageContent != null)
+                    {
+                        <div class="right-column">
+                            <img class="img_a" src="data:@Model.HotelImageContentType;base64,@Model.HotelImageContent" alt="placeholder image5">
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="right-column">
+                            <img class="img_a" src="https://waterfallcity.co.za/wp-content/uploads/CITY-LODGE-HOTEL-1.jpg" alt="placeholder image5">
+                        </div>
+                    }
+
                 </div>
                 <div class="temp_body">
                     <p>

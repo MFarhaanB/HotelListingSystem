@@ -269,12 +269,30 @@
             </div>
             <div class="container_about " style="width: 1200px; margin-right: 150px; height: 500px; background-color: #4d2f66;">
                 <div class="left-column">
-                    <div class="row_a">
-                        <img class="img_a" src="https://lh4.googleusercontent.com/proxy/zZA09cFACVZPZzJFCXlnC1ieotdcS0sB_xq4_m2gGU9PFOcZyQfwS0h03Q08hCyyzPTBNQxX1pfOQwaBxGimGN4NHUvEs5NM8MKVNy1Ux1VtdLkX_-ses6MbswHuXZ0-7FOV0XlOktAjCeOWRGk6EFQy5OyF7OI=w253-h168-k-no" alt="placeholder image1">
-                    </div>
-                    <div class="row_a" style="position: absolute; bottom: 0; width: 100%;">
-                        <img class="img_a" src="https://lh4.googleusercontent.com/proxy/1IXepcM0G_86fzNZx4hXB1KVrC96YKMF_zTz7fWp8lW2dFDBq92XAYGY0qoeFbUhY7sgQ9kcOXgwk9M7jxPdWPZXE90Z8MavReYiCb2Eggbhn86hFOr_CxOQ0jTbDMZKgLWInqUG1Kdw3MSB2HE3PZtNgwlDKg=w253-h168-k-no" alt="placeholder image4">
-                    </div>
+                    @{
+                        var db = new HotelListingSystem.Models.ApplicationDbContext();
+                        var room = db.Rooms.FirstOrDefault(a => a.HotelId == Model.Id);
+                    }
+
+                    @if (room != null)
+                    {
+                        <div class="row_a">
+                            <img class="img_a" src="data::@room.RoomImageContentType1;base64,@room.RoomImageContent1" alt="placeholder image1">
+                        </div>
+                        <div class="row_a">
+                            <img class="img_a" src="data:@room.RoomImageContentType2;base64,@room.RoomImageContent2" alt="placeholder image4">
+                        </div>
+
+                    }
+                    else
+                    {
+                        <div class="row_a">
+                            <img class="img_a" src="https://lh4.googleusercontent.com/proxy/zZA09cFACVZPZzJFCXlnC1ieotdcS0sB_xq4_m2gGU9PFOcZyQfwS0h03Q08hCyyzPTBNQxX1pfOQwaBxGimGN4NHUvEs5NM8MKVNy1Ux1VtdLkX_-ses6MbswHuXZ0-7FOV0XlOktAjCeOWRGk6EFQy5OyF7OI=w253-h168-k-no" alt="placeholder image1">
+                        </div>
+                        <div class="row_a" style="position: absolute; bottom: 0; width: 100%;">
+                            <img class="img_a" src="https://lh4.googleusercontent.com/proxy/1IXepcM0G_86fzNZx4hXB1KVrC96YKMF_zTz7fWp8lW2dFDBq92XAYGY0qoeFbUhY7sgQ9kcOXgwk9M7jxPdWPZXE90Z8MavReYiCb2Eggbhn86hFOr_CxOQ0jTbDMZKgLWInqUG1Kdw3MSB2HE3PZtNgwlDKg=w253-h168-k-no" alt="placeholder image4">
+                        </div>
+                    }
                 </div>
 
 

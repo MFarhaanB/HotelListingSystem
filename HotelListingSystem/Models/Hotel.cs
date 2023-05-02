@@ -82,5 +82,7 @@ namespace HotelListingSystem.Models
 
         public string LayoutKeyValue { get; set; }
 
+        public decimal AmountOwed { get; set; }
+
     }
 }

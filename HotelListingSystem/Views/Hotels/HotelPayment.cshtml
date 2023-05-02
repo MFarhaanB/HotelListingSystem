@@ -232,6 +232,7 @@
                         <th>Owner Name</th>
                         <th>Name</th>
                         <th>Occupancy</th>
+                        <th>Amount</th>
                         <th>Due date</th>
                         <th>Payment done date</th>
                         <th></th>
@@ -250,6 +251,9 @@
                             </td>
                             <td>
                                 @Html.DisplayFor(modelItem => item.MaxOccupancy)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AmountOwed)
                             </td>
                             @*<td>
                                     @Html.DisplayFor(modelItem => item.IsVerified)

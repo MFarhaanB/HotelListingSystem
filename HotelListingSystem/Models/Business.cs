@@ -59,5 +59,7 @@ namespace HotelListingSystem.Models
         public int? HotelUserId { get; set; }
         [ForeignKey("HotelUserId")]
         public HotelUsers HotelUser { get; set; }
+
+       
     }
 }
