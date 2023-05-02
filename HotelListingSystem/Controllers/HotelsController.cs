@@ -250,7 +250,7 @@ namespace HotelListingSystem.Controllers
             ViewBag.City = new SelectList(db.Hotels.Select(h => h.City).Distinct().ToList());
             ViewBag.Suburb = new SelectList(db.Hotels.Select(h => h.Suburb).Distinct().ToList());
             ViewBag.HotelId = new SelectList(db.Hotels, "Id", "Name");
-            ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName");
+            ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName"); 
             ViewBag.RoomId = new SelectList(db.Rooms, "Id", "Name");
 
             return hotels; // Return the list of hotels to the view for display
@@ -331,7 +331,6 @@ namespace HotelListingSystem.Controllers
                 return File("~/Content/default_image.jpg", "image/jpeg");
             }
         }
-
 
 
         // GET: Hotels/Details/5

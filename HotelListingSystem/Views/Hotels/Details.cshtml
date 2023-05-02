@@ -131,8 +131,8 @@
                         <stromg>Physical Address: </stromg> @string.Format($"{Model.StreetNumber} {Model.StreetName} {Model.Suburb}, {Model.City}, {Model.PhysicalAddressCode}")<br />
                     </p>
                     <p>
-                        @Html.ActionLink("Certificate Of Occupancy", "Edit", new { id = Model.Id }, new { @class = "btn btn-primary" }) |
-                        @Html.ActionLink("Certificate Of Occupancy", "Index", new { id = Model.Id }, new { @class = "btn btn-primary" })
+@Html.ActionLink("Certificate Of Occupancy", "DisplayImage", new { hotelId = Model.Id, IMage = 2 }, new { @class = "btn btn-primary", target="_blank" }) |
+                        @Html.ActionLink("COA Document", "DisplayImage", new { hotelId = Model.Id, IMage = 3 }, new { @class = "btn btn-primary", target = "_blank" })
                     </p>
                 </div>
             </div>
