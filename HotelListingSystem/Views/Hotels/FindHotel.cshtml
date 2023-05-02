@@ -484,7 +484,9 @@
             {
                 <div class="container_s container">
                     <div class="left-section">
-                        <img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Image description">
+                        <img src="@Url.Action("DisplayImage", "Hotels", new { hotelId = hotel.HotelId, imageType = 1 })" alt="Image description">
+                        
+                        @*<img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Image description">*@
                     </div>
                     <div class="middle-section">
                         @{
@@ -539,7 +541,7 @@
                 <div hidden>
 
                     <div class="col-md-4">
-                        <img src="@Url.Action("DisplayImage", "Hotels", new { hotelId  = hotel.HotelId })" alt="Hotel Image" height="150px" width="150px" />
+                        <img src="@Url.Action("DisplayImage", "Hotels", new { hotelId = hotel.HotelId, imageType = 1 })" alt="Hotel Image" height="150px" width="150px" />
                     </div>
                     <div class="col-md-7">
                         <h5>
