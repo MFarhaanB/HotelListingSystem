@@ -81,5 +81,9 @@ namespace HotelListingSystem.Models
         public HotelUsers Receptionist { get; set; }
         public bool? VerificationApproved { get; set; }
 
+        public string LayoutKeyValue { get; set; }
+
+        public decimal AmountOwed { get; set; }
+
     }
 }

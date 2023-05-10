@@ -27,6 +27,23 @@ namespace HotelListingSystem.Controllers
             var hotels = db.Hotels.Find(Id);
             return View(hotels);
         }
+        public ActionResult About2(int Id)
+        {
+            var hotels = db.Hotels.Find(Id);
+            return View(hotels);
+        }
+
+        public ActionResult HotelLayout(int Id)
+        {
+            List<SelectListItem> layouts = new List<SelectListItem>();
+            layouts.Add(new SelectListItem { Text = "Layout 1", Value = "_layout_1" });
+            layouts.Add(new SelectListItem { Text = "Layout 2", Value = "_layout_2" });
+            layouts.Add(new SelectListItem { Text = "Layout 3", Value = "_layout_3" });
+            layouts.Add(new SelectListItem { Value = "_default_", Text = "Default" });
+            ViewBag.Layouts = layouts;
+            return View(db.Hotels.Find(1));
+        }
+
         // GET: Hotels
         public ActionResult MyHotels()
         {
@@ -45,7 +62,7 @@ namespace HotelListingSystem.Controllers
             var hotels = db.Hotels.Include(h => h.HotelUser).Where(x => x.HotelUser.UserName == User.Identity.Name).ToList();
             if (User.IsInRole("Receptionist"))
             {
-                hotels = db.Hotels.Include(h => h.HotelUser).Where(x => x.ReceptionistId == user).ToList();
+                //hotels = db.Hotels.Include(h => h.HotelUser).Where(x => x.ReceptionistId == user).ToList();
             }
             if (User.IsInRole("Administrator"))
             {
@@ -147,6 +164,18 @@ namespace HotelListingSystem.Controllers
             return Json(new { success = savechanges > 0, message = "Hotel updated successfully" });
         }
 
+        public ActionResult UpdateHotelLayout(int Id, string LayoutKey)
+        {
+            using(var db = new ApplicationDbContext())
+            {
+                var hotel = db.Hotels.Find(Id);
+                hotel.LayoutKeyValue = LayoutKey;
+                db.Entry(hotel).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
         [HttpPost]
         public JsonResult BlacklistHotel(int id)
         {
@@ -188,6 +217,88 @@ namespace HotelListingSystem.Controllers
         }
         // GET: /Hotels/Search
         public List<HotelReservationVM> Search(string suburb, string city, DateTime? checkin, DateTime? checkout)
+        {
+            // Store the search criteria in ViewBag to pass to the view for display
+
+            ViewBag.Suburb = suburb;
+            ViewBag.City = city;
+            ViewBag.CheckInDate = checkin;
+            ViewBag.CheckOutDate = checkout;
+
+            if (!String.IsNullOrEmpty(city) && !String.IsNullOrEmpty(suburb) && checkin!=null && checkout != null)
+            {
+                using(var core = new ApplicationDbContext())
+                {
+                    //var User = AppHelper.CurrentHotelUser()?.Id;
+                    //var reserv = core.Reservations.FirstOrDefault(a => a.CheckInDate >= checkin && a.CheckOutDate <= checkout && a.HotelUserId == User);
+                    //if(reserv == null)
+                    //{
+                    //    var hotelsr = core.Hotels.Where(a => a.City == city || a.Suburb == suburb).ToList();
+                    //    foreach (var hotel in hotelsr)
+                    //    {
+                    //        Reservation reservation = new Reservation
+                    //        {
+                    //            HotelId = hotel.Id,
+                    //            HotelName = hotel.Name,
+                    //            CheckInDate = (DateTime)checkin,
+                    //            CheckOutDate = (DateTime)checkout
+                    //        };
+                    //        core.Reservations.Add(reservation);
+                    //        core.SaveChanges();
+                    //    }
+                       
+                    //}
+                }
+            }
+
+
+
+            //FIX
+            // Query the database to get hotels based on the search criteria
+            var result = (from rooms in db.Rooms
+                          join hotel in db.Hotels on rooms.HotelId equals hotel.Id
+                         join reservation in db.Reservations on hotel.Id equals reservation.HotelId into hotelReservationGroup
+                         from reservation in hotelReservationGroup.DefaultIfEmpty()
+                         where  hotel.Blacklisted != true /*&& hotel.IsVerified == true*/
+                         select new HotelReservationVM
+                         {
+                             HotelId = hotel.Id,
+                             HotelName = hotel.Name,
+                             Suburb = hotel.Suburb,
+                             MaxOccupancy = hotel.MaxOccupancy,
+                             RoomId = rooms.Id,
+                             RoomName = rooms.Name,
+                             City = hotel.City,
+                             HotelUserId = hotel.HotelUserId == null ? null : hotel.HotelUserId,
+                             Rating = hotel.Rating,
+                             CheckInDate = reservation.CheckInDate,
+                             CheckOutDate = reservation.CheckOutDate,
+                             HotelImageName = hotel.HotelImageName,
+                             HotelImageContent = hotel.HotelImageContent,
+                             PricePerRoom = rooms.PricePerRoom,
+                         }).ToList();
+
+
+            var hotels = result.Where(h =>
+                (string.IsNullOrEmpty(suburb) || h.Suburb.Contains(suburb)) &&
+                (string.IsNullOrEmpty(city) || h.City.Contains(city)) &&
+                (!checkin.HasValue || h.CheckInDate <= checkin.Value) &&
+                (!checkout.HasValue || h.CheckOutDate >= checkout.Value)).ToList();
+
+            if ((hotels.Count() != result.Count()) && hotels.Count() > 0)
+            {
+                hotels.FirstOrDefault().IsSearchResults = true;
+            }
+
+            ViewBag.City = new SelectList(db.Hotels.Select(h => h.City).Distinct().ToList());
+            ViewBag.Suburb = new SelectList(db.Hotels.Select(h => h.Suburb).Distinct().ToList());
+            ViewBag.HotelId = new SelectList(db.Hotels, "Id", "Name");
+            ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName"); 
+            ViewBag.RoomId = new SelectList(db.Rooms, "Id", "Name");
+
+            return hotels; // Return the list of hotels to the view for display
+        }
+        public List<HotelReservationVM> Search2(string suburb, string city, DateTime? checkin, DateTime? checkout)
         {
             // Store the search criteria in ViewBag to pass to the view for display
             ViewBag.Suburb = suburb;
@@ -263,7 +374,6 @@ namespace HotelListingSystem.Controllers
                 return File("~/Content/default_image.jpg", "image/jpeg");
             }
         }
-
 
 
         // GET: Hotels/Details/5

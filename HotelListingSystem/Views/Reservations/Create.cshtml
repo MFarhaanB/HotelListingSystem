@@ -15,7 +15,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.CheckInDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CheckInDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.CheckInDate, new { htmlAttributes = new { @class = "form-control", @type="date", @required = "required" } })
                 @Html.ValidationMessageFor(model => model.CheckInDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -23,7 +23,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.CheckOutDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CheckOutDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.CheckOutDate, new { htmlAttributes = new { @class = "form-control", @type = "date", @required = "required" } })
                 @Html.ValidationMessageFor(model => model.CheckOutDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -46,7 +46,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.NoOfRooms, htmlAttributes: new { @class = "control-label col-md-2", @value = "No. of rooms" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.NoOfRooms, new { htmlAttributes = new { @class = "form-control", @min="1", @max="50" } })
+                @Html.EditorFor(model => model.NoOfRooms, new { htmlAttributes = new { @class = "form-control", @min="1", @max="50", @required = "required" } })
                 @Html.ValidationMessageFor(model => model.NoOfRooms, "", new { @class = "text-danger" })
             </div>
         </div>

@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using static HotelListingSystem.Controllers.ReservationsController;
 
 namespace HotelListingSystem.Models
 {
@@ -43,5 +44,7 @@ namespace HotelListingSystem.Models
         public System.Data.Entity.DbSet<HotelListingSystem.Models.Room> Rooms { get; set; }
 
         public System.Data.Entity.DbSet<HotelListingSystem.Models.Reservation> Reservations { get; set; }
+        public System.Data.Entity.DbSet<AddOnsR> AddOnsRs { get; set; }
+
     }
 }

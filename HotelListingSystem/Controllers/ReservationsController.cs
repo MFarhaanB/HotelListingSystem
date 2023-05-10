@@ -1,7 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Core.Metadata.Edm;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -25,7 +28,9 @@ namespace HotelListingSystem.Controllers
         // GET: Reservations
         public ActionResult Index()
         {
-            var user = AppHelper.CurrentHotelUser().Id;
+            var user = AppHelper.CurrentHotelUser()?.Id;
+            if (user == null) 
+                user = db.HotelUsers.FirstOrDefault(a => a.UserName == User.Identity.Name).Id;
             var reservations = db.Reservations.Include(r => r.Hotel).Include(r => r.HotelUser).Include(r => r.Room).Where(x=>x.HotelUserId == user).ToList();
             return View(reservations);
         }
@@ -153,8 +158,14 @@ namespace HotelListingSystem.Controllers
             reservation.CreatedOn = DateTime.Now;
             if (ModelState.IsValid)
             {
-                db.Reservations.Add(reservation);
-                db.SaveChanges();
+                using(ApplicationDbContext core = new ApplicationDbContext())
+                {
+                    var room = core.Rooms.Find(reservation.RoomId);
+                    if (reservation.TotalCost == 0) 
+                        reservation.TotalCost = room.PricePerRoom * reservation.NoOfRooms;
+                    core.Reservations.Add(reservation);
+                    core.SaveChanges();
+                }
                 return RedirectToAction("Index");
             }
 
@@ -165,6 +176,90 @@ namespace HotelListingSystem.Controllers
             return View(reservations);
         }
 
+        // GET: Reservations/Create
+        public ActionResult AddOns(int id)
+        {
+            Reservation reservation = new Reservation
+            {
+                HotelId = id,
+                HotelName = db.Hotels.AsNoTracking().FirstOrDefault(x=>x.Id == id)?.Name,
+                CheckInDate = DateTime.Now,
+                CheckOutDate = DateTime.Now.AddDays(5),
+                Dinings = db.Dinings.ToList()
+            };
+            ViewBag.HotelId = new SelectList(db.Hotels, "Id", "Name");
+            ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName");
+            ViewBag.RoomId = new SelectList(db.Rooms, "Id", "Name");
+            return View(reservation);
+        }
+
+        // POST: Reservations/Create
+        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddOns(int Id,string [] DiningSelectList, Reservation reservation)
+        {
+
+
+            var User = AppHelper.CurrentHotelUser()?.Id;
+            using (ApplicationDbContext core = new ApplicationDbContext())
+            {
+                var AddOns = "";
+                var addValue = 0.0;
+                reservation = core.Reservations.Find(Id);
+                foreach (var selected in DiningSelectList)
+                {
+                    AddOns = (String.IsNullOrEmpty(AddOns)) ? selected : String.Format($"{AddOns},{selected}");
+                    var dining = core.Dinings.Find(Convert.ToInt16(selected));
+                    addValue += dining.CostPerPerson;
+                }
+                var addons = new AddOnsR
+                {
+                    HotelUserId = (int)User,
+                    ReservationId = Id,
+                    AddOns = AddOns
+                };
+                if (reservation.AddOnsId != null)
+                {
+                    addons = core.AddOnsRs.Find(reservation.AddOnsId);
+                    addons.AddOns = AddOns;
+                    core.Entry(addons).State = EntityState.Modified;
+                    core.SaveChanges();
+                }
+                else{
+                    core.AddOnsRs.Add(addons);
+                    core.SaveChanges();
+                }
+
+                reservation.TotalCost -= reservation.AddOnsCost;
+                reservation.AddOnsCost = decimal.Parse(addValue.ToString());
+                reservation.TotalCost += decimal.Parse(addValue.ToString());
+                reservation.AddOnsId = addons.Id;
+                core.Entry(reservation).State = EntityState.Modified;
+                core.SaveChanges();
+            }
+            
+            return RedirectToAction("Index");
+        }
+
+        public class AddOnsR
+        {
+            [Key]
+            [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+            public int Id { get; set; }
+            public string AddOns { get; set; }
+
+            
+            public int ReservationId { get; set; }
+            [ForeignKey("ReservationId")]
+            public Reservation Reservation { get; set; }
+
+           
+            public int HotelUserId { get; set; }
+            [ForeignKey("HotelUserId")]
+            public HotelUsers HotelUser { get; set; }
+        }
         // GET: Reservations/Edit/5
         public ActionResult Edit(int? id)
         {

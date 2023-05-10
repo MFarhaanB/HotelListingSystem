@@ -45,7 +45,7 @@ namespace HotelListingSystem.Controllers
         public ActionResult Create(int? hotelId)
         {
             Room room = new Room();
-            if (hotelId != null )
+            if (hotelId != null)
             {
                 var hotel = db.Hotels.FirstOrDefault(a => a.Id == hotelId);
                 if (hotel.IsVerified == null) return View("_AwaitingVerification");
@@ -102,7 +102,7 @@ namespace HotelListingSystem.Controllers
             return View(room);
         }
 
-        public ActionResult DisplayImage(int roomId, int imageType = 1)
+        public ActionResult DisplayImage(int roomId, int imageType)
         {
             var hotel = db.Rooms.FirstOrDefault(h => h.Id == roomId);
             if (imageType == 1 && hotel != null && hotel.RoomImageContent1 != null)

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using HotelListingSystem.Models;
+using HotelListingSystem.ViewModel;
 using PayPal.Api;
 using Payment = HotelListingSystem.Models.Payment;
 
@@ -102,7 +103,9 @@ namespace HotelListingSystem.Controllers
 
                 db.Payments.Add(payment);
                 db.SaveChanges();
-                return PaymentWithPaypal(desc, refno, reservation.Room.PricePerRoom.ToString(), total.ToString(), reservation.NoOfRooms.ToString(), payment.InvoiceNumber);
+                var business = db.Businesses.Where(a => a.HotelUserId == reservation.HotelUserId).FirstOrDefault();
+                return PaymentWithPaypal(desc, refno, reservation.Room.PricePerRoom.ToString(), total.ToString(), reservation.NoOfRooms.ToString(), payment.InvoiceNumber, reservation.Hotel, reservation.HotelUser);
+
             }
             //ViewBag.CustomerId = new SelectList(db.Customers, "Id", "FirstName", payment.CustomerId);
             //ViewBag.ReservationId = new SelectList(db.Reservations, "Id", "To", payment.ReservationId);
@@ -150,7 +153,7 @@ namespace HotelListingSystem.Controllers
             if (ModelState.IsValid)
             {
                 db.Entry(payment).State = EntityState.Modified;
-                db.SaveChanges();
+                db.SaveChanges();   
                 return RedirectToAction("Index");
             }
             ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName", payment.HotelUserId);
@@ -212,7 +215,8 @@ namespace HotelListingSystem.Controllers
             }
         }
 
-        public ActionResult PaymentWithPaypal(string description, string refNo, string price, string total, string quantity, string invNo, string Cancel = null)
+        public ActionResult PaymentWithPaypal(string description, string refNo, string price, string total, string quantity, string invNo, Hotel hotel, HotelUsers User
+             , string Cancel = null)
         {
             string guid = String.Empty;
             //getting the apiContext  
@@ -263,11 +267,21 @@ namespace HotelListingSystem.Controllers
                         return View("Failure");
                     }
                 }
+
+                hotel.AmountOwed += decimal.Parse((double.Parse(total) * 0.02).ToString());
+                db.Entry(hotel).State = EntityState.Modified;
+                db.SaveChanges();
+
+                var body = $"Hi {User.FullName} thankyou for your payment ";
+                new Email().SendEmail(User.EmailAddress, "Hotel Payment", User.FullName, body);
             }
             catch (Exception ex)
             {
                 return RedirectToAction("Failure", new { q = ex.Message });
             }
+
+            
+
             //on successful payment, show success page to user.  
             return RedirectToAction("PaymentSuccess", new { guid = guid });
         }

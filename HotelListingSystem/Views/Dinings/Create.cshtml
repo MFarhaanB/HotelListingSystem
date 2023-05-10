@@ -53,7 +53,7 @@
                             @Html.ValidationMessageFor(model => model.MealTypeId, "", new { @class = "text-danger" })
                         </div>
                     </div>
-
+                    
                     <div class="form-group">
                         @Html.LabelFor(model => model.DiningTableTypeId, "Dining Table Type", htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-3">
@@ -68,7 +68,7 @@
                         @Html.LabelFor(model => model.StartTime, "Start Time", htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-3">
 
-                            @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.StartTime, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local" } })
                             @Html.ValidationMessageFor(model => model.StartTime, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -76,7 +76,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.EndTime, "End Time", htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-3">
-                            @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.EndTime, new { htmlAttributes = new { @class = "form-control", @type = "datetime-local" } })
                             @Html.ValidationMessageFor(model => model.EndTime, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -87,6 +87,13 @@
                         <div class="col-md-3">
                             @Html.EditorFor(model => model.NoOfTables, new { htmlAttributes = new { @class = "form-control", @min = 1, @max = 50 } })
                             @Html.ValidationMessageFor(model => model.NoOfTables, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.CostPerPerson, "Cost Per Person", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-3">
+                            @Html.EditorFor(model => model.CostPerPerson, new { htmlAttributes = new { @class = "form-control", @min = 1, @max = 50 } })
+                            @Html.ValidationMessageFor(model => model.CostPerPerson, "", new { @class = "text-danger" })
                         </div>
                     </div>
 

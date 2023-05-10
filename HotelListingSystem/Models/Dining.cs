@@ -26,8 +26,5 @@ namespace HotelListingSystem.Models
         public DateTime? EndTime { get; set; }
 
         public int? NoOfTables { get; set; }
-
-        [Display(Name ="Cost P/P R.")]
-        public int CostPerPerson { get; set; }
     }
 }

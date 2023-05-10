@@ -455,7 +455,7 @@
                                 <input type="date" name="checkout" id="checkout" class="check_out search_input round_corner" value="@ViewBag.CheckOutDate">
                             </div>
 
-                            <button type="submit" class="button search_button">
+                            <button type="submit" onclick="reserveRoom(1, 'room 1', 1)" class="button search_button">
                                 search <span></span>
                                 <span></span>
                                 <span></span>
@@ -472,18 +472,44 @@
     <div class="results_section" id="ThisId">
         @if (Model != null && Model.Count > 0)
         {
-            <div class="srearch_result_header container" style="margin-bottom: 20px;">
-                <h2> Search results for: Durban</h2>
-            </div>
+            if (ViewBag.City.ToString() != "{System.Web.Mvc.SelectList}")
+            {
+<div class="srearch_result_header container" style="margin-bottom: 20px;">
+    <h2> Search results for: Durban</h2>
+</div>
+            }
+
 
             foreach (var hotel in Model)
             {
                 <div class="container_s container">
                     <div class="left-section">
-                        <img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Image description">
+                        <img src="@Url.Action("DisplayImage", "Hotels", new { hotelId = hotel.HotelId, imageType = 1 })" alt="Image description">
+                        
+                        @*<img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Image description">*@
                     </div>
                     <div class="middle-section">
-                        <h2><a href="~/Hotels/About?Id=@hotel.HotelId" style="color:darkblue;"> @hotel.HotelName 116 West Street</a></h2>
+                        @{
+                            var db = new ApplicationDbContext();
+                            var h = db.Hotels.Find(hotel.HotelId);
+                        }
+                        @if (!string.IsNullOrEmpty(h.LayoutKeyValue))
+                        {
+                            switch (h.LayoutKeyValue)
+                            {
+                                case "_layout_2":
+                                    <h2><a href="~/Hotels/About2?Id=@hotel.HotelId" style="color:darkblue;"> @hotel.HotelName 116 West Street</a></h2>
+                                    break;
+                                default:
+                                    <h2><a href="~/Hotels/About?Id=@hotel.HotelId" style="color:darkblue;"> @hotel.HotelName 116 West Street</a></h2>
+                                    break;
+                            }
+                        }
+                        else
+                        {
+                            <h2><a href="~/Hotels/About?Id=@hotel.HotelId" style="color:darkblue;"> @hotel.HotelName 116 West Street</a></h2>
+                        }
+
                         @if (ViewBag.CheckInDate != null)
                         {
                             <h6><strong>@ViewBag.CheckInDate</strong> - <strong>@ViewBag.CheckOutDate</strong></h6>
@@ -515,7 +541,7 @@
                 <div hidden>
 
                     <div class="col-md-4">
-                        <img src="@Url.Action("DisplayImage", "Hotels", new { hotelId  = hotel.HotelId })" alt="Hotel Image" height="150px" width="150px" />
+                        <img src="@Url.Action("DisplayImage", "Hotels", new { hotelId = hotel.HotelId, imageType = 1 })" alt="Hotel Image" height="150px" width="150px" />
                     </div>
                     <div class="col-md-7">
                         <h5>
@@ -778,13 +804,14 @@
         }
 
     function reserveRoom(hotelId, roomName, roomId) {
+        debugger;
             const chkIndt = '@ViewBag.CheckInDate';
             const chkOutdt = '@ViewBag.CheckOutDate';
             var checkInDate = $('#checkInDate_' + roomId).val();
             var checkOutDate = $('#checkOutDate_' + roomId).val();
             var noOfRooms = $('#noOfRooms_' + roomId).val();
-            checkInDate = chkIndt;
-            checkOutDate = chkOutdt;
+            //checkInDate = chkIndt;
+            //checkOutDate = chkOutdt;
             debugger;
             // Perform validation for check-in, check-out dates, and number of rooms
             if (checkInDate === "" || checkOutDate === "") {

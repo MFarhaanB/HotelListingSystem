@@ -45,6 +45,7 @@ namespace HotelListingSystem.ViewModel
                 //alternate logic
             }
         }
+
         public void SendEmail(string Email, string subject, string Name, string body)
         {
             try
@@ -54,8 +55,7 @@ namespace HotelListingSystem.ViewModel
                 mail.From = from;
                 mail.Subject = subject;
                 mail.IsBodyHtml = true;
-                mail.Body = "Hi  " + Name + "<br/>" + body + "<br/><br/>Your's Sincerely<br/><strong>Hotel Listing Team</strong> ";
-
+                mail.Body = String.Format($"Hi {Name} <br/> {body} <br/><br/>Your's Sincerely<br/><strong>Hotel Listing Team</strong>");
                 mail.To.Add(Email);
 
                 //mail.IsBodyHtml = true;

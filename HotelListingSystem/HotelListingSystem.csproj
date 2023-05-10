@@ -217,10 +217,6 @@
     <Compile Include="ViewModel\UserVM.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Data\aspnet-HotelListingSystem-20230408050248.mdf" />
-    <Content Include="App_Data\aspnet-HotelListingSystem-20230408050248_log.ldf">
-      <DependentUpon>aspnet-HotelListingSystem-20230408050248.mdf</DependentUpon>
-    </Content>
     <Content Include="cdn-cgi\scripts\5c5dd728\cloudflare-static\email-decode.min.js" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -331,6 +327,8 @@
     <Content Include="Images\offer_2.jpg.webp" />
     <Content Include="Images\offer_3.jpg.webp" />
     <Content Include="Images\offer_4.jpg.webp" />
+    <None Include="Properties\PublishProfiles\2023GRP23 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\2023GRP23 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\HoldOn.min.js" />
     <Content Include="Scripts\jquery-2.2.0.js" />
@@ -462,6 +460,7 @@
     <Content Include="Views\Hotels\HotelVerification.cshtml" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="App_Data\" />
     <Folder Include="cdn-cgi\rum\" />
     <Folder Include="js\" />
   </ItemGroup>

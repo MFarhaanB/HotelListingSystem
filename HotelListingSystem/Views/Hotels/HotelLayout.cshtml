@@ -1,7 +1,7 @@
 ﻿@model HotelListingSystem.Models.Hotel
 
 @{
-    ViewBag.Title = "Details";
+    ViewBag.Title = "Edit";
     Layout = null;
 }
 <head>
@@ -84,153 +84,76 @@
 <script src="https://preview.colorlib.com/theme/travelix/plugins/OwlCarousel2-2.2.1/owl.carousel.js"></script>
 <script src="https://preview.colorlib.com/theme/travelix/styles/bootstrap4/bootstrap.min.js"></script>
 <script src="https://preview.colorlib.com/theme/travelix/styles/bootstrap4/popper.js"></script>
-<script src="https://preview.colorlib.com/theme/travelix/js/custom.js"></script>
-<style>
-    body {
-        background-color: lightgrey;
-        color: black;
-    }
-
-    .placeholder {
-        width: 300px;
-        height: 200px;
-        background-color: #ccc;
-        margin-right: 20px;
-    }
-
-    .description {
-        flex: 1;
-    }
-
-    h2 {
-        margin-top: 0;
-    }
-
-    .image-container {
-        margin-top: 250px;
-        margin-left: 50px;
-        margin-right: 50px;
-    }
-
-</style>
-
-
+<script src="https://preview.colorlib.com/theme/travelix/js/custom.js"></script>sss
 <body>
-    <div class="image-container">
-        <div class="row">
-            <div class="col-md-3">
-                <div class="placeholder">
-                    <img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Image description" width="300" height="200">
-                </div>
+    <div class="container_body" style="margin-bottom:0px;">
+        <div class="PageBody" id="PageBody">
+            <div class="form-group col-md-12" style="display:inline-grid" >
+                @Html.HiddenFor(model=>model.Id, new {@Id="Hotel_Id"})
+                @Html.Label("Layout Template")
+                @Html.DropDownList("Layouts", null, htmlAttributes: new { @class = "form-control col-md-3", @Id = "LayoutId", @onchange = "changeLayout(this.value);" })
+                <button class="button_see_holtel" onclick="SaveLayout()">Save Layout</button>
             </div>
-            <div class="col-md-6">
-                <div class="description">
-                    <h2> @Html.DisplayFor(model => model.Name).ToString().ToUpperInvariant()</h2>
-                    <p>
-                        <stromg>Max-occupancy: </stromg>@Html.DisplayFor(model => model.MaxOccupancy)<br />
-                        <stromg>Physical Address: </stromg> @string.Format($"{Model.StreetNumber} {Model.StreetName} {Model.Suburb}, {Model.City}, {Model.PhysicalAddressCode}")<br />
-                    </p>
-                    <p>
-@Html.ActionLink("Certificate Of Occupancy", "DisplayImage", new { hotelId = Model.Id, IMage = 2 }, new { @class = "btn btn-primary", target="_blank" }) |
-                        @Html.ActionLink("COA Document", "DisplayImage", new { hotelId = Model.Id, IMage = 3 }, new { @class = "btn btn-primary", target = "_blank" })
-                    </p>
-                </div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3"></div>
-            <div class="col-md-3">
-                <p>
-                    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }, new { @class = "btn btn-warning" }) |
-                    @Html.ActionLink("Back to List", "Index", new { id = Model.Id }, new { @class = "btn btn-success" })
-                </p>
-            </div>
-        </div>
+        </div>  
+    </div>
+    @if (ViewBag.Layout != null)    
+    {
 
+    }
+    else
+    {
+
+    }
+    <div id="layout1">
+        @Html.Partial("_defaultLayout", Model)
+    </div>
+    <div id="layout2">
+
+        @Html.Partial("_hotelLayout2", Model)
     </div>
 
+
+
+    @Html.Partial("_eFooter")
 </body>
+<script>
+    $(document).ready(function () {
+        $("#layout2").hide();
+        $("#layout1").hide();
+    });
+    function changeLayout(val) {
+        debugger;
+        if (val == "_layout_2") {
+            $("#layout2").show();
+            $("#layout1").hide();
+        } else if (val == "_layout1") {
 
-
-@Html.Partial("_eFooter")
-
-
-@*<div>
-        <h4>Hotel Details</h4>
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.HotelUser.FirstName)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.HotelUser.FirstName)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.Name)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Name)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.MaxOccupancy)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.MaxOccupancy)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.PhysicalAddressCode)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.PhysicalAddressCode)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.HotelImageName)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.HotelImageName)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.HotelImageContent)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.HotelImageContent)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.HotelImageContentType)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.HotelImageContentType)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.HotelImageFileSize)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.HotelImageFileSize)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.IsVerified)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.IsVerified)
-            </dd>
-
-        </dl>
-    </div>*@
-
+        } else {
+            $("#layout2").hide();
+            $("#layout1").show();
+        }
+    }
+    function SaveLayout() {
+        debugger;
+        const Layout = document.getElementById("LayoutId").value;
+        const HotelId = document.getElementById("Hotel_Id").value;
+         $.ajax({
+                url: '@Url.Action("UpdateHotelLayout", "Hotels")', // Update with your controller and action method names
+                type: 'POST',
+             data: { Id: HotelId, LayoutKey: Layout },
+                success: function (data) {
+                    if (data) {
+                        alert('The Hotel Layout template has been updated.');
+                        window.location.href = '/hotels/myhotels';
+                    } else {
+                        // Room is not available, show error message
+                        alert(data);
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    // Handle error
+                    console.error(errorThrown);
+                }
+            })
+    }
+</script>
