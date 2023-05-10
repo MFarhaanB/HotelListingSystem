@@ -79,6 +79,7 @@ namespace HotelListingSystem.Models
         public int? ReceptionistId { get; set; }
         [ForeignKey("ReceptionistId")]
         public HotelUsers Receptionist { get; set; }
+        public bool? VerificationApproved { get; set; }
 
     }
 }

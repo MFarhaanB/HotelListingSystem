@@ -224,36 +224,37 @@
                 @*<td>
                         @Html.DisplayFor(modelItem => item.IsVerified)
                     </td>*@
-                <td>
-
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-warning" }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info" })
-                    @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
-                </td>
             <td>
-        
 
-            @{
-                if (item.IsVerified == true)
-                {
-                    <button type="button" class="btn btn-sm btn-danger" onclick="UnverifyHotel(@item.Id)">
-                        Unverify
-                    </button>
-                }
-                else if (item.IsVerified == false)
-                {
-                    <button type="button" class="btn btn-sm btn-primary" onclick="VerifyHotel(@item.Id)">
-                        Verify
-                    </button>
-                }
-                else
-                {
-                    <button type="button" class="btn btn-sm btn-primary" onclick="VerifyHotel(@item.Id)">Verify</button>
-                    //Html.ActionLink("Verify", "VerifyHotel", new { id = item.Id }, new { @class = "btn btn-sm btn-info" });
-                }
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-warning" }) |
+                @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info" }) |
+                @Html.ActionLink("Verify", "HotelVerification", new { Id = item.Id }, new { @class = "btn btn-danger" })
+
+            </td>
+            <td>
+
+                
+                @*@{
+            if (item.IsVerified == true)
+            {
+                <button type="button" class="btn btn-sm btn-danger" onclick="UnverifyHotel(@item.Id)">
+                    Unverify
+                </button>
             }
-            @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
-        </td>
+            else if (item.IsVerified == false)
+            {
+                <button type="button" class="btn btn-sm btn-primary" onclick="VerifyHotel(@item.Id)">
+                    Verify
+                </button>
+            }
+            else
+            {
+                <button type="button" class="btn btn-sm btn-primary" onclick="VerifyHotel(@item.Id)">Verify</button>
+                //Html.ActionLink("Verify", "VerifyHotel", new { id = item.Id }, new { @class = "btn btn-sm btn-info" });
+            }
+        }*@
+                @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
+            </td>
     </tr>
 }
 

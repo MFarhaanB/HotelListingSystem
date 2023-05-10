@@ -134,7 +134,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.Name, "Hotel Name", htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-4">
-                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", @required="required" } })
                             @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
                         </div>
                     </div>
@@ -192,10 +192,10 @@
                             <div class="input-group">
                                 <label class="input-group-btn">
                                     <span class="btn btn-primary">
-                                        Browse&hellip; <input type="file" id="imageUpload" name="documents" style="display: none;" accept="image/x-png,image/jpg,image/jpeg,application/pdf">
+                                        Browse&hellip; <input type="file" id="imageUpload" name="documents" style="display: none;" accept="image/x-png,image/jpg,image/jpeg,application/pdf" required>
                                     </span>
                                 </label>
-                                <input type="text" class="form-control col-md-5 image-text" id="upload-image-info" readonly>
+                                <input type="text" class="form-control col-md-5 image-text" id="upload-image-info" required readonly>
                             </div>
                             <span class="text-danger" style="display:none" id="imageError"></span>
 
@@ -208,10 +208,10 @@
                             <div class="input-group">
                                 <label class="input-group-btn">
                                     <span class="btn btn-primary">
-                                        Browse&hellip; <input type="file" id="CertificateOfOccupancyDocUpload" name="documents" style="display: none;" accept="image/x-png,image/jpg,image/jpeg,application/pdf">
+                                        Browse&hellip; <input type="file" id="CertificateOfOccupancyDocUpload" name="documents" style="display: none;" accept="image/x-png,image/jpg,image/jpeg,application/pdf" required>
                                     </span>
                                 </label>
-                                <input type="text" class="form-control col-md-5 image-text" id="upload-CertificateOfOccupancyDoc-info" readonly>
+                                <input type="text" class="form-control col-md-5 image-text" id="upload-CertificateOfOccupancyDoc-info" required readonly>
                             </div>
                             <span class="text-danger" style="display:none" id="CertificateOfOccupancyDocError"></span>
 
@@ -224,10 +224,10 @@
                             <div class="input-group">
                                 <label class="input-group-btn">
                                     <span class="btn btn-primary">
-                                        Browse&hellip; <input type="file" id="COAUpload" name="documents" style="display: none;" accept="image/x-png,image/jpg,image/jpeg,application/pdf">
+                                        Browse&hellip; <input type="file" id="COAUpload" name="documents" style="display: none;" accept="image/x-png,image/jpg,image/jpeg,application/pdf" required>
                                     </span>
                                 </label>
-                                <input type="text" class="form-control col-md-5 image-text" id="upload-COAUpload-info" readonly>
+                                <input type="text" class="form-control col-md-5 image-text" id="upload-COAUpload-info" required readonly>
                             </div>
                             <span class="text-danger" style="display:none" id="COAError"></span>
 

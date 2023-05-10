@@ -19,7 +19,7 @@ namespace HotelListingSystem.Controllers
         // GET: Hotels
         public ActionResult Index()
         {
-            var hotels = db.Hotels.Include(h => h.HotelUser);
+            var hotels = db.Hotels.Where(a => a.IsVerified == null && (a.VerificationApproved == null || (bool)a.VerificationApproved != false)).Include(h => h.HotelUser);
             return View(hotels.ToList());
         }
         public ActionResult About(int Id)
@@ -54,6 +54,46 @@ namespace HotelListingSystem.Controllers
             return View(hotels);
         }
 
+
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult HotelVerification(int Id)
+        {
+            return View(db.Hotels.Find(Id));
+        }
+
+        [HttpPost]
+        [Authorize]
+        public ActionResult HotelVerification(int Id, string ClerkActionKey)
+        {
+            var hotel = db.Hotels.Find(Id);
+            var user = db.HotelUsers.FirstOrDefault(x => x.Id == hotel.HotelUserId);
+            var body = string.Empty;
+            switch (ClerkActionKey)
+            {
+                case "true":
+                    hotel.VerificationApproved = true;
+                    hotel.IsVerified = true;
+                    body = string.Format($"Hotel {hotel.Name}. <br/>You are required to re-upload the documents for verification");
+                    new Email().SendEmail(user?.EmailAddress, "Hotel Verification Failed", user?.FullName, body);
+                    db.Entry(hotel).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return Json(new { message = string.Format($"Hotel {hotel.Name} has been approved successfully") });
+                default:
+                    hotel.VerificationApproved = false;
+                    hotel.IsVerified = null;
+                    body = string.Format($"Hotel {hotel.Name}. <br/>Your hotel has been aproved, and ready to be discovered by the world.");
+                    new Email().SendEmail(user?.EmailAddress, "Hotel Verification Approved", user?.FullName, body);
+                    db.Entry(hotel).State = EntityState.Modified;
+                    db.SaveChanges();
+                    return Json(new { message = string.Format($"Hotel {hotel.Name} submited for re-upload") });
+            }
+        }
+
+
+
+
         [HttpPost]
         public JsonResult VerifyHotel(int id)
         {
@@ -63,8 +103,10 @@ namespace HotelListingSystem.Controllers
             db.Entry(hotel).State = EntityState.Modified;
             int savechanges = db.SaveChanges();
 
-            var user = db.HotelUsers.FirstOrDefault(x => x.EmailAddress == User.Identity.Name)?.FullName;
-            new Email().SendEmail(User.Identity.Name, "Hotel Validation", user, "verified");
+            var user = db.HotelUsers.FirstOrDefault(x => x.EmailAddress == User.Identity.Name);
+            var body = string.Format($"Your hotel {hotel.Name} has been verified.");
+            new Email().SendEmail(user?.EmailAddress, "Hotel Deactivation", user?.FullName, body);
+            //new Email().SendEmail(User.Identity.Name, "Hotel Validation", user, "verified");
 
             // Return a JSON response to the AJAX request
             return Json(new { success = savechanges > 0, message = "Hotel updated successfully" });
@@ -80,9 +122,12 @@ namespace HotelListingSystem.Controllers
             db.Entry(hotel).State = EntityState.Modified;
             int savechanges = db.SaveChanges();
 
-            var user = db.HotelUsers.FirstOrDefault(x => x.EmailAddress == User.Identity.Name)?.FullName;
-            new Email().SendEmail(User.Identity.Name, "Hotel Validation", user, "unverified");
+            //var user = db.HotelUsers.FirstOrDefault(x => x.EmailAddress == User.Identity.Name)?.FullName;
+            //new Email().SendEmail(User.Identity.Name, "Hotel Validation", user, "unverified");
 
+            var user = db.HotelUsers.FirstOrDefault(x => x.EmailAddress == User.Identity.Name);
+            var body = string.Format($"Your hotel {hotel.Name} has been Deactivated.");
+            new Email().SendEmail(user?.EmailAddress, "Hotel Deactivation", user?.FullName, body);
             // Return a JSON response to the AJAX request
             return Json(new { success = savechanges > 0, message = "Hotel updated successfully" });
         }
@@ -258,47 +303,41 @@ namespace HotelListingSystem.Controllers
             {
                 hotel.HotelUserId = AppHelper.CurrentHotelUser()?.Id;
                 hotel.CreatedOn = DateTime.Now;
-                if (documents?.Count() >= 1)
+                if (documents != null)
                 {
-                    var file = documents[0];
-                    var fileContent = file.InputStream;
+                    int current = 0;
+                    foreach(var doc in documents)
+                    {
+                        var file = doc;
+                        var fileContent = file.InputStream;
+                        byte[] data;
+                        data = new byte[fileContent.Length];
+                        file.InputStream.Read(data, 0, file.ContentLength);
+                        switch (current)
+                        {
+                            case 0:
+                                hotel.HotelImageName = file.FileName;
+                                hotel.HotelImageContentType = file.ContentType;
+                                hotel.HotelImageContent = data;
+                                hotel.HotelImageFileSize = (Int64)file.ContentLength;
+                                break;
+                            case 1:
+                                hotel.CertificateOfOccupancyDocName = file.FileName;
+                                hotel.CertificateOfOccupancyDoContentType = file.ContentType;
+                                hotel.CertificateOfOccupancyDocContent = data;
+                                hotel.CertificateOfOccupancyDoFileSize = (Int64)file.ContentLength;
+                                break;
+                            default:
+                                hotel.COADocName = file.FileName;
+                                hotel.COADocContentType = file.ContentType;
+                                hotel.COADocContent = data;
+                                hotel.COADocFileSize = (Int64)file.ContentLength;
+                                break;
 
-                    hotel.HotelImageName = file.FileName;
-                    hotel.HotelImageContentType = file.ContentType;
-
-                    byte[] data;
-                    data = new byte[fileContent.Length];
-                    file.InputStream.Read(data, 0, file.ContentLength);
-                    hotel.HotelImageContent = data;
-                    hotel.HotelImageFileSize = (Int64)file.ContentLength;
+                        }
+                        current++;
+                    }
                 }
-                if (documents?.Count() >= 2)
-                {
-                    var file = documents[1];
-                    var fileContent = file.InputStream;
-
-                    hotel.CertificateOfOccupancyDocName = file.FileName;
-                    hotel.CertificateOfOccupancyDoContentType = file.ContentType;
-                    byte[] data;
-                    data = new byte[fileContent.Length];
-                    file.InputStream.Read(data, 0, file.ContentLength);
-                    hotel.HotelImageContent = data;
-                    hotel.CertificateOfOccupancyDoFileSize = (Int64)file.ContentLength;
-                }
-                if (documents?.Count() >= 3)
-                {
-                    var file = documents[2];
-                    var fileContent = file.InputStream;
-
-                    hotel.COADocName = file.FileName;
-                    hotel.COADocContentType = file.ContentType;
-                    byte[] data;
-                    data = new byte[fileContent.Length];
-                    file.InputStream.Read(data, 0, file.ContentLength);
-                    hotel.HotelImageContent = data;
-                    hotel.COADocFileSize = (Int64)file.ContentLength;
-                }
-
                 db.Hotels.Add(hotel);
                 db.SaveChanges();
                 ViewBag.AddRooms = "true";

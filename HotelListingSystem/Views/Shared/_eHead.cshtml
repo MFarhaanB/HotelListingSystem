@@ -209,10 +209,12 @@
                             </div>
                             <div class="main_nav_container ml-auto">
                                 <ul class="main_nav_list">
+                                     
                                     @if (!Request.IsAuthenticated || User.IsInRole("Customer"))
                                     {
                                         <li class="main_nav_item"><a href="~/">home</a></li>
-                                        <li class="main_nav_item"><a href="offers.html">offers</a></li>
+                                        @*<li class="main_nav_item"><a href="offers.html">offers</a></li>*@
+                                       
                                     }
                                     @if (User.IsInRole("Administrator"))
                                     {
@@ -232,7 +234,7 @@
                                         <li class="main_nav_item"><a href="~/Hotels/MyHotels">My Hotels</a></li>
                                         <li class="main_nav_item"><a href="~/Account/AddReceptionist">Add Receptionist</a></li>
                                         <li class="main_nav_item"><a href="~/Rooms/Index">Rooms</a></li>
-                                      
+
                                     }
                                     @if (User.IsInRole("Customer") || User.IsInRole("Administrator"))
                                     {
@@ -240,7 +242,7 @@
                                         <li class="main_nav_item"><a href="~/Reservations/CreateReservation">Reservations</a></li>
                                         <li class="main_nav_item"><a href="~/Dinings/Index">Dining</a></li>
                                     }
-                                   
+
 
                                 </ul>
                             </div>

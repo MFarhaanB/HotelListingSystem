@@ -87,6 +87,46 @@ namespace HotelListingSystem.Controllers
 
 
         // GET: Reservations/Create
+        public ActionResult AddOns(int id)
+        {
+            Reservation reservation = new Reservation
+            {
+                HotelId = id,
+                HotelName = db.Hotels.AsNoTracking().FirstOrDefault(x=>x.Id == id)?.Name,
+                CheckInDate = DateTime.Now,
+                CheckOutDate = DateTime.Now.AddDays(5),
+            };
+
+            var dinig = db.Dinings;
+            ViewBag.Dining = new SelectList(dinig, "Id", "Name");
+
+            ViewBag.HotelId = new SelectList(db.Hotels, "Id", "Name");
+            ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName");
+            ViewBag.RoomId = new SelectList(db.Rooms, "Id", "Name");
+            return View(reservation);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddOns(int Id, string[] SelectedRoles)
+        {
+            //if (SelectedRoles != null)
+            //{ 
+            //    using (ApplicationDbContext core = new ApplicationDbContext())
+            //    {
+            //        var reservation = core.Reservations.Find(Id);
+
+            //        var d_reservation = new DiningReservation
+            //        {
+            //            CreatedOn =DateTime.Now,
+            //            Date = reservation.CheckInDate,
+            //            NoOfPeople = reservation.
+            //        }
+            //    }
+                
+            //}
+            return RedirectToAction("Index");
+        }
+        // GET: Reservations/Create
         public ActionResult Create(int id)
         {
             Reservation reservation = new Reservation

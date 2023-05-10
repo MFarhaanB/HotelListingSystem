@@ -47,10 +47,13 @@ namespace HotelListingSystem.Controllers
             Room room = new Room();
             if (hotelId != null )
             {
+                var hotel = db.Hotels.FirstOrDefault(a => a.Id == hotelId);
+                if (hotel.IsVerified == null) return View("_AwaitingVerification");
+
                 ViewBag.AddRooms = "true";
                 room.HotelId = hotelId;
             }
-            ViewBag.HotelId = new SelectList(db.Hotels, "Id", "Name");
+            ViewBag.HotelId = new SelectList(db.Hotels.Where(a => (bool)a.IsVerified), "Id", "Name");
             return View(room);
         }
 
