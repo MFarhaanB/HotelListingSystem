@@ -53,7 +53,8 @@ namespace HotelListingSystem.Controllers
                 ViewBag.AddRooms = "true";
                 room.HotelId = hotelId;
             }
-            ViewBag.HotelId = new SelectList(db.Hotels.Where(a => (bool)a.IsVerified), "Id", "Name");
+            var CurrentUser = AppHelper.CurrentHotelUser();
+            ViewBag.HotelId = new SelectList(db.Hotels.Where(a => (bool)a.IsVerified && a.HotelUserId == CurrentUser.Id), "Id", "Name");
             return View(room);
         }
 
@@ -67,33 +68,34 @@ namespace HotelListingSystem.Controllers
             if (ModelState.IsValid)
             {
                 room.CreatedOn = DateTime.Now;
-                if (documents?.Count() >= 1)
+                if (documents != null)
                 {
-                    var file = documents[0];
-                    var fileContent = file.InputStream;
-
-                    room.RoomImageName1 = file.FileName;
-                    room.RoomImageContentType1 = file.ContentType;
-                    byte[] data;
-                    data = new byte[fileContent.Length];
-                    file.InputStream.Read(data, 0, file.ContentLength);
-                    room.RoomImageContent1 = data;
-                    room.RoomImageFileSize1 = (Int64)file.ContentLength;
+                    int current = 0;
+                    foreach (var doc in documents)
+                    {
+                        var file = doc;
+                        var fileContent = file.InputStream;
+                        byte[] data;
+                        data = new byte[fileContent.Length];
+                        file.InputStream.Read(data, 0, file.ContentLength);
+                        switch (current)
+                        {
+                            case 0:
+                                room.RoomImageName1 = file.FileName;
+                                room.RoomImageContentType1 = file.ContentType;
+                                room.RoomImageContent1 = data;
+                                room.RoomImageFileSize1 = (Int64)file.ContentLength;
+                                break;
+                            case 1:
+                                room.RoomImageName2 = file.FileName;
+                                room.RoomImageContentType2 = file.ContentType;
+                                room.RoomImageContent2 = data;
+                                room.RoomImageFileSize2 = (Int64)file.ContentLength;
+                                break;
+                        }
+                        current++;
+                    }
                 }
-                if (documents?.Count() >= 2)
-                {
-                    var file = documents[1];
-                    var fileContent = file.InputStream;
-
-                    room.RoomImageName2 = file.FileName;
-                    room.RoomImageContentType2 = file.ContentType;
-                    byte[] data;
-                    data = new byte[fileContent.Length];
-                    file.InputStream.Read(data, 0, file.ContentLength);
-                    room.RoomImageContent2 = data;
-                    room.RoomImageFileSize2 = (Int64)file.ContentLength;
-                }
-
                 db.Rooms.Add(room);
                 db.SaveChanges();
                 return RedirectToAction("Index");

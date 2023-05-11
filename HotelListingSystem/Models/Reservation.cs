@@ -44,6 +44,6 @@ namespace HotelListingSystem.Models
         public List<Dining> Dinings { get; set; }
             
         public int ? AddOnsId { get; set; }
-        public decimal AddOnsCost { get; set; }
+        public decimal? AddOnsCost { get; set; }
     }
 }
