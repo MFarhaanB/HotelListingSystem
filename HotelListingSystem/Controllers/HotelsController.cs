@@ -82,7 +82,7 @@ namespace HotelListingSystem.Controllers
 
         [HttpPost]
         [Authorize]
-        public ActionResult HotelVerification(int Id, string ClerkActionKey)
+        public ActionResult HotelVerification(int Id, string ClerkActionKey, string reuploadReason)
         {
             var hotel = db.Hotels.Find(Id);
             var user = db.HotelUsers.FirstOrDefault(x => x.Id == hotel.HotelUserId);
@@ -101,6 +101,7 @@ namespace HotelListingSystem.Controllers
                     hotel.VerificationApproved = false;
                     hotel.IsVerified = null;
                     body = string.Format($"Hotel {hotel.Name}. <br/>Your hotel has been aproved, and ready to be discovered by the world.");
+                    if (!string.IsNullOrEmpty(reuploadReason)) body = string.Format($"{body} <br/>Due to: {reuploadReason}");
                     new Email().SendEmail(user?.EmailAddress, "Hotel Verification Approved", user?.FullName, body);
                     db.Entry(hotel).State = EntityState.Modified;
                     db.SaveChanges();
@@ -483,6 +484,8 @@ namespace HotelListingSystem.Controllers
         {
             if (ModelState.IsValid)
             {
+                hotel.VerificationApproved = null;
+                hotel.IsVerified = null;
                 db.Entry(hotel).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("MyHotels");

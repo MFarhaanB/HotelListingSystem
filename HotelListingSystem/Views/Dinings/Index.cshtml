@@ -34,9 +34,7 @@
             <th>Dining Table Types</th>
             <th>Meal Type</th>
             <th>Meal</th>
-            @*<th>
-                @Html.DisplayNameFor(model => model.DiningTableTypeId)
-            </th>*@
+            <th>Cost Per Person</th>
             <th>Dining Starts</th>
             <th>Dining Ends</th>
             <th>No. Of Tables</th>
@@ -55,9 +53,9 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
-                @*<td>
-                    @Html.DisplayFor(modelItem => item.DiningTableTypeId)
-                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.CostPerPerson)
+                </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.StartTime)
                 </td>
@@ -79,9 +77,7 @@
                 <th>Dining Table Types</th>
                 <th>Meal Type</th>
                 <th>Meal</th>
-                @*<th>
-                    @Html.DisplayNameFor(model => model.DiningTableTypeId)
-                </th>*@
+                <th>Cost Per Person</th>
                 <th>Dining Starts</th>
                 <th>Dining Ends</th>
                 <th>No. Of Tables</th>

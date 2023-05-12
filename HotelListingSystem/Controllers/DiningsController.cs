@@ -49,7 +49,7 @@ namespace HotelListingSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,MealTypeId,DiningTableTypeId,StartTime,EndTime,NoOfTables")] Dining dining)
+        public ActionResult Create([Bind(Include = "Id,Name,MealTypeId,DiningTableTypeId,StartTime,EndTime,NoOfTables")] Dining dining, double CostPerPerson)
         {
             var rqstStartTime = Request.Form["StartTime"];
             if (dining.StartTime == null)
@@ -58,6 +58,7 @@ namespace HotelListingSystem.Controllers
             }
             if (ModelState.IsValid)
             {
+                dining.CostPerPerson = CostPerPerson;
                 db.Dinings.Add(dining);
                 db.SaveChanges();
                 return RedirectToAction("Index");

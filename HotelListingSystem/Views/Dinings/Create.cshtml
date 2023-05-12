@@ -92,7 +92,7 @@
                     <div class="form-group">
                         @Html.LabelFor(model => model.CostPerPerson, "Cost Per Person", htmlAttributes: new { @class = "control-label col-md-2" })
                         <div class="col-md-3">
-                            @Html.EditorFor(model => model.CostPerPerson, new { htmlAttributes = new { @class = "form-control", @min = 1, @max = 50 } })
+                            @Html.EditorFor(model => model.CostPerPerson, new { htmlAttributes = new { @class = "form-control", @min = 1, @max = 50, @Name= "CostPerPerson" } })
                             @Html.ValidationMessageFor(model => model.CostPerPerson, "", new { @class = "text-danger" })
                         </div>
                     </div>

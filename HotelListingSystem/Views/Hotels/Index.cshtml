@@ -298,6 +298,7 @@
     }
 
     function UnverifyHotel(id) {
+       
         $.ajax({
             url: '@Url.Action("UnverifyHotel", "Hotels")?id=' + id, // Replace with your controller's action method URL
             type: 'POST', // Use POST or GET depending on your requirements

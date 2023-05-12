@@ -161,8 +161,9 @@
 
 <script>
     function SubmitForReupload(Id) {
+        var userInput = prompt("Please enter the reason for re-upload:");
         $.ajax({
-            url: '@Url.Action("HotelVerification", "Hotels")?Id=' + Id + '&ClerkActionKey=false', // Replace with your controller's action method URL
+            url: '@Url.Action("HotelVerification", "Hotels")?Id=' + Id + '&ClerkActionKey=false&reuploadReason=' + userInput, // Replace with your controller's action method URL
             type: 'POST', // Use POST or GET depending on your requirements
             dataType: 'json', // Set the data type to JSON if needed
             success: function (response) {

@@ -172,54 +172,53 @@ namespace HotelListingSystem.Controllers
         // GET: HotelUsers/Create
         public ActionResult AddReceptionist()
         {
+            var user = AppHelper.CurrentHotelUser().Id;
+            var hotels = db.Hotels.Where(a => a.HotelUserId == user).ToList();
+            ViewBag.HotelsList = new SelectList(hotels, "Id", "Name");
             return View();
         }
 
-        // POST: HotelUsers/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> AddReceptionist(RegisterViewModel model)
         {
-            //if (ModelState.IsValid)
-            //{
-                var identityManager = new IdentityManager();
+            var identityManager = new IdentityManager();
+            var user = new SystemUser { UserName = model.Email, Email = model.Email, EmailConfirmed = true };
+            user.HotelUser = new HotelUsers
+            {
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                IdentificationNumber = model.IdentificationNumber,
+                UserName = model.Email,
+                CompanyName = model?.CompanyName,
+                EmailAddress = model.Email,
+                MobileNumber = model?.MobileNumber,
+                CreatedOn = DateTime.Now,
+                HotelUserType = model.HotelUserType
+            };
 
-                var user = new SystemUser { UserName = model.Email, Email = model.Email,EmailConfirmed = true };
-                user.HotelUser = new HotelUsers
-                {
-                    FirstName = model.FirstName,
-                    LastName = model.LastName,
-                    IdentificationNumber = model.IdentificationNumber,
-                    UserName = model.Email,
-                    CompanyName = model?.CompanyName,
-                    EmailAddress = model.Email,
-                    MobileNumber = model?.MobileNumber,
-                    CreatedOn = DateTime.Now,
-                    HotelUserType = model.HotelUserType
-                };
-
-                var password = GenerateProfilePassword();
+            var password = GenerateProfilePassword();
+            if (model.HotelId != 0)
+            {
+                model.Password = password;
+                model.ConfirmPassword = password;
                 var result = await UserManager.CreateAsync(user, password);
                 if (result.Succeeded)
                 {
                     var roleResult = identityManager.AddUserToRole(user.Id, "Receptionist");
-                    //await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
+                    using(ApplicationDbContext core = new ApplicationDbContext())
+                    {
+                        var hotel = core.Hotels.Find(model.HotelId);
+                        hotel.ReceptionistId = user.HotelUserId;
+                        core.Entry(hotel).State = System.Data.Entity.EntityState.Modified;
+                        core.SaveChanges();
+                    }
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    //var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    //await UserManager.SendEmailAsync(user.Id, $"Confirm your account", $"You have been added as a Receptionist. Your Account credentials are as follows... <br/>Username : {user}, Password: {password}. <br/>Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-
-                    new Email().SendEmail(model.Email, "Receptionist Confirmation", model.FirstName +" "+model.LastName, "Please user the below information to confirm your account <br/> Username: "+model.Email +"<br/>Password"+ password ,false);
-
-
+                    new Email().SendEmail(model.Email, "Receptionist Confirmation", model.FirstName + " " + model.LastName, "Please user the below information to confirm your account <br/> Username: " + model.Email + "<br/>Password" + password, false);
                     return RedirectToAction("Index", "Home", new { id = User.Identity.GetUserId(), message = "Receptionist added successfully" });
                 }
                 AddErrors(result);
-            //}
+            }
             return View(model);
         }
 

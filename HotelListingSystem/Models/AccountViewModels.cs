@@ -136,6 +136,9 @@ namespace HotelListingSystem.Models
 
         [Display(Name = "Hotel User Type")]
         public string HotelUserType { get; set; }
+
+        [Display(Name = "Hotel Name")]
+        public int HotelId { get; set; }
     }
 
     public class ResetPasswordViewModel

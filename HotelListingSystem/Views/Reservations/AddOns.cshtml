@@ -6,33 +6,35 @@
 
 @using (Html.BeginForm())
 {
+    
+<div>
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(x=>x.Id, new {@Name ="Id"})
-    <div class="form-horizontal">
-        <h4>Add Ons Reservation</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+@Html.HiddenFor(x => x.Id, new { @Name = "Id" })
+<div class="form-horizontal">
+    <h4>Add Ons Reservation</h4>
+    <hr />
+    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @foreach (var menu in Model.Dinings)
-            {
-                    <input type="checkbox" name="DiningSelectList"  value="@menu.Id"/>
-                    @Html.Raw(string.Format($"{menu.Name} - <b>From</b> {Convert.ToDateTime(menu.StartTime).TimeOfDay} <b>To</b> {Convert.ToDateTime(menu.EndTime).TimeOfDay} - {menu.CostPerPerson.ToString("C")} <b>p/p   </b>")) 
-                <br />
-            }
-        </div>
-
-
-        </div>
-
-
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-sm btn-primary" />
-            </div>
-        </div>
+    <div class="form-group">
+        @foreach (var menu in Model.Dinings)
+        {
+            <input type="checkbox" name="DiningSelectList" value="@menu.Id" />
+            @Html.Raw(string.Format($"{menu.Name} - <b>From</b> {Convert.ToDateTime(menu.StartTime).TimeOfDay} <b>To</b> {Convert.ToDateTime(menu.EndTime).TimeOfDay} - {menu.CostPerPerson.ToString("C")} <b>p/p   </b>"))
+            <br />
+        }
     </div>
+
+
+</div>
+
+
+
+<div class="form-group">
+    <div class="col-md-offset-2 col-md-10">
+        <input type="submit" value="Create" class="btn btn-sm btn-primary" />
+    </div>
+</div>
+</div>
 }
 
 <script>
