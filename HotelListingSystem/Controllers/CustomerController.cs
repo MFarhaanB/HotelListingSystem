@@ -32,5 +32,27 @@ namespace HotelListingSystem.Controllers
             }
             return Ok(mobileGenericReturn);
         }
+
+        [HttpGet]
+        [Route("api/customerapi/gethotelrooms")]
+        public IHttpActionResult ReturnAvailableHotelRooms()
+        {
+            MobileGenericReturn mobileGenericReturn = new MobileGenericReturn();
+            try
+            {
+                (List<Room>, List<Hotel>) result = CustomerApis.ReturnAvailablleHotelsRooms();
+                if (result.Item1 == null && result.Item2 == null) throw new Exception();
+                mobileGenericReturn.ReturntValue = result;
+                mobileGenericReturn.StatusCode = "200";
+                mobileGenericReturn.Message = "OK";
+            }
+            catch (Exception)
+            {
+                mobileGenericReturn.ReturntValue = null;
+                mobileGenericReturn.StatusCode = "401";
+                mobileGenericReturn.Message = "InternalServerError";
+            }
+            return Ok(mobileGenericReturn);
+        }
     }
 }

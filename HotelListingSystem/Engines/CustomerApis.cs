@@ -7,7 +7,7 @@ using System.Web.Helpers;
 using System.Security.Cryptography;
 using HotelListingSystem.Controllers;
 using Microsoft.AspNet.Identity.Owin;
-
+using System.Data.Entity;
 
 namespace HotelListingSystem.Engines
 {
@@ -28,6 +28,16 @@ namespace HotelListingSystem.Engines
             }
             return User;
         }
+
+        public static  (List<Room>, List<Hotel>) ReturnAvailablleHotelsRooms()
+        {
+            return (GetAllAvailableRooms(core), GetAllActiveHotels(core));
+        }
+
+        public static List<Room> GetAllAvailableRooms(ApplicationDbContext core) 
+            => core.Rooms.Where(a => a.HotelId != null).Include(a => a.Hotel).ToList();
+        public static List<Hotel> GetAllActiveHotels(ApplicationDbContext core)
+            => core.Hotels.Where(a => (bool)a.VerificationApproved && (bool)a.IsVerified).Include(a => a.HotelUser).Include(a => a.Receptionist).ToList();
 
         public static SystemUser GetUserInfo(ApplicationDbContext core, string Username)
             => core.Users.FirstOrDefault(x => x.UserName == Username);
