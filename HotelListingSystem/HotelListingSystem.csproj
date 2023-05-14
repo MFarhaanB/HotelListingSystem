@@ -278,6 +278,7 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AddOnsR.cs" />
     <Compile Include="Models\AppHelper.cs" />
     <Compile Include="Models\Business.cs" />
     <Compile Include="Models\CheckInRoom.cs" />
@@ -555,6 +556,8 @@
     <Content Include="Views\Shared\_defaultLayout.cshtml" />
     <Content Include="Views\Shared\_hotelLayout2.cshtml" />
     <Content Include="Views\Shared\_NotVerified.cshtml" />
+    <Content Include="Views\Payments\history.cshtml" />
+    <Content Include="Views\Payments\ReceiptDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

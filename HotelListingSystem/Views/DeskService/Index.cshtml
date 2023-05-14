@@ -19,39 +19,42 @@
 <body>
     <main>
         <div class="container_body">
-            <h1 >Desk Check-Ins</h1>
+            <h1 >Desk Services</h1>
             <p>@Html.ActionLink("Create New", "Create", new { id = 0 }, new { @class = "btn btn-outline-dark back_btn" })</p>
             <br />
-            <table class="table" width="90%" id="example">
-                <tr>
-                    <th>ㅤㅤㅤㅤㅤ</th>
-                    <th>Reserved By</th>
-                    <th>Identity No.</th>
-                    <th>Check-In date</th>
-                    <th>Check-out date</th>
-                    <th>Number of days</th>
-                    <th>Room Type</th>
-                    <th>Total Cost</th>
-                    <th></th>
-                </tr>
-
-                @foreach (var item in Model)
-                {
+            <table class="table" width="90%" id="exampleId">
+                <thead>
                     <tr>
-                        <td></td>
-                        <td>@Html.DisplayFor(modelItem => item.HotelUser.FullName)</td>
-                        <td>@Html.DisplayFor(modelItem => item.HotelUser.IdentificationNumber)</td>
-                        <td>@Html.Raw(item.CheckInDate.ToString().Substring(0, 10))</td>
-                        <td>@Html.Raw(item.CheckOutDate.ToString().Substring(0, 10))</td>
-                        <td>@Html.Raw(String.Format($"{((int)(item.CheckOutDate - item.CheckInDate).TotalDays)} days"))</td>
-                        <td>@Html.DisplayFor(modelItem => item.Room.Name)</td>
-                        <td>@Html.Raw(item.TotalCost.ToString("C"))</td>
-                        <td>
-                            @Html.ActionLink("Update", "Update", new { Id = item.Id }, new { @class = "btn btn-warning" }) |
-                            @Html.ActionLink("Check-In", "DeskCheckIns", new { Id = item.Id }, new { @class = "btn btn-success" })
-                        </td>
+                        <th>ㅤㅤㅤㅤㅤ</th>
+                        <th>Reserved By</th>
+                        <th>Identity No.</th>
+                        <th>Check-In date</th>
+                        <th>Check-out date</th>
+                        <th>Number of days</th>
+                        <th>Room Type</th>
+                        <th>Total Cost</th>
+                        <th></th>
                     </tr>
-                }
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td></td>
+                            <td>@Html.DisplayFor(modelItem => item.HotelUser.FullName)</td>
+                            <td>@Html.DisplayFor(modelItem => item.HotelUser.IdentificationNumber)</td>
+                            <td>@Html.Raw(item.CheckInDate.ToString().Substring(0, 10))</td>
+                            <td>@Html.Raw(item.CheckOutDate.ToString().Substring(0, 10))</td>
+                            <td>@Html.Raw(String.Format($"{((int)(item.CheckOutDate - item.CheckInDate).TotalDays)} days"))</td>
+                            <td>@Html.DisplayFor(modelItem => item.Room.Name)</td>
+                            <td>@Html.Raw(item.TotalCost.ToString("C"))</td>
+                            <td>
+                                @Html.ActionLink("Update", "Update", new { Id = item.Id }, new { @class = "btn btn-warning" }) |
+                                @Html.ActionLink("Check-In", "DeskCheckIns", new { Id = item.Id }, new { @class = "btn btn-success" })
+                            </td>
+                        </tr>
+                    }
+                </tbody>
                 <tfoot>
                     <tr>
                         <th>ㅤㅤㅤㅤㅤ</th>
@@ -106,8 +109,8 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap4.min.css">
 @Html.Partial("_eFooter")
-<script>
+<script type="text/javascript">
     $(document).ready(function () {
-        $('#example').DataTable();
+        $('#exampleId').DataTable();
     });
 </script>

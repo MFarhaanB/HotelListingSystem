@@ -48,7 +48,13 @@ namespace HotelListingSystem.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Reservation reservation = db.Reservations.Find(id);
+            Reservation reservation = db.Reservations
+                .Include(c => c.Hotel)
+                .Include(c => c.Room)
+                .Include(c => c.HotelUser)
+                .Include(c => c.CheckInRoom)
+                .FirstOrDefault(a => a.Id == id);
+            ViewBag.ThisHotelRooms = new SelectList(db.Rooms.Where(a => a.HotelId == reservation.HotelId).ToList(), "Id", "Name");
             if (reservation == null)
             {
                 return HttpNotFound();
@@ -202,23 +208,6 @@ namespace HotelListingSystem.Controllers
             return RedirectToAction("Index");
         }
 
-        public class AddOnsR
-        {
-            [Key]
-            [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-            public int Id { get; set; }
-            public string AddOns { get; set; }
-
-            
-            public int ReservationId { get; set; }
-            [ForeignKey("ReservationId")]
-            public Reservation Reservation { get; set; }
-
-           
-            public int HotelUserId { get; set; }
-            [ForeignKey("HotelUserId")]
-            public HotelUsers HotelUser { get; set; }
-        }
         // GET: Reservations/Edit/5
         public ActionResult Edit(int? id)
         {

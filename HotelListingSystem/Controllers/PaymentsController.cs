@@ -38,7 +38,28 @@ namespace HotelListingSystem.Controllers
             }
         }
 
-        // GET: Payments/Details/5
+        public ActionResult history()
+        {
+            return View(db.Payments.Include(d => d.Reservation.Hotel).Include(d => d.HotelUser).Where(c => c.IsPaid).ToList());
+        }
+
+        public ActionResult ReceiptDetails(int Id)
+        {
+            ReceiptDetailsViewModel paymentVM = new ReceiptDetailsViewModel();
+            using(ApplicationDbContext context = new ApplicationDbContext())
+            {
+                paymentVM.Payment = context.Payments.Find(Id);
+                paymentVM.Reservation = context.Reservations.Find(paymentVM.Payment.ReservationId);
+                paymentVM.ReservationBy = context.HotelUsers.Find(paymentVM.Reservation.HotelUserId);
+                paymentVM.BookedHotel = context.Hotels.Find(paymentVM.Reservation.HotelId);
+                //paymentVM.Add_Ons = context.AddOnsRs.Where(a => a.Id == (int)paymentVM.Reservation.AddOnsId).FirstOrDefault();
+                paymentVM.Room = context.Rooms.Find(paymentVM.Reservation.RoomId);
+                paymentVM.Receptionist = context.HotelUsers.Find(paymentVM.BookedHotel.ReceptionistId);
+            }
+            return View(paymentVM);
+        }
+       
+
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -53,30 +74,7 @@ namespace HotelListingSystem.Controllers
             return View(payment);
         }
 
-        // GET: Payments/Create
-        //public ActionResult Create(int? id)
-        //{
-        //    Reservation reservation = db.Reservations.Include(x => x.Route).FirstOrDefault(x => x.Id == id);
 
-        //    if (reservation != null)
-        //    {
-        //        string refno = PaymentReferenceGenerator();
-        //        string desc = $"{reservation.NoOfReservations} {reservation.Route.RouteName} {(reservation.NoOfReservations > 1 ? "Tickets" : "Tickets")}";
-        //        decimal total = reservation.Route.Rate * reservation.NoOfReservations;
-
-        //        //PayController pay = new PayController();
-        //        return PaymentWithPaypal(desc, refno, reservation.Route.Rate.ToString(), total.ToString(), reservation.NoOfReservations.ToString());
-        //        //return View();
-
-        //    }
-        //    return View();
-        //}
-
-        // POST: Payments/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
         public ActionResult Create(int id)
         {
             Reservation reservation = db.Reservations.Include(x => x.HotelUser).Include(x=>x.Room).Include(x=>x.Hotel).FirstOrDefault(x => x.Id == id);
