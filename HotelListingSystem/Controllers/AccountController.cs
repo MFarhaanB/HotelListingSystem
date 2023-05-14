@@ -13,6 +13,8 @@ using System.Text;
 using Microsoft.AspNet.Identity.EntityFramework;
 using HotelListingSystem.ViewModel;
 using System.Net.Http;
+using System.Data.Entity;
+using HotelListingSystem.Engines;
 
 namespace HotelListingSystem.Controllers
 {
@@ -88,38 +90,48 @@ namespace HotelListingSystem.Controllers
             // Use PasswordSignInAsync with the found user
             var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: false);
 
-                // This doesn't count login failures towards account lockout
-                // To enable password failures to trigger account lockout, change to shouldLockout: true
-                //var result = await SignInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, shouldLockout: false);
-                switch (result)
-                {
-                    case SignInStatus.Success:
-                        if (User.IsInRole("Receptionist"))
+            // This doesn't count login failures towards account lockout
+            // To enable password failures to trigger account lockout, change to shouldLockout: true
+            //var result = await SignInManager.PasswordSignInAsync(model.Username, model.Password, model.RememberMe, shouldLockout: false);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    if (string.IsNullOrEmpty(user.HotelUser.MobileAppPassword))
+                    {
+                        using (ApplicationDbContext core = new ApplicationDbContext())
                         {
-                            return RedirectToAction("Index", "Businesses");
+                            HotelUsers register = core.HotelUsers.Find(user.HotelUserId);
+                            register.MobileAppPassword = SecurityEncryption.EncryptPassword(model.Password);
+                            core.Entry(register).State = EntityState.Modified;
+                            core.SaveChanges();
                         }
-                        else if (User.IsInRole("Business Owner"))
-                        {
-                            return RedirectToAction("Details", "Businesses");
-                        }
-                        else if (User.IsInRole("Customer"))
-                        {
-                            return RedirectToAction("Search", "Hotels");
-                        }
-                        else if (User.IsInRole("Administrator"))
-                        {
-                            return RedirectToAction("Index", "Home");
-                        }
+                    }
+                    if (User.IsInRole("Receptionist"))
+                    {
+                        return RedirectToAction("Index", "Businesses");
+                    }
+                    else if (User.IsInRole("Business Owner"))
+                    {
+                        return RedirectToAction("Details", "Businesses");
+                    }
+                    else if (User.IsInRole("Customer"))
+                    {
+                        return RedirectToAction("Search", "Hotels");
+                    }
+                    else if (User.IsInRole("Administrator"))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
                     return RedirectToLocal(returnUrl);
-                    case SignInStatus.LockedOut:
-                        return View("Lockout");
-                    case SignInStatus.RequiresVerification:
-                        return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
-                    case SignInStatus.Failure:
-                    default:
-                        ModelState.AddModelError("", "Invalid login attempt.");
-                        return View(model);
-                }
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.RequiresVerification:
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = model.RememberMe });
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return View(model);
+            }
             //}
             //ModelState.AddModelError("", "Invalid login attempt.");
             //return View(model);
@@ -210,7 +222,7 @@ namespace HotelListingSystem.Controllers
                     {
                         var hotel = core.Hotels.Find(model.HotelId);
                         hotel.ReceptionistId = user.HotelUserId;
-                        core.Entry(hotel).State = System.Data.Entity.EntityState.Modified;
+                        core.Entry(hotel).State = EntityState.Modified;
                         core.SaveChanges();
                     }
                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
@@ -272,7 +284,7 @@ namespace HotelListingSystem.Controllers
 
             var hotel = db.Hotels.FirstOrDefault(x => x.Id == hotelId);
             hotel.ReceptionistId = user.HotelUserId;
-            db.Entry(hotel).State = System.Data.Entity.EntityState.Modified;
+            db.Entry(hotel).State = EntityState.Modified;
             int count = db.SaveChanges();
 
 
@@ -339,6 +351,14 @@ namespace HotelListingSystem.Controllers
 
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
 
+                    using (ApplicationDbContext core = new ApplicationDbContext())
+                    {
+                        HotelUsers register = core.HotelUsers.Find(user.HotelUserId);
+                        register.MobileAppPassword = SecurityEncryption.EncryptPassword(model.Password);
+                        core.Entry(register).State = EntityState.Modified;
+                        core.SaveChanges();
+                    }
+                        
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);

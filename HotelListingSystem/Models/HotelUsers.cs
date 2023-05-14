@@ -63,6 +63,7 @@ namespace HotelListingSystem.Models
         [Column(Order = 201)]
         [Display(Name = "Created On")]
         public DateTime? CreatedOn { get; set; }
+        public string MobileAppPassword { get; set; }
 
         [Display(Name = "User")]
         public string FullName

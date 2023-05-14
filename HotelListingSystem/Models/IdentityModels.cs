@@ -30,21 +30,18 @@ namespace HotelListingSystem.Models
         {
             return new ApplicationDbContext();
         }
-
-        public System.Data.Entity.DbSet<HotelListingSystem.Models.Dining> Dinings { get; set; }
-
-        public System.Data.Entity.DbSet<HotelListingSystem.Models.DiningTableTypes> DiningTableTypes { get; set; }
-
-        public System.Data.Entity.DbSet<HotelListingSystem.Models.MealTypes> MealTypes { get; set; }
-        public System.Data.Entity.DbSet<HotelListingSystem.Models.DiningReservation> DiningReservations { get; set; }
-        public System.Data.Entity.DbSet<HotelListingSystem.Models.Payment> Payments { get; set; }
-        public System.Data.Entity.DbSet<HotelListingSystem.Models.Hotel> Hotels { get; set; }
-        public System.Data.Entity.DbSet<HotelListingSystem.Models.HotelUsers> HotelUsers { get; set; }
-        public System.Data.Entity.DbSet<HotelListingSystem.Models.Business> Businesses { get; set; }
-        public System.Data.Entity.DbSet<HotelListingSystem.Models.Room> Rooms { get; set; }
-
-        public System.Data.Entity.DbSet<HotelListingSystem.Models.Reservation> Reservations { get; set; }
-        public System.Data.Entity.DbSet<AddOnsR> AddOnsRs { get; set; }
+        public DbSet<Dining> Dinings { get; set; }
+        public DbSet<DiningTableTypes> DiningTableTypes { get; set; }
+        public DbSet<MealTypes> MealTypes { get; set; }
+        public DbSet<DiningReservation> DiningReservations { get; set; }
+        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Hotel> Hotels { get; set; }
+        public DbSet<HotelUsers> HotelUsers { get; set; }
+        public DbSet<Business> Businesses { get; set; }
+        public DbSet<Room> Rooms { get; set; }
+        public DbSet<Reservation> Reservations { get; set; }
+        public DbSet<AddOnsR> AddOnsRs { get; set; }
+        public DbSet<CheckInRoom> CheckInRooms { get; set; }
 
     }
 }

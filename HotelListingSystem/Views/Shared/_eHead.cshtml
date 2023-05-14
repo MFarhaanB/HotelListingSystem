@@ -174,8 +174,7 @@
                                         <div class="cls_logins">
                                             <div class="user_box ml-auto" style="float:right;">
                                                 <div class="user_box_login user_box_link">
-                                                    <a>@User.Identity.Name</a>
-
+                                                    <a href="/HotelUsers/Details">@User.Identity.Name</a>
                                                 </div>
                                                 <div class="user_box_register user_box_link">
                                                     <a href="javascript:document.getElementById('logoutForm').submit()">Log Out</a>
@@ -185,15 +184,6 @@
 
                                     }
                                 }
-                                @*<div class="user_box ml-auto">
-                                        <div class="user_box_login user_box_link">
-                                            <a>@User.Identity.Name</a>
-
-                                        </div>
-                                        <div class="user_box_register user_box_link">
-                                            <a href="javascript:document.getElementById('logoutForm').submit()">Log Out</a>
-                                        </div>
-                                    </div>*@
                             }
 
                         </div>
@@ -206,14 +196,14 @@
                         <div class="col main_nav_col d-flex flex-row align-items-center justify-content-start">
                             <div class="logo_container">
                                 <div class="logo">
-                                    <a href="#">
+                                    <a href="../">
                                         <img src="https://preview.colorlib.com/theme/travelix/images/logo.png" alt="">travelix
                                     </a>
                                 </div>
                             </div>
                             <div class="main_nav_container ml-auto">
                                 <ul class="main_nav_list">
-                                     
+
                                     @if (!Request.IsAuthenticated || User.IsInRole("Customer"))
                                     {
                                         <li class="main_nav_item"><a href="~/">home</a></li>
@@ -229,9 +219,13 @@
                                         <li class="main_nav_item"><a href="~/Hotels/Index">Hotels</a></li>
                                         <li class="main_nav_item"><a href="~/Hotels/HotelPayment">Payments</a></li>
                                     }
+                                    @if (User.IsInRole("Receptionist"))
+                                    {
+                                        <li class="main_nav_item"><a href="~/DeskService/Index">Desk Service</a></li>
+                                    }
                                     @if (User.IsInRole("Business Owner") || User.IsInRole("Administrator"))
                                     {
-                                        <li class="main_nav_item"><a href="~/HotelUsers/Details">My Profile</a></li>
+
                                         <li class="main_nav_item"><a href="~/Hotels/MyHotels">My Hotels</a></li>
                                         <li class="main_nav_item"><a href="~/Account/AddReceptionist">Add Receptionist</a></li>
                                         <li class="main_nav_item"><a href="~/Rooms/Index">Rooms</a></li>

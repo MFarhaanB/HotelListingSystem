@@ -45,5 +45,21 @@ namespace HotelListingSystem.Models
             
         public int ? AddOnsId { get; set; }
         public decimal? AddOnsCost { get; set; }
+
+        public bool Cancelled { get; set; }
+        public bool Updated { get; set; }
+        public bool PaymentApproved { get; set; }
+
+        public int? CancelledById { get; set; }
+        [ForeignKey("CancelledById")]
+        public HotelUsers CancelledBy { get; set; }
+        public int? UpdatedById { get; set; }
+        [ForeignKey("UpdatedById")]
+        public HotelUsers UpdatedBy { get; set; }
+        public int? CheckInRoomId { get; set; }
+        [ForeignKey("CheckInRoomId")]
+        public CheckInRoom CheckInRoom { get; set; }
+
+        
     }
 }

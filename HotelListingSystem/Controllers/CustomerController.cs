@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HotelListingSystem.Engines;
+using HotelListingSystem.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -11,9 +13,24 @@ namespace HotelListingSystem.Controllers
     {
         [HttpGet]
         [Route("api/customerapi/userlogin")]
-        public IHttpActionResult CheckNumberVaild(string Number, int? CustomerId)
+        public IHttpActionResult CheckNumberVaild(string Username, string Password)
         {
-            return Ok(true);
+            MobileGenericReturn mobileGenericReturn = new MobileGenericReturn();
+            try
+            {
+                var result = CustomerApis.GetUserLoginDetails(Username, Password);
+                if (result == null) throw new Exception();
+                mobileGenericReturn.ReturntValue = result;
+                mobileGenericReturn.StatusCode = "200";
+                mobileGenericReturn.Message = "OK";
+            }
+            catch (Exception)
+            {
+                mobileGenericReturn.ReturntValue = null;
+                mobileGenericReturn.StatusCode = "401";
+                mobileGenericReturn.Message = "InternalServerError";
+            }
+            return Ok(mobileGenericReturn);
         }
     }
 }
