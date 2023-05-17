@@ -212,7 +212,7 @@
                                     }
                                     @if (User.IsInRole("Receptionist"))
                                     {
-                                <li class="main_nav_item"><a href="~/DeskService/Index">Desk Service</a></li>
+                                        <li class="main_nav_item"><a href="~/DeskService/Index">Desk Service</a></li>
                                     }
                                     @if (User.IsInRole("Business Owner") || User.IsInRole("Administrator"))
                                     {
@@ -235,7 +235,10 @@
                                         <li class="main_nav_item"><a href="~/DiningTableTypes/Index">Tables</a></li>
                                         <li class="main_nav_item"><a href="~/MealTypes/Index">Meals</a></li>
                                     }
-
+                                    @if (User.IsInRole("Customer") || User.IsInRole("Administrator") || User.IsInRole("Receptionist"))
+                                    {
+                                        <li class="main_nav_item"><a href="~/CustomerQuery/Queries">Query</a></li>
+                                    }
                                 </ul>
                             </div>
                             <div class="content_search ml-lg-0 ml-auto">

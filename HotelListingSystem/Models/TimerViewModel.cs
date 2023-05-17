@@ -28,4 +28,16 @@ namespace HotelListingSystem.Models
         [Display(Name = "Is Valid")]
         public bool IsValid { get; set; }
     }
+
+
+    public class BusinessPDFStatement
+    {
+        public string HotelName { get; set; }
+        public DateTime? PaymentDate { get; set; }
+        public string PaymentBy { get; set; }
+        public decimal Amountpaid { get; set; }
+        public decimal TravixComission { get; set; }
+        public int PaymentId { get; set; }
+    }
+
 }

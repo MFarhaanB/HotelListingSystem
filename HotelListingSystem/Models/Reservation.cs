@@ -60,6 +60,10 @@ namespace HotelListingSystem.Models
         [ForeignKey("CheckInRoomId")]
         public CheckInRoom CheckInRoom { get; set; }
 
-        
+        [Display(Name = "User")]
+        public string FullName
+        {
+            get { return string.Format("{0}, {1}", Hotel.Name, CheckInDate); }
+        }
     }
 }

@@ -39,6 +39,22 @@ namespace HotelListingSystem.Controllers
             }
             return View(hotelUsers);
         }
+        public ActionResult Profile(int? id)
+        {
+            if (id == null)
+            {
+                var currentUser = User.Identity.Name;
+                var findHotel = db.HotelUsers.Find(id);
+                if (findHotel == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+                id = findHotel.Id;
+            }
+            HotelUsers hotelUsers = db.HotelUsers.Find(id);
+            if (hotelUsers == null)
+            {
+                return HttpNotFound();
+            }
+            return View(hotelUsers);
+        }
 
 
         // GET: HotelUsers/Create

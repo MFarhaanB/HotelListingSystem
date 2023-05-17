@@ -42,6 +42,8 @@ namespace HotelListingSystem.Models
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<AddOnsR> AddOnsRs { get; set; }
         public DbSet<CheckInRoom> CheckInRooms { get; set; }
-
+        public DbSet<CustomerQuery> CustomerQueries { get; set; }
+        public DbSet<File> Files { get; set; }
+        public DbSet<Document> Documents { get; set; }
     }
 }

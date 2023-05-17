@@ -59,7 +59,31 @@ namespace HotelListingSystem.Controllers
             return View(paymentVM);
         }
        
+        public ActionResult Payments()
+        {
+            using(ApplicationDbContext context = new ApplicationDbContext())
+            {
+                var businessUser = AppHelper.CurrentHotelUser().Id;
+                var businesspayments = (from payment in context.Payments
+                                        join reseve in context.Reservations on payment.ReservationId equals reseve.Id
+                                        join hotel in context.Hotels on reseve.HotelId equals hotel.Id
+                                        join business in context.HotelUsers on hotel.HotelUserId equals business.Id
+                                        join payer in context.HotelUsers on payment.HotelUserId equals payer.Id
+                                        where (int)hotel.HotelUserId == businessUser
+                                        select new BusinessPDFStatement
+                                        {
+                                            HotelName = hotel.Name,
+                                            PaymentDate = payment.CreatedDateTime,
+                                            PaymentBy = payer.FirstName + " " + payer.LastName,
+                                            Amountpaid = payment.Amount,
+                                            TravixComission = payment.Amount,
+                                            PaymentId = payment.Id
+                                        }).ToList();
 
+                return View(businesspayments);
+            }
+           
+        }
         public ActionResult Details(int? id)
         {
             if (id == null)
