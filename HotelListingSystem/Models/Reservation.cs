@@ -65,5 +65,12 @@ namespace HotelListingSystem.Models
         {
             get { return string.Format("{0}, {1}", Hotel.Name, CheckInDate); }
         }
+
+        [NotMapped]
+        public List<Dining> breakfastmeals { get; set; }
+        [NotMapped]
+        public List<Dining> lunchmeals { get; set; }
+        [NotMapped]
+        public AddOnsR Addons { get; set; }
     }
 }

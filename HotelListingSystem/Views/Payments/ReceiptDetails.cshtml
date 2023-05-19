@@ -59,8 +59,8 @@
             <hr class="col-md-offset-2" />
             <div class="form-group text-right">
                 <div class="col-md-offset-2 col-md-4">
-                    <input type="submit" value="Send Email" class="btn btn-sm btn-success" hidden />
-                    <input type="submit" value="View Profile" class="btn btn-sm btn-secondary" />
+                    <input type="button" onclick="SendEmailNotification('@Model.ReservationBy.EmailAddress', '@Model.ReservationBy.FullName')" value="Send Email" class="btn btn-sm btn-success" />
+                    <input type="submit" value="View Profile" class="btn btn-sm btn-secondary" hidden/>
                 </div>
             </div>
 
@@ -79,7 +79,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Reservation.CheckInDate, "Check-In Date", htmlAttributes: new { @class = "control-label col-md-1 col-md-offset-1" })
                 <div class="col-md-2 c_half_input">
-                    @Html.EditorFor(model => model.Reservation.CheckInDate, new { htmlAttributes = new { @class = "form-control", @type = "date",  @readonly = "readonly", @Id = "CheckInId" } })
+                    @Html.EditorFor(model => model.Reservation.CheckInDate, new { htmlAttributes = new { @class = "form-control", @type = "date", @readonly = "readonly", @Id = "CheckInId" } })
                     @Html.ValidationMessageFor(model => model.Reservation.CheckInDate, "", new { @class = "text-danger" })
                 </div>
                 @Html.LabelFor(model => model.Reservation.CheckOutDate, "Check-Out Date", htmlAttributes: new { @class = "control-label col-md-1" })
@@ -145,7 +145,7 @@
             <hr class="col-md-offset-2" />
             <div class="form-group text-right">
                 <div class="col-md-offset-2 col-md-4">
-                    <input type="submit" value="Send Email" class="btn btn-sm btn-success" />
+                    <input type="button" onclick="SendEmailNotification('@Model.Receptionist.EmailAddress', '@Model.Receptionist.FullName')" value="Send Email" class="btn btn-sm btn-success" />
                     <input type="submit" value="View Profile" class="btn btn-sm btn-secondary" hidden />
                 </div>
             </div>
@@ -199,8 +199,8 @@
             <hr class="col-md-offset-2" />
             <div class="form-group text-right">
                 <div class="col-md-offset-2 col-md-4">
-                    <input type="submit" value="Send Invoice" class="btn btn-sm btn-warning" />
-                    <input type="submit" value="Print Recipt" class="btn btn-sm btn-danger" />
+                    <input type="button" value="Send Invoice" onclick="SendInvoiceEmail()" class="btn btn-sm btn-warning" />
+                    <input type="button" value="Print Recipt" class="btn btn-sm btn-danger" />
                 </div>
             </div>
         </div>
@@ -243,6 +243,37 @@
             }
         })
     });
+</script>
+<script>
+    function SendInvoiceEmail() {
+        let email = prompt("Please enter the recipient's email:");
+        /*let messageBody = prompt("Please enter message body:");*/
+        alert("Invoice sent successfully to: " + email);
+    }
+
+
+
+
+    function SendEmailNotification(email, userFullName) {
+        let messageTitle = prompt("Please enter message tittle:");
+        let messageBody = prompt("Please enter message body:");
+
+        $.ajax({
+            url: '@Url.Action("SendEmailNotification", "CustomerQuery")', // Update with your controller and action method names
+            type: 'POST',
+            data: { email: email, userFullName: userFullName, messageBody: messageBody, messageTitle: messageTitle },
+            success: function (data) {
+                if (data) {
+                    alert('Your email has been sent out successfully.');
+                } else {
+                    alert('An error occured while trying to send your email, please try again.');
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                alert('An error occured while trying to send your email, please try again.');
+            }
+        });
+    }
 </script>
 
 

@@ -55,6 +55,7 @@ namespace HotelListingSystem.Models
 
         [Display(Name = "Invoice Number")]
         public string InvoiceNumber { get; set; }
+        public string YoccoReferrence { get; set; }
 
         public string PaymentStatus
         {

@@ -49,7 +49,7 @@
                             <td>@Html.Raw(item.CheckInDate.ToString().Substring(0, 10))</td>
                             <td>@Html.Raw(item.CheckOutDate.ToString().Substring(0, 10))</td>
                             <td>@Html.Raw(String.Format($"{((int)(item.CheckOutDate - item.CheckInDate).TotalDays)} days"))</td>
-                            <td>@Html.Raw(item.TotalCost.ToString("C"))</td>
+                            <td>@Html.Raw($"{item.TotalCost.ToString("C")} per day")</td>
                             <td>
                                 @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-info" })  @*|
                                 @Html.ActionLink("AddOns", "AddOns", new { id = item.Id }, new { @class = "btn btn-sm btn-warning" }) |

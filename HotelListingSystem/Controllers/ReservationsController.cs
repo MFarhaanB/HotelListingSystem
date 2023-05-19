@@ -54,15 +54,21 @@ namespace HotelListingSystem.Controllers
                 .Include(c => c.HotelUser)
                 .Include(c => c.CheckInRoom)
                 .FirstOrDefault(a => a.Id == id);
+            reservation.breakfastmeals = db.Dinings.Include(d => d.MealTypes).Where(a => a.MealTypes.Name.Contains("Breakfast")).ToList();
+            reservation.lunchmeals = db.Dinings.Where(a => a.MealTypes.Name.Contains("lunch")).ToList();
+            if (reservation.AddOnsId != null)
+                reservation.Addons = db.AddOnsRs.Find(reservation.AddOnsId);
             ViewBag.ThisHotelRooms = new SelectList(db.Rooms.Where(a => a.HotelId == reservation.HotelId).ToList(), "Id", "Name");
             if (reservation == null)
             {
                 return HttpNotFound();
             }
+            ViewBag.HotelId = new SelectList(db.Hotels, "Id", "Name");
+            ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName");
+            ViewBag.ThisHotelRooms = new SelectList(db.Rooms, "Id", "Name");
             return View(reservation);
         }
 
-        // GET: Reservations/Create
         public ActionResult CreateReservation()
         {
             ViewBag.HotelId = new SelectList(db.Hotels, "Id", "Name");
@@ -72,9 +78,6 @@ namespace HotelListingSystem.Controllers
             return View(reservations);
         }
 
-        // POST: Reservations/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult CreateReservation([Bind(Include = "Id,CheckInDate,CheckOutDate,HotelId,RoomId,HotelUserId")] Reservation reservation)
@@ -95,18 +98,21 @@ namespace HotelListingSystem.Controllers
         }
 
 
-
-        // GET: Reservations/Create
         public ActionResult Create(int id)
         {
             Reservation reservation = new Reservation
             {
                 HotelId = id,
-                HotelName = db.Hotels.AsNoTracking().FirstOrDefault(x=>x.Id == id)?.Name,
+                HotelName = db.Hotels.AsNoTracking().FirstOrDefault(x => x.Id == id)?.Name,
                 CheckInDate = DateTime.Now,
                 CheckOutDate = DateTime.Now.AddDays(5),
                 HotelUser = AppHelper.CurrentHotelUser(),
-                Hotel= db.Hotels.Find(id)
+                Hotel = db.Hotels.Find(id),
+                NoOfRooms = 1,
+                AddOnsCost = 0,
+                CheckInRoom = new CheckInRoom { RooomNumber = "n/a" },
+                breakfastmeals = db.Dinings.Where(a => a.MealTypes.Name.Contains("Breakfast")).ToList(),
+                lunchmeals = db.Dinings.Where(a => a.MealTypes.Name.Contains("lunch")).ToList()
             };
             ViewBag.HotelId = new SelectList(db.Hotels, "Id", "Name");
             ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName");
@@ -114,24 +120,45 @@ namespace HotelListingSystem.Controllers
             return View(reservation);
         }
 
-        // POST: Reservations/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Reservation reservation)
+        public ActionResult Create(Reservation reservation, string [] selectedMeals, int HotelId)
         {
-            reservation.HotelUserId = AppHelper.CurrentHotelUser()?.Id;
-            reservation.CreatedOn = DateTime.Now;
             if (ModelState.IsValid)
             {
                 using(ApplicationDbContext core = new ApplicationDbContext())
                 {
                     var room = core.Rooms.Find(reservation.RoomId);
-                    if (reservation.TotalCost == 0) 
-                        reservation.TotalCost = room.PricePerRoom * reservation.NoOfRooms;
-                    core.Reservations.Add(reservation);
+
+
+                    Reservation save = new Reservation();
+                    save.HotelId = HotelId;
+                    save.CheckInDate = reservation.CheckInDate;
+                    save.CheckOutDate = reservation.CheckOutDate;
+                    save.RoomId = room.Id;
+                    save.HotelUserId = AppHelper.CurrentHotelUser()?.Id;
+                    save.CreatedOn = DateTime.Now;
+                    save.AddOnsCost = reservation.AddOnsCost;
+                    save.NoOfRooms = reservation.NoOfRooms;
+                    save.TotalFees = (room.PricePerRoom * reservation.NoOfRooms);
+                    save.TotalCost = (room.PricePerRoom * reservation.NoOfRooms) + (int)reservation.AddOnsCost;
+                    core.Reservations.Add(save);
                     core.SaveChanges();
+
+                    var adds = "";
+                    foreach (var meal in selectedMeals)
+                        adds = (!String.IsNullOrEmpty(adds)) ? $"{adds},{meal}" : adds;
+                    if (!string.IsNullOrEmpty(adds))
+                    {
+                        var add = new AddOnsR { ReservationId = save.Id, AddOns = adds, HotelUserId = (int)save.HotelUserId };
+                        core.AddOnsRs.Add(add);
+                        core.SaveChanges();
+
+                        save.AddOnsId = add.Id;
+                        core.Entry(save).State = EntityState.Modified;
+                        core.SaveChanges();
+                    }
+                    
                 }
                 return RedirectToAction("Index");
             }
@@ -344,5 +371,63 @@ namespace HotelListingSystem.Controllers
             
             return Json(new { success = true, message = cost }, JsonRequestBehavior.AllowGet);
         }
+
+
+        public ActionResult SubmitLiveImage(int reservationId, string LiveBase64)
+        {
+            bool ImageSubmitedResults = false;
+            try
+            {
+                using (ApplicationDbContext context = new ApplicationDbContext())
+                {
+                    var resrvation = context.Reservations.Find(reservationId);
+                    var document = context.Documents.FirstOrDefault(a => a.DocumentTypeKey == "a_customer_liveness_image" && a.ReservationId == reservationId);
+                    if (document != null)
+                    {
+                        var ofile = context.Files.Find(document.FileId);
+                        ofile.Content = Convert.FromBase64String(LiveBase64.Split(',').ToList()[1]);
+                        ofile.FileSize = ofile.Content.Length;
+                        ofile.ModifiedDateTime = DateTime.Now;
+                        context.Entry(ofile).State = EntityState.Modified;
+                        context.SaveChanges();
+                    }
+                    else
+                    {
+                        var customer = context.HotelUsers.Find(resrvation.HotelUserId);
+                        document = new Document();
+                        File ofile = new File();
+                        ofile.ContentType = "image/png";
+                        ofile.Content = Convert.FromBase64String(LiveBase64.Split(',').ToList()[1]);
+                        ofile.FileName = $"c_{customer.FullName.Replace(' ', '_').ToLower()}_{resrvation.Id}";
+                        ofile.FileSize = ofile.Content.Length;
+                        ofile.IsActive = true;
+                        ofile.IsDeleted = false;
+                        ofile.CreatedDateTime = DateTime.Now;
+                        ofile.ModifiedDateTime = DateTime.Now;
+                        context.Files.Add(ofile);
+                        context.SaveChanges();
+
+                        
+                        document.IsActive = true;
+                        document.IsDeleted = false;
+                        document.CreatedDateTime = DateTime.Now;
+                        document.ModifiedDateTime = DateTime.Now;
+                        document.FileId = ofile.Id;
+                        document.DocumentTypeKey = "a_customer_liveness_image";
+                        document.ReservationId = resrvation.Id;
+                        context.Documents.Add(document);
+                        context.SaveChanges();
+                    }
+                }
+                ImageSubmitedResults = true;
+            }
+            catch
+            {
+
+            }
+            return Json(ImageSubmitedResults, JsonRequestBehavior.AllowGet);
+        }
+
+
     }
 }

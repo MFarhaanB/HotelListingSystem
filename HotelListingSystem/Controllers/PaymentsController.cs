@@ -126,7 +126,7 @@ namespace HotelListingSystem.Controllers
                 db.Payments.Add(payment);
                 db.SaveChanges();
                 var business = db.Businesses.Where(a => a.HotelUserId == reservation.HotelUserId).FirstOrDefault();
-                return PaymentWithPaypal(desc, refno, reservation.Room.PricePerRoom.ToString(), total.ToString(), reservation.NoOfRooms.ToString(), payment.InvoiceNumber, reservation.Hotel, reservation.HotelUser);
+                return PaymentWithPaypal(desc, refno, (reservation.Room.PricePerRoom + reservation.AddOnsCost).ToString(), total.ToString(), reservation.NoOfRooms.ToString(), payment.InvoiceNumber, reservation.Hotel, reservation.HotelUser);
 
             }
             //ViewBag.CustomerId = new SelectList(db.Customers, "Id", "FirstName", payment.CustomerId);
@@ -412,6 +412,64 @@ namespace HotelListingSystem.Controllers
         {
             ViewBag.Error = q;
             return View();
+        }
+
+
+
+
+        public ActionResult CreditDebitPaymentYoco(int reservationId, string yocco_ref)
+        {
+            try
+            {
+                using (ApplicationDbContext context = new ApplicationDbContext())
+                {
+                    var reservation = context.Reservations.Find(reservationId);
+                    Payment payment = new Payment();
+                    payment.YoccoReferrence = yocco_ref;
+                    payment.CreatedDateTime = DateTime.Now;
+                    payment.ReservationId = reservation.Id;
+                    payment.HotelUserId = reservation.HotelUserId;
+                    payment.Amount = reservation.TotalCost;
+                    payment.RefNo = GetpaymentReferrence("YC", context);
+                    payment.IsActive = true;
+                    payment.IsPaid = false;
+                    payment.PaymentMethod = "YOCCO Debit/Credit";
+                    payment.InvoiceNumber = InvReferenceGenerator();
+                    payment.IsPaid = true;
+                    payment.ModifiedDateTime = DateTime.Now;
+                    context.Payments.Add(payment);
+                    context.SaveChanges();
+
+                    reservation.Booked = true;
+                    reservation.Updated = true;
+                    reservation.UpdatedById = reservation.HotelUserId;
+                    reservation.ModifiedOn = DateTime.Now;
+                    context.Entry(reservation).State = EntityState.Modified;
+                    context.SaveChanges();
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch
+            {
+
+            }
+            return Json(false, JsonRequestBehavior.AllowGet);
+        }
+        public static string GetpaymentReferrence(string Prefix, ApplicationDbContext context)
+        {
+            try
+            {
+                Random random = new Random();
+                int randNumber = random.Next(10000, 99999);
+                string refnos = string.Format("{0}{1}", Prefix, randNumber);
+                _ = (context.Payments.Select(x => x.RefNo).Contains(refnos)) ? GetpaymentReferrence(Prefix, context) : refnos;
+                return refnos;
+            }
+            catch 
+            {
+                GetpaymentReferrence(Prefix, context);
+            }
+            return null;
         }
     }
 }
