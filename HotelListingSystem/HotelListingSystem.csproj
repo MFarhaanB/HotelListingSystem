@@ -584,6 +584,7 @@
     <Content Include="Views\CustomerQuery\LogQuery.cshtml" />
     <Content Include="Views\CustomerQuery\CustomerQuery.cshtml" />
     <Content Include="Views\CustomerQuery\AdministratorCustomerQuery.cshtml" />
+    <Content Include="Views\CustomerQuery\CustomerQueryDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

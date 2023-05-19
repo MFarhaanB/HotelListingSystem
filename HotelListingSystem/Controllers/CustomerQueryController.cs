@@ -36,7 +36,7 @@ namespace HotelListingSystem.Controllers
 
                     if (User.IsInRole("Administrator"))
                         customerQuery =
-                            customerQuery.Where(d => d.IsEscalated).ToList();
+                            customerQuery.Where(d => d.IsEscalated && !d.IsClosed).ToList();
 
                     if (User.IsInRole("Receptionist"))
                         customerQuery =
@@ -267,8 +267,42 @@ namespace HotelListingSystem.Controllers
             }
         }
 
+        public ActionResult CustomerQueryDetails(int id)
+        {
+            var context = new ApplicationDbContext();
+            CustomerQuery customerQuery = context.CustomerQueries
+                    .Include(c => c.Receptionist).Include(c => c.Reservation.Hotel)
+                    .Include(c => c.Customer).Include(c => c.Administrator)
+                    .Where(x => x.Id == id).FirstOrDefault();
+            var customerQueryDocs = context.Documents.Include(c => c.File)
+                    .Where(d => d.CustomerQueryId == customerQuery.Id).ToList();
+            var docsCust = customerQueryDocs.FirstOrDefault(c => c.DocumentTypeKey == "a_customer_log_query");
+            var docsRecept = customerQueryDocs.FirstOrDefault(c => c.DocumentTypeKey == "a_customer_query_r_review");
+            var docsAdmin = customerQueryDocs.FirstOrDefault(c => c.DocumentTypeKey == "a_admin_query_docs");
+            ViewBag.CustomerDocName = docsCust.File.FileName;
+            ViewBag.CustomerFileId = docsCust.File.Id;
+            ViewBag.RecepionistDocsName = docsCust.File.FileName;
+            ViewBag.RecepionistDocsFileId = docsCust.File.Id;
+            ViewBag.AdminDocsName = docsAdmin.File.FileName;
+            ViewBag.AdminDocsFileId = docsAdmin.File.Id;
+            return View(customerQuery);
+                 
+        }
+
         public static string getQueryUpdateStatus(string approvalStatus)
             => (approvalStatus == "c_query_escalated_opened") ? "Customer Query Escalated/Open" : "Customer Query Closed/Solved";
+
+
+
+
+        public ActionResult SendEmailNotification(string email, string userFullName, string messageBody, string messageTitle)
+        {
+            if (!String.IsNullOrEmpty(email) && !String.IsNullOrEmpty(userFullName) && !String.IsNullOrEmpty(messageBody) && !String.IsNullOrEmpty(messageTitle))
+                new Email().SendEmail(email.Trim(), messageTitle, userFullName, messageBody);
+            else
+                return Json(false, JsonRequestBehavior.AllowGet);
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
 
     }
 }

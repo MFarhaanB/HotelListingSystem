@@ -1,13 +1,582 @@
 ﻿@model HotelListingSystem.Models.Reservation
-
 @{
-    ViewBag.Title = "Create Reservation";
+    Layout = null;
 }
 
-@using (Html.BeginForm())
+<!DOCTYPE html>
+<html>
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap4.min.css">
+    <meta name="viewport" content="width=device-width" />
+    <title>Update Reservation</title>
+    @Html.Partial("_eHead")
+    <style>
+        .PageBody {
+            margin: 200px 0 0 0;
+        }
+
+        .container_body {
+            margin-left: 40px;
+            margin-right: 20px;
+        }
+
+        .control-label {
+            font-weight: 600;
+        }
+
+        .form-control {
+            color: black;
+        }
+
+        .image-text {
+            margin: 0 0 0 20px;
+            height: 37.6px;
+        }
+
+        hr {
+            width: 32%;
+        }
+
+        .container_about {
+            border: 1px solid grey;
+            display: flex;
+            width: 767px;
+            margin-left: 150px;
+        }
+
+        .left-column {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .row_a {
+            display: flex;
+        }
+
+        .img_a {
+            width: 245.1px;
+            height: auto;
+        }
+
+        .right-column {
+            flex-grow: 1;
+        }
+
+            .right-column img {
+                width: 100%;
+                height: auto;
+                padding-right: 10;
+            }
+
+        .img_a {
+            margin-top: 5px;
+            margin-bottom: 5px;
+            margin-left: 5px;
+            margin-right: 1px;
+        }
+
+        .srearch_result_header, temp_body {
+            margin-left: 150px;
+        }
+
+        .temp_body {
+            margin: 35px 150px 20px 150px;
+            width: 767px;
+        }
+
+        .temp_head {
+            width: 767px;
+        }
+
+        .button_see_holtel {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            background-color: purple;
+            color: white;
+            font-weight: bold;
+            border: 1px solid white;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 5px;
+            float: right;
+        }
+
+        .top_sec_hot {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 767px;
+        }
+
+            .top_sec_hot p {
+                margin: 0;
+            }
+
+            .top_sec_hot button {
+                height: 30px;
+            }
+
+
+
+        .c_half_input {
+            width: 177px;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="layout1">
+        <div class="container_body">
+            <div class="PageBody" id="PageBody">
+
+                <div class="temp_head">
+                    <div class="srearch_result_header" style="margin-bottom: 20px;">
+
+                        <h2>@Model.Hotel.Name.ToString().ToUpper()</h2>
+                        <div class="top_sec_hot">
+                            <p style="color:dimgrey;">@string.Format($"{Model.Hotel.StreetNumber} {Model.Hotel.StreetName},{Model.Hotel.Suburb}") <span class="f4bd0794db b4273d69aa"><a href="https://www.google.com/maps/search/?api=1&query= @string.Format($"{Model.Hotel.StreetNumber} {Model.Hotel.StreetName},{Model.Hotel.Suburb}")" target="_blank">Show Map</a></span></p>
+                            <button class="button_see_holtel" id=".button_see_holtel" @*onclick="window.location.href='#mainId'"*@> Book Now</button>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="container_about ">
+                    @{
+                        var db = new HotelListingSystem.Models.ApplicationDbContext();
+                        var room = db.Rooms.FirstOrDefault(a => a.HotelId == Model.Id);
+                    }
+
+                    <div class="left-column">
+                        @if (room != null)
+                        {
+                            <div class="row_a">
+                                <img class="img_a" src="data::@room.RoomImageContentType1;base64,@room.RoomImageContent1" alt="placeholder image1">
+                            </div>
+                            <div class="row_a">
+                                <img class="img_a" src="data:@room.RoomImageContentType2;base64,@room.RoomImageContent2" alt="placeholder image4">
+                            </div>
+
+                        }
+                        else
+                        {
+                            <div class="row_a">
+                                <img class="img_a" src="https://lh4.googleusercontent.com/proxy/zZA09cFACVZPZzJFCXlnC1ieotdcS0sB_xq4_m2gGU9PFOcZyQfwS0h03Q08hCyyzPTBNQxX1pfOQwaBxGimGN4NHUvEs5NM8MKVNy1Ux1VtdLkX_-ses6MbswHuXZ0-7FOV0XlOktAjCeOWRGk6EFQy5OyF7OI=w253-h168-k-no" alt="placeholder image1">
+                            </div>
+                            <div class="row_a">
+                                <img class="img_a" src="https://lh4.googleusercontent.com/proxy/1IXepcM0G_86fzNZx4hXB1KVrC96YKMF_zTz7fWp8lW2dFDBq92XAYGY0qoeFbUhY7sgQ9kcOXgwk9M7jxPdWPZXE90Z8MavReYiCb2Eggbhn86hFOr_CxOQ0jTbDMZKgLWInqUG1Kdw3MSB2HE3PZtNgwlDKg=w253-h168-k-no" alt="placeholder image4">
+                            </div>
+                        }
+
+                    </div>
+                    @if (Model.Hotel.HotelImageContent != null)
+                    {
+                        <div class="right-column">
+                            <img class="img_a" src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fcity-lodge-va-waterfront.capetown-hotels-za.com%2Fen%2F&psig=AOvVaw2wLo85EfQZ8JGtQGhw5Cxi&ust=1684447489730000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCODlsYOu_f4CFQAAAAAdAAAAABAE" alt="placeholder image5">
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="right-column">
+                            <img class="img_a" src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fcity-lodge-va-waterfront.capetown-hotels-za.com%2Fen%2F&psig=AOvVaw2wLo85EfQZ8JGtQGhw5Cxi&ust=1684447489730000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCODlsYOu_f4CFQAAAAAdAAAAABAE" alt="placeholder image5">
+                        </div>
+                    }
+
+                </div>
+                <div class="temp_body">
+                    <p>
+                        You're eligible for a Genius discount at Buckleigh Guesthouse! To save at this property, all you have to do is sign in. <br />
+
+                        The accommodation offers a terrace. Guests at Buckleigh Guesthouse will be able to enjoy activities in and around Durban, like skiing and cycling. <br />
+
+                        Durban ICC is 7.1 km from the guest house, while Durban Botanic Gardens is 7.8 km from the property. The nearest airport is King Shaka International Airport, 28 km from Buckleigh Guesthouse. <br />
+
+                        Couples particularly like the location — they rated it 9.1 for a two-person trip. <br />
+
+                        Buckleigh Guesthouse has been welcoming Booking.com guests since 27 May 2016. <br />
+
+                        Distance in property description is calculated using © OpenStreetMap <br />
+                    </p>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <main style="margin-top:30px;" id="mainId">
+        <hr class="col-md-offset-2" />
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(x => x.HotelId)
+        <div class="form-horizontal">
+            <h1 class="col-md-offset-2">New Hotel Reservation</h1>
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <br />
+            <br />
+            <h5 class="col-md-offset-2">Personal Details</h5>
+            <hr class="col-md-offset-2" />
+            <div class="form-group">
+                @Html.LabelFor(model => model.HotelUser, "Reservation By User", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.HotelUser.FullName, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.HotelUser, "Identification No.", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.HotelUser.IdentificationNumber, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.HotelUser, "Mobile No.", htmlAttributes: new { @class = "control-label col-md-1 col-md-offset-1" })
+                <div class="col-md-2 c_half_input">
+                    @Html.EditorFor(model => model.HotelUser.MobileNumber, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                </div>
+
+                @Html.LabelFor(model => model.HotelUser, "Email Address", htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-2 c_half_input">
+                    @Html.EditorFor(model => model.HotelUser.EmailAddress, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                </div>
+            </div>
+
+            <hr class="col-md-offset-2" />
+            <div class="form-group text-right">
+                <div class="col-md-offset-2 col-md-4">
+                    <input type="submit" value="Send Email" class="btn btn-sm btn-success" hidden />
+                    <input type="submit" value="View Profile" class="btn btn-sm btn-secondary" />
+                </div>
+            </div>
+
+            <br />
+            <br />
+            <h5 class="col-md-offset-2">Reservation Information</h5>
+            <hr class="col-md-offset-2" />
+
+            <div class="form-group">
+                @Html.LabelFor(model => model.Hotel.Name, "Reserved Hotel", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-4">
+                    @Html.EditorFor(model => model.Hotel.Name, new { htmlAttributes = new { @class = "form-control", @required = "required", @disabled = "disabled" } })
+                    @Html.ValidationMessageFor(model => model.Hotel.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.CheckInDate, "Check-In Date", htmlAttributes: new { @class = "control-label col-md-1 col-md-offset-1" })
+                <div class="col-md-2 c_half_input">
+                    @Html.EditorFor(model => model.CheckInDate, new { htmlAttributes = new { @class = "form-control", @type = "date", @required = "required", @Id = "CheckInId" } })
+                    @Html.ValidationMessageFor(model => model.CheckInDate, "", new { @class = "text-danger" })
+                </div>
+                @Html.LabelFor(model => model.CheckOutDate, "Check-Out Date", htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-2 c_half_input">
+                    @Html.EditorFor(model => model.CheckOutDate, new { htmlAttributes = new { @class = "form-control", @type = "date", @required = "required", @Id = "CheckOutId" } })
+                    @Html.ValidationMessageFor(model => model.CheckOutDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.RoomId, "Room Type", htmlAttributes: new { @class = "control-label col-md-1 col-md-offset-1" })
+                <div class="col-md-2 c_half_input">
+                    @Html.DropDownListFor(model => model.RoomId, (SelectList)ViewBag.ThisHotelRooms, htmlAttributes: new { @class = "form-control" })
+                    @Html.ValidationMessageFor(model => model.RoomId, "", new { @class = "text-danger" })
+                </div>
+                @Html.LabelFor(model => model.NoOfRooms, "Number Of Room/s", htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-2 c_half_input">
+                    @Html.EditorFor(model => model.NoOfRooms, new { htmlAttributes = new { @class = "form-control", @min = "1", @max = "50", @required = "required" } })
+                    @Html.ValidationMessageFor(model => model.NoOfRooms, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.TotalCost, "Room Number", htmlAttributes: new { @class = "control-label col-md-1 col-md-offset-1" })
+                <div class="col-md-2 c_half_input">
+                    @Html.EditorFor(model => model.CheckInRoom.RooomNumber, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.TotalCost, "", new { @class = "text-danger" })
+                </div>
+                @Html.LabelFor(model => model.TotalCost, "Total Cost", htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-2 c_half_input">
+                    @Html.EditorFor(model => model.TotalCost, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.TotalCost, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <hr class="col-md-offset-2" />
+            <br />
+            <br />
+            <h5 class="col-md-offset-2">Hotel Add-Ons Details</h5>
+            <hr class="col-md-offset-2" />
+            <br />
+            <div class="form-group">
+                @Html.LabelFor(model => model.Hotel.Name, "Breakfast Menu", htmlAttributes: new { @class = "control-label col-md-1 col-md-offset-1" })
+                <div class="col-md-2 c_half_input">
+                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Sandwich - R75.00") <br />
+                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Sandwich - R75.00") <br />
+                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Sandwich - R75.00") <br />
+                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Sandwich - R75.00") <br />
+                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Sandwich - R75.00") <br />
+                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Sandwich - R75.00") <br />
+                </div>
+                @Html.LabelFor(model => model.Hotel.Name, "Breakfast Menu", htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-2 c_half_input">
+                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Meat Meal - R250") <br />
+                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Meat Meal - R250") <br />
+                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Meat Meal - R250") <br />
+                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Meat Meal - R250") <br />
+                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Meat Meal - R250") <br />
+                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Meat Meal - R250") <br />
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-3 col-md-offset-1" style="margin-left:55px;">
+                </div>
+                @Html.LabelFor(model => model.TotalCost, "Total Cost", htmlAttributes: new { @class = "control-label col-md-1" })
+                <div class="col-md-2 c_half_input">
+                    @Html.EditorFor(model => model.TotalCost, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.TotalCost, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <hr class="col-md-offset-2" />
+            <div class="form-group text-right">
+                <div class="col-md-offset-2 col-md-4">
+                    <input type="button" value="Back" class="btn btn-sm btn-outline-warning" />
+                    <input type="submit" value="Submit" class="btn btn-sm btn-outline-success" />
+                </div>
+            </div>
+
+            <div hidden>
+                <br />
+                <br />
+                <h5 class="col-md-offset-2">Make Payment</h5>
+                <hr class="col-md-offset-2" />
+                <br />
+                <div class="form-group">
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RoomId, "Payment Method", htmlAttributes: new { @class = "control-label col-md-1 col-md-offset-1" })
+                        <div class="col-md-2 c_half_input">
+                            @Html.DropDownListFor(model => model.RoomId, new List<SelectListItem>
+                            {
+                                new SelectListItem { Value = "a_paypal_payment", Text = "Paypal" },
+                                new SelectListItem { Value = "a_yoco_payment_method", Text = "Credit/Debit" }
+                            }, htmlAttributes: new { @class = "form-control", @onchange = "ChangePaymentMethod(this.value)" })
+                            @Html.ValidationMessageFor(model => model.RoomId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <hr class="col-md-offset-2" />
+                <div class="form-group text-right">
+                    <div class="col-md-offset-2 col-md-4">
+                        <input type="button" value="Paypal Pay Now" class="btn btn-sm btn-primary" id="paypalPayment" />
+                        @*<input type="button" value="Debit/Credit Card Payment" class="btn btn-sm btn-warning" id="cardPaymentButton" style="display:none;" />*@
+                        <button class="btn btn-sm btn-warning" id="cardPaymentButton" style="display:none;">Debit/Credit Card Payment</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</body>
+</html>
+@Html.Partial("_eFooter")
+
+
+<!-- Include the Yoco SDK in your web page -->
+<script src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
+
+<!-- Create a pay button that will open the popup-->
+@*<button id="checkout-button">Pay</button>*@
+
+<script type="text/javascript">
+    var yoco = new window.YocoSDK({
+
+        publicKey: 'pk_test_ed3c54a6gOol69qa7f45',
+    });
+    var checkoutButton = document.querySelector('#cardPaymentButton');
+    checkoutButton.addEventListener('click', function () {
+        debugger
+        yoco.showPopup({
+            amountInCents: 2799,
+            currency: 'ZAR',
+            name: 'Your Store or Product',
+            description: 'Awesome description',
+            callback: function (result) {
+                debugger;
+                // This function returns a token that your server can use to capture a payment
+                if (result.error) {
+                    const errorMessage = result.error.message;
+                    alert("error occured: " + errorMessage);
+                } else {
+                    alert("card successfully tokenised: " + result.id);
+                }
+                // In a real integration - you would now pass this chargeToken back to your
+                // server along with the order/basket that the customer has purchased.
+            }
+        })
+    });
+</script>
+
+
+<script>
+    document.querySelector('.button_see_holtel').addEventListener('click', function () {
+        const element = document.querySelector('#mainId');
+        element.scrollIntoView({
+            behavior: 'smooth'
+        });
+    });
+
+
+
+    function ChangePaymentMethod(paymentMethod) {
+        switch (paymentMethod) {
+            case "a_paypal_payment":
+                $('#cardPaymentButton').hide();
+                $('#paypalPayment').show();
+                break;
+            case "a_yoco_payment_method":
+                $('#cardPaymentButton').show();
+                $('#paypalPayment').hide();
+                break;
+        }
+    }
+
+
+
+    function formatdate(date) {
+        var year = date.getFullYear();
+        var month = (date.getMonth() + 1).toString().padStart(2, "0");
+        var day = date.getDate().toString().padStart(2, "0");
+        var formattedDate = year + "-" + month + "-" + day;
+        return formattedDate;
+    }
+
+    $(document).ready(function () {
+        @*document.getElementById("CheckOutId").value = formatdate(new Date('@Model.CheckOutDate'));
+        document.getElementById("CheckInId").value = formatdate(new Date('@Model.CheckInDate'));*@
+    });
+
+
+    $("#RoomId").on('change', function myfunction() {
+        var noOfRooms = $("#NoOfRooms").val();
+        var roomId = $("#RoomId").val();
+            $.ajax({
+                url: '@Url.Action("GetTotalCost", "Reservations")',
+                type: 'POST',
+                data: { roomId: roomId, noOfRooms: noOfRooms },
+                success: function (data) {
+                    if (data.success) {
+                        $("#TotalCost").val(data.message)
+                    } else {
+                        alert(data.message);
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error(errorThrown);
+                }
+            })
+    });
+    $("#NoOfRooms").on('change', function myfunction() {
+        var noOfRooms = $("#NoOfRooms").val();
+        var roomId = $("#RoomId").val();
+            $.ajax({
+                url: '@Url.Action("GetTotalCost", "Reservations")',
+                type: 'POST',
+                data: { roomId: roomId, noOfRooms: noOfRooms },
+                success: function (data) {
+                    if (data.success) {
+                        $("#TotalCost").val(data.message)
+                    } else {
+                        alert(data.message);
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error(errorThrown);
+                }
+            })
+    });
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@*@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    @Html.HiddenFor(x=>x.HotelId)
+    @Html.HiddenFor(x => x.HotelId)
     <div class="form-horizontal">
         <h4>Create Reservation</h4>
         <hr />
@@ -15,7 +584,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.CheckInDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.CheckInDate, new { htmlAttributes = new { @class = "form-control", @type="date", @required = "required" } })
+                @Html.EditorFor(model => model.CheckInDate, new { htmlAttributes = new { @class = "form-control", @type = "date", @required = "required" } })
                 @Html.ValidationMessageFor(model => model.CheckInDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -31,7 +600,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.HotelName, "Hotel", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.HotelName, new { htmlAttributes = new { @class = "form-control", @readonly= "readonly", @disabled = "disabled" } })
+                @Html.EditorFor(model => model.HotelName, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @disabled = "disabled" } })
             </div>
         </div>
 
@@ -46,7 +615,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.NoOfRooms, htmlAttributes: new { @class = "control-label col-md-2", @value = "No. of rooms" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.NoOfRooms, new { htmlAttributes = new { @class = "form-control", @min="1", @max="50", @required = "required" } })
+                @Html.EditorFor(model => model.NoOfRooms, new { htmlAttributes = new { @class = "form-control", @min = "1", @max = "50", @required = "required" } })
                 @Html.ValidationMessageFor(model => model.NoOfRooms, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -65,9 +634,9 @@
             </div>
         </div>
     </div>
-}
+}*@
 
-<script>
+@*<script>
     $("#RoomId").on('change', function myfunction() {
 
         // Perform AJAX call to check room availability
@@ -123,5 +692,5 @@
     });
 
 
-</script>
+</script>*@
 

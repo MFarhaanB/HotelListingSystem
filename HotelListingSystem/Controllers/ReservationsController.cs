@@ -105,6 +105,8 @@ namespace HotelListingSystem.Controllers
                 HotelName = db.Hotels.AsNoTracking().FirstOrDefault(x=>x.Id == id)?.Name,
                 CheckInDate = DateTime.Now,
                 CheckOutDate = DateTime.Now.AddDays(5),
+                HotelUser = AppHelper.CurrentHotelUser(),
+                Hotel= db.Hotels.Find(id)
             };
             ViewBag.HotelId = new SelectList(db.Hotels, "Id", "Name");
             ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName");
