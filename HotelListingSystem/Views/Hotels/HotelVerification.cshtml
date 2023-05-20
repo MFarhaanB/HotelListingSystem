@@ -120,8 +120,7 @@
         <div class="row">
             <div class="col-md-3">
                 <div class="placeholder">
-                    @*<img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Image description" width="300" height="200">*@
-                    <img src="@Url.Action("DisplayImage", "Hotels", new { hotelId = Model.Id })" alt="Image description" width="300" height="200">
+                    <img src="@Url.Action("DownloadHotelFile", "Hotels", new { Id = Model.Id, doc_key_type = "c_hotel_image_c" })" alt="Image description" width="300" height="200">
                 </div>
             </div>
             <div class="col-md-6">
@@ -132,8 +131,8 @@
                         <stromg>Physical Address: </stromg> @string.Format($"{Model.StreetNumber} {Model.StreetName} {Model.Suburb}, {Model.City}, {Model.PhysicalAddressCode}")<br />
                     </p>
                     <p>
-                        @Html.ActionLink("Certificate Of Occupancy", "DisplayImage", "Hotels", new { id = Model.Id, imageType = 2 }, new { @class = "btn btn-warning", target = "_blank" }) |
-                        @Html.ActionLink("COA Document", "DisplayImage", "Hotels", new { id = Model.Id, imageType = 3 }, new { @class = "btn btn-primary", target = "_blank" })
+                        <button class="btn btn-outline-primary" onclick="window.location.href='@Url.Action("DownloadHotelFile", "Hotels", new { Id = Model.Id, doc_key_type = "c_certificate_of_occupancy_c" })'">Certificate Of Occupancy</button> |
+                        <button class="btn btn-outline-secondary" onclick="window.location.href='@Url.Action("DownloadHotelFile", "Hotels", new { Id = Model.Id, doc_key_type = "c_coa_document_c" })'">COA Document</button>
                     </p>
                 </div>
             </div>

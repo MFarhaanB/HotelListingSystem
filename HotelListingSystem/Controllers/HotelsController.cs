@@ -402,9 +402,6 @@ namespace HotelListingSystem.Controllers
             return View();
         }
 
-        // POST: Hotels/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(Hotel hotel, List<HttpPostedFileBase> documents)
@@ -414,6 +411,8 @@ namespace HotelListingSystem.Controllers
             {
                 hotel.HotelUserId = AppHelper.CurrentHotelUser()?.Id;
                 hotel.CreatedOn = DateTime.Now;
+                db.Hotels.Add(hotel);
+                db.SaveChanges();
                 if (documents != null)
                 {
                     int current = 0;
@@ -427,36 +426,112 @@ namespace HotelListingSystem.Controllers
                         switch (current)
                         {
                             case 0:
-                                hotel.HotelImageName = file.FileName;
-                                hotel.HotelImageContentType = file.ContentType;
-                                hotel.HotelImageContent = data;
-                                hotel.HotelImageFileSize = (Int64)file.ContentLength;
+                                #region old
+                                //hotel.HotelImageName = file.FileName;
+                                //hotel.HotelImageContentType = file.ContentType;
+                                //hotel.HotelImageContent = data;
+                                //hotel.HotelImageFileSize = (Int64)file.ContentLength;
+                                //hotel.CertificateOfOccupancyDocName = file.FileName;
+                                //hotel.CertificateOfOccupancyDoContentType = file.ContentType;
+                                //hotel.CertificateOfOccupancyDocContent = data;
+                                //hotel.CertificateOfOccupancyDoFileSize = (Int64)file.ContentLength;
+                                //hotel.COADocName = file.FileName;
+                                //hotel.COADocContentType = file.ContentType;
+                                //hotel.COADocContent = data;
+                                //hotel.COADocFileSize = (Int64)file.ContentLength;
+                                #endregion
+                                SaveHotelDocument(file.FileName, file.ContentType, data, (Int64)file.ContentLength, hotel.Id, "c_hotel_image_c");
                                 break;
                             case 1:
-                                hotel.CertificateOfOccupancyDocName = file.FileName;
-                                hotel.CertificateOfOccupancyDoContentType = file.ContentType;
-                                hotel.CertificateOfOccupancyDocContent = data;
-                                hotel.CertificateOfOccupancyDoFileSize = (Int64)file.ContentLength;
+                                SaveHotelDocument(file.FileName, file.ContentType, data, (Int64)file.ContentLength, hotel.Id, "c_certificate_of_occupancy_c");
                                 break;
                             default:
-                                hotel.COADocName = file.FileName;
-                                hotel.COADocContentType = file.ContentType;
-                                hotel.COADocContent = data;
-                                hotel.COADocFileSize = (Int64)file.ContentLength;
+                                SaveHotelDocument(file.FileName, file.ContentType, data, (Int64)file.ContentLength, hotel.Id, "c_coa_document_c");
                                 break;
 
                         }
                         current++;
                     }
                 }
-                db.Hotels.Add(hotel);
-                db.SaveChanges();
+                
                 ViewBag.AddRooms = "true";
                 return RedirectToAction("Create", "Rooms", new { hotelId = hotel.Id });
             }
 
             ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName", hotel.HotelUserId);
             return View(hotel);
+        }
+
+
+        public static void SaveHotelDocument(string fileName, string fileType, byte[] fileBytes, Int64 fileSize, int hotelId, string doc_key_type)
+        {
+            using(ApplicationDbContext context = new ApplicationDbContext())
+            {
+                Document document = context.Documents
+                    .FirstOrDefault(c => c.HotelId == hotelId && c.DocumentTypeKey == doc_key_type);
+                if (document == null)
+                {
+                    document = new Document();
+                    File ofile = new File();
+                    ofile.ContentType = fileType;
+                    ofile.Content = fileBytes;
+                    ofile.FileName = fileName;
+                    ofile.FileSize = fileSize;
+                    ofile.IsActive = true;
+                    ofile.IsDeleted = false;
+                    ofile.CreatedDateTime = DateTime.Now;
+                    ofile.ModifiedDateTime = DateTime.Now;
+                    context.Files.Add(ofile);
+                    context.SaveChanges();
+
+                    document.IsActive = true;
+                    document.IsDeleted = false;
+                    document.CreatedDateTime = DateTime.Now;
+                    document.ModifiedDateTime = DateTime.Now;
+                    document.FileId = ofile.Id;
+                    document.DocumentTypeKey = doc_key_type;
+                    document.HotelId = hotelId;
+                    context.Documents.Add(document);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    File ofile = context.Files.Find(document.FileId);
+                    ofile.ContentType = fileType;
+                    ofile.Content = fileBytes;
+                    ofile.FileName = fileName;
+                    ofile.FileSize = fileSize;
+                    ofile.ModifiedDateTime = DateTime.Now;
+                    document.ModifiedDateTime = DateTime.Now;
+                    context.Entry(ofile).State = EntityState.Modified;
+                    context.Entry(document).State = EntityState.Modified;
+                    context.SaveChanges();
+                }
+                
+            }
+        }
+
+        public ActionResult DownloadHotelFile(int Id, string doc_key_type)
+        {
+            try
+            {
+                using (ApplicationDbContext context = new ApplicationDbContext())
+                {
+                    Document document = context.Documents.FirstOrDefault(a => a.HotelId == Id && a.DocumentTypeKey == doc_key_type);
+                    File file = context.Files.Find(document.FileId);
+                    if (document.DocumentTypeKey == "a_customer_liveness_image")
+                    {
+                        Response.ContentType = "image/png";
+                        return File(file.Content, file.FileName);
+                    }
+                    return File(file.Content, file.ContentType, file.FileName);
+                }
+            }
+            catch
+            {
+
+            }
+            return null;
         }
 
         // GET: Hotels/Edit/5
@@ -480,7 +555,7 @@ namespace HotelListingSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,MaxOccupancy,PhysicalAddress1,PhysicalAddress2,PhysicalAddress3,PhysicalAddress4,PhysicalAddress5,PhysicalAddressCode,HotelUserId,HotelImageName,HotelImageContent,HotelImageContentType,HotelImageFileSize,IsVerified")] Hotel hotel)
+        public ActionResult Edit(Hotel hotel, List<HttpPostedFileBase> documents)
         {
             if (ModelState.IsValid)
             {
@@ -488,6 +563,45 @@ namespace HotelListingSystem.Controllers
                 hotel.IsVerified = null;
                 db.Entry(hotel).State = EntityState.Modified;
                 db.SaveChanges();
+                if (documents != null)
+                {
+                    int current = 0;
+                    foreach (var doc in documents)
+                    {
+                        var file = doc;
+                        var fileContent = file.InputStream;
+                        byte[] data;
+                        data = new byte[fileContent.Length];
+                        file.InputStream.Read(data, 0, file.ContentLength);
+                        switch (current)
+                        {
+                            case 0:
+                                #region old
+                                //hotel.HotelImageName = file.FileName;
+                                //hotel.HotelImageContentType = file.ContentType;
+                                //hotel.HotelImageContent = data;
+                                //hotel.HotelImageFileSize = (Int64)file.ContentLength;
+                                //hotel.CertificateOfOccupancyDocName = file.FileName;
+                                //hotel.CertificateOfOccupancyDoContentType = file.ContentType;
+                                //hotel.CertificateOfOccupancyDocContent = data;
+                                //hotel.CertificateOfOccupancyDoFileSize = (Int64)file.ContentLength;
+                                //hotel.COADocName = file.FileName;
+                                //hotel.COADocContentType = file.ContentType;
+                                //hotel.COADocContent = data;
+                                //hotel.COADocFileSize = (Int64)file.ContentLength;
+                                #endregion
+                                SaveHotelDocument(file.FileName, file.ContentType, data, (Int64)file.ContentLength, hotel.Id, "c_hotel_image_c");
+                                break;
+                            case 1:
+                                SaveHotelDocument(file.FileName, file.ContentType, data, (Int64)file.ContentLength, hotel.Id, "c_certificate_of_occupancy_c");
+                                break;
+                            default:
+                                SaveHotelDocument(file.FileName, file.ContentType, data, (Int64)file.ContentLength, hotel.Id, "c_coa_document_c");
+                                break;
+                        }
+                        current++;
+                    }
+                }
                 return RedirectToAction("MyHotels");
             }
             ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName", hotel.HotelUserId);

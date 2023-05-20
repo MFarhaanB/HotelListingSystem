@@ -189,7 +189,7 @@
 
                 <td>
 
-                    <img src="@Url.Action("DisplayImage", "Hotels", new { hotelId = item.Id })" alt="Hotel Image" style="height: 150px;width: 150px;" />
+                    <img src="@Url.Action("DownloadHotelFile", "Hotels", new { Id = item.Id, doc_key_type = "c_hotel_image_c" })" alt="Hotel Image" style="height: 150px;width: 150px;" />
                 </td>
                 @*<td>
                         <img src="@Url.Action("DisplayImage", "Hotels", new { hotelId = item.Id, imageType = 2 })" alt="Hotel Image" style="height: 150px;width: 150px;" />

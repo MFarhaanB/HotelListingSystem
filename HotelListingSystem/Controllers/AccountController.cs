@@ -212,9 +212,7 @@ namespace HotelListingSystem.Controllers
             var password = GenerateProfilePassword();
             if (model.HotelId != 0)
             {
-                model.Password = password;
-                model.ConfirmPassword = password;
-                var result = await UserManager.CreateAsync(user, password);
+                var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
                     var roleResult = identityManager.AddUserToRole(user.Id, "Receptionist");
@@ -231,6 +229,9 @@ namespace HotelListingSystem.Controllers
                 }
                 AddErrors(result);
             }
+            var user2 = AppHelper.CurrentHotelUser().Id;
+            var hotels = db.Hotels.Where(a => a.HotelUserId == user2).ToList();
+            ViewBag.HotelsList = new SelectList(hotels, "Id", "Name");
             return View(model);
         }
 
