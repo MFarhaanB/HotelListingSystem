@@ -258,26 +258,26 @@ namespace HotelListingSystem.Controllers
             // Query the database to get hotels based on the search criteria
             var result = (from rooms in db.Rooms
                           join hotel in db.Hotels on rooms.HotelId equals hotel.Id
-                         join reservation in db.Reservations on hotel.Id equals reservation.HotelId into hotelReservationGroup
-                         from reservation in hotelReservationGroup.DefaultIfEmpty()
-                         where  hotel.Blacklisted != true /*&& hotel.IsVerified == true*/
-                         select new HotelReservationVM
-                         {
-                             HotelId = hotel.Id,
-                             HotelName = hotel.Name,
-                             Suburb = hotel.Suburb,
-                             MaxOccupancy = hotel.MaxOccupancy,
-                             RoomId = rooms.Id,
-                             RoomName = rooms.Name,
-                             City = hotel.City,
-                             HotelUserId = hotel.HotelUserId == null ? null : hotel.HotelUserId,
-                             Rating = hotel.Rating,
-                             CheckInDate = reservation.CheckInDate,
-                             CheckOutDate = reservation.CheckOutDate,
-                             HotelImageName = hotel.HotelImageName,
-                             HotelImageContent = hotel.HotelImageContent,
-                             PricePerRoom = rooms.PricePerRoom,
-                         }).ToList();
+                          join reservation in db.Reservations on hotel.Id equals reservation.HotelId into hotelReservationGroup
+                          from reservation in hotelReservationGroup.DefaultIfEmpty()
+                          where hotel.Blacklisted != true && hotel.IsVerified == true && hotel.IsBlackListed != true
+                          select new HotelReservationVM
+                          {
+                              HotelId = hotel.Id,
+                              HotelName = hotel.Name,
+                              Suburb = hotel.Suburb,
+                              MaxOccupancy = hotel.MaxOccupancy,
+                              RoomId = rooms.Id,
+                              RoomName = rooms.Name,
+                              City = hotel.City,
+                              HotelUserId = hotel.HotelUserId == null ? null : hotel.HotelUserId,
+                              Rating = hotel.Rating,
+                              CheckInDate = reservation.CheckInDate,
+                              CheckOutDate = reservation.CheckOutDate,
+                              HotelImageName = hotel.HotelImageName,
+                              HotelImageContent = hotel.HotelImageContent,
+                              PricePerRoom = rooms.PricePerRoom,
+                          }).ToList();
 
 
             var hotels = result.Where(h =>

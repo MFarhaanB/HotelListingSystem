@@ -71,6 +71,7 @@ namespace HotelListingSystem.Models
         public bool? COADocVerified { get; set; }
 
         public DateTime? CreatedOn { get; set; }
+        public DateTime? ModifiedDate { get; set; }
 
         public int? HotelUserId { get; set; }
         [ForeignKey("HotelUserId")]
@@ -80,10 +81,13 @@ namespace HotelListingSystem.Models
         [ForeignKey("ReceptionistId")]
         public HotelUsers Receptionist { get; set; }
         public bool? VerificationApproved { get; set; }
-
         public string LayoutKeyValue { get; set; }
-
         public decimal AmountOwed { get; set; }
+        public bool IsBlackListed { get; set; }
+        public bool IsNotified { get; set; }
+        public DateTime? NotificationDate { get; set; }
+
+
 
     }
 }

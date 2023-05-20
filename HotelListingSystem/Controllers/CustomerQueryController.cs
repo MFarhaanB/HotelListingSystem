@@ -150,11 +150,6 @@ namespace HotelListingSystem.Controllers
             return document;
         }
 
-
-       
-
-
-
         public ActionResult DownloadFile(int FileId)
         {
             using (ApplicationDbContext context = new ApplicationDbContext())

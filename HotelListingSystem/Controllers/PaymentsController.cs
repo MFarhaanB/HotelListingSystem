@@ -289,10 +289,10 @@ namespace HotelListingSystem.Controllers
                         return View("Failure");
                     }
                 }
-
-                hotel.AmountOwed += decimal.Parse((double.Parse(total) * 0.02).ToString());
-                db.Entry(hotel).State = EntityState.Modified;
-                db.SaveChanges();
+                UpdateHotelFees(hotel.Id, decimal.Parse(total));
+                //hotel.AmountOwed += decimal.Parse((double.Parse(total) * 0.02).ToString());
+                //db.Entry(hotel).State = EntityState.Modified;
+                //db.SaveChanges();
 
                 var body = $"Hi {User.FullName} thankyou for your payment ";
                 new Email().SendEmail(User.EmailAddress, "Hotel Payment", User.FullName, body);
@@ -414,6 +414,49 @@ namespace HotelListingSystem.Controllers
             return View();
         }
 
+        [Authorize(Roles = "Administrator, Receptionist")]
+        public ActionResult HotelPyaments()
+        {
+            List<Payment> payments = new List<Payment>();
+            List<IGrouping<int, Hotel>> owinghotels = new List<IGrouping<int, Hotel>>();
+
+            try
+            {
+                using (ApplicationDbContext context = new ApplicationDbContext())
+                {
+                    var payment = context.Payments
+                        .Include(a => a.Reservation.Hotel.HotelUser)
+                        .Where(c => c.IsActive)
+                        .ToList();
+
+                    if (User.IsInRole("Administrator"))
+                    {
+                        payments = payment;
+                        owinghotels = payment
+                            .Select(a => a.Reservation.Hotel)
+                            .GroupBy(grp => grp.Id)
+                            .ToList();
+                    }
+                    else
+                    {
+                        var user = AppHelper.CurrentHotelUser().Id;
+                        payments = payment
+                            .Where(a => (a.Reservation.Hotel.HotelUser.Id == user || a.Reservation.Hotel.ReceptionistId == user))
+                            .ToList();
+                        owinghotels = payments
+                            .Select(a => a.Reservation.Hotel)
+                            .GroupBy(grp => grp.Id)
+                            .ToList();
+                    }
+                }
+            }
+            catch
+            {
+                // Handle exception
+            }
+
+            return View(owinghotels);
+        }
 
 
 
@@ -446,6 +489,9 @@ namespace HotelListingSystem.Controllers
                     reservation.ModifiedOn = DateTime.Now;
                     context.Entry(reservation).State = EntityState.Modified;
                     context.SaveChanges();
+
+                    UpdateHotelFees((int)reservation.HotelId, reservation.TotalCost);
+
                     return Json(true, JsonRequestBehavior.AllowGet);
                 }
             }
@@ -470,6 +516,168 @@ namespace HotelListingSystem.Controllers
                 GetpaymentReferrence(Prefix, context);
             }
             return null;
+        }
+
+        public static void UpdateHotelFees(int id, decimal amount)
+        {
+            try
+            {
+                using (ApplicationDbContext context = new ApplicationDbContext())
+                {
+                    var hotel = context.Hotels.Find(id);
+                    var user = context.HotelUsers.Find(hotel.HotelUserId);
+
+                    hotel.ModifiedDate = DateTime.Now;
+                    hotel.AmountOwed += amount * decimal.Parse("0,02");
+                    user.SystemRates = (user.SystemRates == null) ? (hotel.AmountOwed) : (user.SystemRates + hotel.AmountOwed);
+                    context.Entry(hotel).State = EntityState.Modified;
+                    context.Entry(user).State = EntityState.Modified;
+                    context.SaveChanges();
+                }
+            }
+            catch
+            {
+
+            }
+        }
+
+
+        public ActionResult PaySystemFeesBulk(int id, string yocco_ref)
+        {
+            try
+            {
+                using (ApplicationDbContext context = new ApplicationDbContext())
+                {
+                    var owner = context.HotelUsers.Find(id);
+                    var hotels = context.Hotels.Where(a => a.HotelUserId == owner.Id).ToList();
+                    foreach(var h in hotels)
+                    {
+                        h.AmountOwed = 0;
+                        //h.IsBlackListed = false;
+                        h.PaymentDoneDate = DateTime.Now;
+                        h.ModifiedDate = DateTime.Now;
+                        context.Entry(h).State = EntityState.Modified;
+                    }
+
+                    owner.SystemRates = 0;
+                    owner.LastPaymentDate = DateTime.Now;
+                    context.Entry(owner).State = EntityState.Modified;
+                    context.SaveChanges();
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch
+            {
+
+            }
+            return Json(false, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult PaySystemFeesSingle(int id, int HotelId, string yocco_ref)
+        {
+            try
+            {
+                using (ApplicationDbContext context = new ApplicationDbContext())
+                {
+                    var owner = context.HotelUsers.Find(id);
+                    var hotel = context.Hotels.Find(HotelId);
+                    //hotel.IsBlackListed = false;
+                    hotel.PaymentDoneDate = DateTime.Now;
+                    hotel.ModifiedDate = DateTime.Now;
+                    owner.SystemRates = (owner.SystemRates - hotel.AmountOwed);
+                    hotel.AmountOwed = 0;
+                    owner.LastPaymentDate = DateTime.Now;
+                    context.Entry(hotel).State = EntityState.Modified;
+                    context.Entry(owner).State = EntityState.Modified;
+                    context.SaveChanges();
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch
+            {
+
+            }
+            return Json(false, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult SendBlacklistEmail(int id)
+        {
+            try
+            {
+                using (ApplicationDbContext context = new ApplicationDbContext())
+                {
+                    var hotel = context.Hotels.Find(id);
+                    var owner = context.HotelUsers.Find(hotel.HotelUserId);
+                   
+                    hotel.IsBlackListed = false;
+                    hotel.NotificationDate = DateTime.Now;
+                    hotel.IsNotified = true;
+                    context.Entry(hotel).State = EntityState.Modified;
+                    context.SaveChanges();
+
+                    new Email().SendEmail(owner.EmailAddress, "Payment Due", $"{owner.FullName}", $"Your hotel {hotel.Name} has been marked for blacklist if you do not settle the overdue funds immedietly.");
+
+                    
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch
+            {
+
+            }
+            return Json(false, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult Blacklisthotel(int id)
+        {
+            try
+            {
+                using (ApplicationDbContext context = new ApplicationDbContext())
+                {
+                    var hotel = context.Hotels.Find(id);
+                    var owner = context.HotelUsers.Find(hotel.HotelUserId);
+                   
+                    hotel.IsBlackListed = true;
+                    hotel.NotificationDate = DateTime.Now;
+                    hotel.IsNotified = true;
+                    context.Entry(hotel).State = EntityState.Modified;
+                    context.SaveChanges();
+
+                    new Email().SendEmail(owner.EmailAddress, "Blacklist", $"{owner.FullName}", $"Your hotel {hotel.Name} has been blacklisted due to pennding payments. To reactivate your hotel you need to sttle the payments and await approval.");
+
+                    
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch
+            {
+
+            }
+            return Json(false, JsonRequestBehavior.AllowGet);
+        }
+        public ActionResult WhitelistHotel(int id)
+        {
+            try
+            {
+                using (ApplicationDbContext context = new ApplicationDbContext())
+                {
+                    var hotel = context.Hotels.Find(id);
+                    var owner = context.HotelUsers.Find(hotel.HotelUserId);
+                   
+                    hotel.IsBlackListed = false;
+                    hotel.NotificationDate = DateTime.Now;
+                    hotel.IsNotified = false;
+                    context.Entry(hotel).State = EntityState.Modified;
+                    context.SaveChanges();
+
+                    new Email().SendEmail(owner.EmailAddress, "Whitelist", $"{owner.FullName}", $"Your hotel {hotel.Name} has been whitelisted you will now be getting bookings via our channel.");
+
+                    
+                    return Json(true, JsonRequestBehavior.AllowGet);
+                }
+            }
+            catch
+            {
+
+            }
+            return Json(false, JsonRequestBehavior.AllowGet);
         }
     }
 }

@@ -64,6 +64,8 @@ namespace HotelListingSystem.Models
         [Display(Name = "Created On")]
         public DateTime? CreatedOn { get; set; }
         public string MobileAppPassword { get; set; }
+        public DateTime? LastPaymentDate { get; set; }
+        public decimal? SystemRates { get; set; }
 
         [Display(Name = "User")]
         public string FullName
