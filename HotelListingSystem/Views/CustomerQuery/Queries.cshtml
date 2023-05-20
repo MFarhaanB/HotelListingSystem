@@ -51,15 +51,19 @@
                             <td>
                                 @if (User.IsInRole("Customer"))
                                 {
-                                    @Html.ActionLink("View Details", "QueryDetails", "CustomerQuery", new { Id = item.Id }, new { @class = "btn btn-primary" })
+                                    @Html.ActionLink("View Details", "CustomerQueryDetails", "CustomerQuery", new { Id = item.Id }, new { @class = "btn btn-primary" })
                                 }
-                                else
+                                else if ((!item.IsEscalated && !item.IsClosed) || (item.IsEscalated && !item.IsClosed))
                                 {
                                     @Html.ActionLink("View Query Details", "CustomerQuery", new { id = item.Id }, new { @class = "btn btn-outline-warning" })
                                 }
+                                else
+                                {
+                                    @Html.ActionLink("View Details", "CustomerQueryDetails", "CustomerQuery", new { Id = item.Id }, new { @class = "btn btn-primary" })
+                                }
                             </td>
                         </tr>
-                       
+
                     }
                 </tbody>
                 <tfoot>

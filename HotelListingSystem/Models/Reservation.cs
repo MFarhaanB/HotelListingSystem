@@ -60,6 +60,15 @@ namespace HotelListingSystem.Models
         [ForeignKey("CheckInRoomId")]
         public CheckInRoom CheckInRoom { get; set; }
 
+
+
+        public string RoomNumber { get; set; }
+        public bool RoomAllocated { get; set; }
+        public bool CheckInConfirmed { get; set; }
+
+
+
+
         [Display(Name = "User")]
         public string FullName
         {
@@ -70,6 +79,10 @@ namespace HotelListingSystem.Models
         public List<Dining> breakfastmeals { get; set; }
         [NotMapped]
         public List<Dining> lunchmeals { get; set; }
+        [NotMapped]
+        public Payment payment { get; set; }
+        [NotMapped]
+        public Document Document { get; set; }
         [NotMapped]
         public AddOnsR Addons { get; set; }
     }

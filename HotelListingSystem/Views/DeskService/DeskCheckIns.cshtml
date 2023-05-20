@@ -146,8 +146,19 @@
                 <hr class="col-md-offset-2" />
                 <div class="form-group text-right">
                     <div class="col-md-offset-2 col-md-4">
-                        <input type="submit" value="Allocate Room" class="btn btn-sm btn-success" />
-                        <input type="submit" value="Approve Check-In" class="btn btn-sm btn-warning" />
+                        @if (!Model.RoomAllocated)
+                        {
+                            <input type="button" onclick="AllocateRoom('@Model.Id')" value="Allocate Room" class="btn btn-sm btn-success" />
+                        }
+                        else if (Model.RoomAllocated && !Model.CheckInConfirmed)
+                        {
+                            <input type="button" onclick="ConfirmHotelCheckIn('@Model.Id')" value="Approve Check-In" class="btn btn-sm btn-warning" />
+                            if (Model.Document != null)
+                            {
+                                <input type="button" onclick="window.open('@Url.Action("DownloadFile", "CustomerQuery", new { FileId = Model.Document.FileId })', '_blank')" value="View KYC Image" class="btn btn-sm btn-outline-danger" />
+                            }
+                        }
+                        <input type="button" value="Back To List" onclick="window.history.back()" class="btn btn-sm btn-outline-warning" />
                     </div>
                 </div>
             </div>
@@ -157,6 +168,45 @@
 </html>
 @Html.Partial("_eFooter")
 <script>
+    function AllocateRoom(id){
+          $.ajax({
+                url: '@Url.Action("AllocateRoomsToReservation", "DeskService")',
+                type: 'POST',
+                data: { id: id },
+                success: function (data) {
+                    if (data) {
+                        alert('Room allocated to the reservation.')
+                        window.location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error(errorThrown);
+                }
+            })
+    }
+    function ConfirmHotelCheckIn(id){
+          $.ajax({
+                url: '@Url.Action("ConfirmHotelCheckIn", "DeskService")',
+                type: 'POST',
+                data: { id: id },
+                success: function (data) {
+                    if (data) {
+                        alert('Check confirmed successfully!')
+                        window.location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error(errorThrown);
+                }
+            })
+    }
+
+
+
     function formatdate(date) {
         var year = date.getFullYear();
         var month = (date.getMonth() + 1).toString().padStart(2, "0");

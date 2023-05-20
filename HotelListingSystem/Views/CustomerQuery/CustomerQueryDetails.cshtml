@@ -1,5 +1,4 @@
 ﻿@model HotelListingSystem.Models.CustomerQuery
-
 @{
     Layout = null;
 }
@@ -18,7 +17,7 @@
     @Html.Partial("_eHead")
     <style>
         .c_half_input {
-            width: 193px;
+            width: 177px;
         }
 
         .image-text {
@@ -64,14 +63,17 @@
                         @Html.EditorFor(model => model.Customer.EmailAddress, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
                     </div>
                 </div>
-
-                <hr class="col-md-offset-2" />
-                <div class="form-group text-right">
-                    <div class="col-md-offset-2 col-md-4">
-                        <input type="button" onclick="SendEmailNotification('@Model.Customer.EmailAddress', '@Model.Customer.FullName')" value="Send Email" class="btn btn-sm btn-success" />
-                        <input type="submit" value="View Profile" class="btn btn-sm btn-secondary" />
+                @if (HotelListingSystem.Models.AppHelper.CurrentHotelUser().Id != Model.Customer.Id)
+                {
+                    <hr class="col-md-offset-2" />
+                    <div class="form-group text-right">
+                        <div class="col-md-offset-2 col-md-4">
+                            <input type="button" onclick="SendEmailNotification('@Model.Customer.EmailAddress', '@Model.Customer.FullName')" value="Send Email" class="btn btn-sm btn-success" />
+                            @*<input type="submit" value="View Profile" class="btn btn-sm btn-secondary" />*@
+                        </div>
                     </div>
-                </div>
+                }
+
 
                 <br />
                 <br />
@@ -104,105 +106,141 @@
                 </div>
 
 
+                @if (!String.IsNullOrEmpty(Model.EscalationDesciption))
+                {
+                    <br />
+                    <br />
+                    <h5 class="col-md-offset-2">Receptionist Details</h5>
+                    <hr class="col-md-offset-2" />
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Receptionist, "Receptionist Full Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-4">
+                            @Html.EditorFor(model => model.Receptionist.FullName, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Receptionist, "Mobile No.", htmlAttributes: new { @class = "control-label col-md-1 col-md-offset-1" })
+                        <div class="col-md-2 c_half_input">
+                            @Html.EditorFor(model => model.Receptionist.MobileNumber, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                        </div>
+
+                        @Html.LabelFor(model => model.Receptionist, "Email Address", htmlAttributes: new { @class = "control-label col-md-1" })
+                        <div class="col-md-2 c_half_input">
+                            @Html.EditorFor(model => model.Receptionist.EmailAddress, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                        </div>
+                    </div>
+                    if (HotelListingSystem.Models.AppHelper.CurrentHotelUser().Id != Model.Receptionist.Id)
+                    {
+                        <hr class="col-md-offset-2" />
+                        <div class="form-group text-right">
+                            <div class="col-md-offset-2 col-md-4">
+                                <input type="button" onclick="SendEmailNotification('@Model.Receptionist.EmailAddress', '@Model.Receptionist.FullName')" value="Send Email" class="btn btn-sm btn-success" />
+                            </div>
+                        </div>
+                    }
 
 
-                <br />
-                <br />
-                <h5 class="col-md-offset-2">Receptionist Details</h5>
+                    <br />
+                    <br />
+                    <h5 class="col-md-offset-2">Recepionist Query Details</h5>
+                    <hr class="col-md-offset-2" />
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Reservation, "Action Status", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-2">
+                            @Html.DropDownList("approvalStatus", new SelectList(new[]
+                         {
+                                  new SelectListItem { Text = "Escalate Customer Query - Open", Value = "c_query_escalated_opened" }
+                                }, "Value", "Text"), new { @class = "form-control", @Name = "approvalStatus", @disabled = "disabled" })
+
+                            @Html.ValidationMessage("approvalStatus", "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("Escalation Document", new { @class = "control-label col-md-2" })
+                        <div class="col-md-7">
+                            <a href='@Url.Action("DownloadFile", new { FileId = ViewBag.CustomerFileId })'><i class="fa fa-download"></i>@ViewBag.CustomerDocName</a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.EscalationDesciption, "Escalation Description", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-4">
+                            @Html.TextAreaFor(model => model.EscalationDesciption, new { @class = "form-control", @disabled = "disabled", @style = "height: 85px;" })
+                            @Html.ValidationMessageFor(model => model.EscalationDesciption, "", new { @class = "text-danger", @disabled = "disabled" })
+                        </div>
+                    </div>
+
+
+                }
+
+
+                @if (!String.IsNullOrEmpty(Model.FinalDescription))
+                {
+                    <br />
+                    <br />
+                    <h5 class="col-md-offset-2">Administrator Details</h5>
+                    <hr class="col-md-offset-2" />
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Receptionist, "Administrator Full Name", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-4">
+                            @Html.EditorFor(model => model.Administrator.FullName, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Receptionist, "Mobile No.", htmlAttributes: new { @class = "control-label col-md-1 col-md-offset-1" })
+                        <div class="col-md-2 c_half_input">
+                            @Html.EditorFor(model => model.Administrator.MobileNumber, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                        </div>
+
+                        @Html.LabelFor(model => model.Receptionist, "Email Address", htmlAttributes: new { @class = "control-label col-md-1" })
+                        <div class="col-md-2 c_half_input">
+                            @Html.EditorFor(model => model.Administrator.EmailAddress, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
+                        </div>
+                    </div>
+
+                    <hr class="col-md-offset-2" />
+                    <div class="form-group text-right">
+                        <div class="col-md-offset-2 col-md-4">
+                            <input type="button" onclick="SendEmailNotification('@Model.Administrator.EmailAddress', '@Model.Administrator.FullName')" value="Send Email" class="btn btn-sm btn-success" />
+                        </div>
+                    </div>
+
+
+
+                    <br />
+                    <br />
+                    <h5 class="col-md-offset-2">Capture Query Response Details</h5>
+                    <hr class="col-md-offset-2" />
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.Reservation, "Action Status", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-2">
+                            @Html.DropDownList("approvalStatus", new SelectList(new[]
+                         {
+                                  new SelectListItem { Text = "Close Customer Query - Solved", Value = "c_query_solved_closed" },
+                                }, "Value", "Text"), new { @class = "form-control", @Name = "approvalStatus", @required = "required", @disabled = "disabled" })
+                            @Html.ValidationMessage("approvalStatus", "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.Label("Solution of Issue Document", new { @class = "control-label col-md-2" })
+                        <div class="col-md-7">
+                            <a href='@Url.Action("DownloadFile", new { FileId = ViewBag.AdminDocsFileId })'><i class="fa fa-download"></i>@ViewBag.AdminDocsName</a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.FinalDescription, "Solution of Issue Description", htmlAttributes: new { @class = "control-label col-md-2" })
+                        <div class="col-md-4">
+                            @Html.TextAreaFor(model => model.FinalDescription, new { @class = "form-control", @required = "required", @style = "height: 85px;", @disabled = "disabled" })
+                            @Html.ValidationMessageFor(model => model.FinalDescription, "", new { @class = "text-danger", @disabled = "disabled" })
+                        </div>
+                    </div>
+
+                }
+
                 <hr class="col-md-offset-2" />
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Receptionist, "Receptionist Full Name", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-4">
-                        @Html.EditorFor(model => model.Receptionist.FullName, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Receptionist, "Mobile No.", htmlAttributes: new { @class = "control-label col-md-1 col-md-offset-1" })
-                    <div class="col-md-2 c_half_input">
-                        @Html.EditorFor(model => model.Receptionist.MobileNumber, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
-                    </div>
-
-                    @Html.LabelFor(model => model.Receptionist, "Email Address", htmlAttributes: new { @class = "control-label col-md-1" })
-                    <div class="col-md-2 c_half_input">
-                        @Html.EditorFor(model => model.Receptionist.EmailAddress, new { htmlAttributes = new { @class = "form-control", @disabled = "disabled" } })
-                    </div>
-                </div>
-
-                <hr class="col-md-offset-2" />
-                <div class="form-group text-right">
-                    <div class="col-md-offset-2 col-md-4">
-                        <input type="button" onclick="SendEmailNotification('@Model.Receptionist.EmailAddress', '@Model.Receptionist.FullName')" value="Send Email" class="btn btn-sm btn-success" />
-                        <input type="submit" value="View Profile" class="btn btn-sm btn-secondary" />
-                    </div>
-                </div>
-
-                <br />
-                <br />
-                <h5 class="col-md-offset-2">Recepionist Query Details</h5>
-                <hr class="col-md-offset-2" />
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Reservation, "Action Status", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-2">
-                        @Html.DropDownList("approvalStatus", new SelectList(new[]
-                            {
-                              //new SelectListItem { Text = "Close Customer Query - Solved", Value = "c_query_solved_closed" },
-                              new SelectListItem { Text = "Escalate Customer Query - Open", Value = "c_query_escalated_opened" }
-                            }, "Value", "Text"), new { @class = "form-control", @Name = "approvalStatus", @disabled = "disabled" })
-
-                        @Html.ValidationMessage("approvalStatus", "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.Label("Escalation Document", new { @class = "control-label col-md-2" })
-                    <div class="col-md-7">
-                        <a href='@Url.Action("DownloadFile", new { FileId = ViewBag.CustomerFileId })'><i class="fa fa-download"></i>@ViewBag.CustomerDocName</a>
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.EscalationDesciption, "Escalation Description", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-4">
-                        @Html.TextAreaFor(model => model.EscalationDesciption, new { @class = "form-control", @disabled = "disabled", @style = "height: 85px;" })
-                        @Html.ValidationMessageFor(model => model.EscalationDesciption, "", new { @class = "text-danger", @disabled = "disabled" })
-                    </div>
-                </div>
-
-
-                <br />
-                <br />
-                <h5 class="col-md-offset-2">Capture Query Response Details</h5>
-                <hr class="col-md-offset-2" />
-                <div class="form-group">
-                    @Html.LabelFor(model => model.Reservation, "Action Status", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-2">
-                        @Html.DropDownList("approvalStatus", new SelectList(new[]
-                            {
-                              new SelectListItem { Text = "Close Customer Query - Solved", Value = "c_query_solved_closed" },
-                              //new SelectListItem { Text = "Escalate Customer Query - Open", Value = "c_query_escalated_opened" }
-                            }, "Value", "Text"), "---Select Option---", new { @class = "form-control", @Name = "approvalStatus", @required = "required" })
-
-                        @Html.ValidationMessage("approvalStatus", "", new { @class = "text-danger" })
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.Label("Solution of Issue Document", new { @class = "control-label col-md-2" })
-                    <div class="col-md-7">
-                        @*<a href='@Url.Action("uuu", "kkkk", new { FileId = ViewBag.CustomerFileId })'><i class="fa fa-download"></i>@ViewBag.CustomerDocName</a>*@
-                        <input type="file" name="file" id="imageUpload" class="control-label" accept=".png, .jpg, .jpeg, .pdf" required />
-                    </div>
-                </div>
-                <div class="form-group">
-                    @Html.LabelFor(model => model.FinalDescription, "Solution of Issue Description", htmlAttributes: new { @class = "control-label col-md-2" })
-                    <div class="col-md-4">
-                        @Html.TextAreaFor(model => model.FinalDescription, new { @class = "form-control", @required = "required", @style = "height: 85px;" })
-                        @*@Html.TextArea("QueryDescription", new { @class = "form-control", @Id = "Comments", @required = "required" })*@
-                        @Html.ValidationMessageFor(model => model.FinalDescription, "", new { @class = "text-danger", @disabled = "disabled" })
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input type="submit" value="Submit Query" class="btn btn-warning" />
-                    </div>
+                    <div class="form-group text-right">
+                        <div class="col-md-offset-2 col-md-4">
+                            <input type="button" value="Back To List" onclick="window.history.back()" class="btn btn-outline-warning" />
+                        </div>
                 </div>
             </div>
         }
@@ -215,6 +253,10 @@
 @Html.Partial("_eFooter")
 
 <script>
+    function goBack() {
+        window.history.back();
+    }
+
     function SendEmailNotification(email, userFullName) {
         let messageTitle = prompt("Please enter message tittle:");
         let messageBody = prompt("Please enter message body:");

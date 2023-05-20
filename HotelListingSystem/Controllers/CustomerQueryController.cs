@@ -160,6 +160,12 @@ namespace HotelListingSystem.Controllers
             using (ApplicationDbContext context = new ApplicationDbContext())
             {
                 Models.File file = context.Files.Find(FileId);
+                Document document = context.Documents.FirstOrDefault(a => a.FileId == FileId);
+                if (document.DocumentTypeKey == "a_customer_liveness_image")
+                {
+                    Response.ContentType = "image/png";
+                    return File(file.Content, file.FileName);
+                }
                 return File(file.Content, file.ContentType, file.FileName);
             }
         }
@@ -286,12 +292,20 @@ namespace HotelListingSystem.Controllers
             var docsAdmin = customerQueryDocs.FirstOrDefault(c => c.DocumentTypeKey == "a_admin_query_docs");
             ViewBag.CustomerDocName = docsCust.File.FileName;
             ViewBag.CustomerFileId = docsCust.File.Id;
-            ViewBag.RecepionistDocsName = docsCust.File.FileName;
-            ViewBag.RecepionistDocsFileId = docsCust.File.Id;
-            ViewBag.AdminDocsName = docsAdmin.File.FileName;
-            ViewBag.AdminDocsFileId = docsAdmin.File.Id;
+            if (docsRecept != null)
+            {
+                ViewBag.RecepionistDocsName = docsRecept.File.FileName;
+                ViewBag.RecepionistDocsFileId = docsRecept.File.Id;
+            }
+            if (docsAdmin != null)
+            {
+                ViewBag.AdminDocsName = docsAdmin.File.FileName;
+                ViewBag.AdminDocsFileId = docsAdmin.File.Id;
+            }
+
+
             return View(customerQuery);
-                 
+
         }
 
         public static string getQueryUpdateStatus(string approvalStatus)
