@@ -277,20 +277,22 @@ namespace HotelListingSystem.Controllers
                               HotelImageName = hotel.HotelImageName,
                               HotelImageContent = hotel.HotelImageContent,
                               PricePerRoom = rooms.PricePerRoom,
-                          }).ToList();
+                          }).Distinct().ToList();
 
 
             var hotels = result.Where(h =>
                 (string.IsNullOrEmpty(suburb) || h.Suburb.Contains(suburb)) &&
                 (string.IsNullOrEmpty(city) || h.City.Contains(city)) &&
                 (!checkin.HasValue || h.CheckInDate <= checkin.Value) &&
-                (!checkout.HasValue || h.CheckOutDate >= checkout.Value)).ToList();
+                (!checkout.HasValue || h.CheckOutDate >= checkout.Value)).Distinct().ToList();
 
             if ((hotels.Count() != result.Count()) && hotels.Count() > 0)
             {
                 hotels.FirstOrDefault().IsSearchResults = true;
             }
-
+            hotels = hotels.GroupBy(h => h.HotelId)
+              .Select(g => g.First())
+              .ToList();
             ViewBag.City = new SelectList(db.Hotels.Select(h => h.City).Distinct().ToList());
             ViewBag.Suburb = new SelectList(db.Hotels.Select(h => h.Suburb).Distinct().ToList());
             ViewBag.HotelId = new SelectList(db.Hotels, "Id", "Name");

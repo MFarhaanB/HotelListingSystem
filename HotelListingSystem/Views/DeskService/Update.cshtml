@@ -94,12 +94,12 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.RoomId, "Room Type", htmlAttributes: new { @class = "control-label col-md-1 col-md-offset-1" })
                 <div class="col-md-2 c_half_input">
-                    @Html.DropDownListFor(model => model.RoomId, (SelectList)ViewBag.ThisHotelRooms, htmlAttributes: new { @class = "form-control", @disabled = "disabled" })
+                    @Html.DropDownListFor(model => model.RoomId, (SelectList)ViewBag.ThisHotelRooms, htmlAttributes: new { @class = "form-control", @disabled = "disabled", @Id = "roomsId" })
                     @Html.ValidationMessageFor(model => model.RoomId, "", new { @class = "text-danger" })
                 </div>
                 @Html.LabelFor(model => model.NoOfRooms, "Number Of Room/s", htmlAttributes: new { @class = "control-label col-md-1" })
                 <div class="col-md-2 c_half_input">
-                    @Html.EditorFor(model => model.NoOfRooms, new { htmlAttributes = new { @class = "form-control", @min = "1", @max = "50", @required = "required" } })
+                    @Html.EditorFor(model => model.NoOfRooms, new { htmlAttributes = new { @class = "form-control", @min = "1", @max = "50", @required = "required", @Id="noOfroomsId" } })
                     @Html.ValidationMessageFor(model => model.NoOfRooms, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -111,16 +111,8 @@
                 </div>
                 @Html.LabelFor(model => model.TotalCost, "Total Cost", htmlAttributes: new { @class = "control-label col-md-1" })
                 <div class="col-md-2 c_half_input">
-                    @Html.EditorFor(model => model.TotalCost, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.EditorFor(model => model.TotalFees, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
                     @Html.ValidationMessageFor(model => model.TotalCost, "", new { @class = "text-danger" })
-                </div>
-            </div>
-
-            <hr class="col-md-offset-2" />
-            <div class="form-group text-right">
-                <div class="col-md-offset-2 col-md-4">
-                    <input type="submit" value="Update" class="btn btn-sm btn-warning" />
-                    <input type="submit" value="Calncel" class="btn btn-sm btn-danger" />
                 </div>
             </div>
 
@@ -132,21 +124,19 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.Hotel.Name, "Breakfast Menu", htmlAttributes: new { @class = "control-label col-md-1 col-md-offset-1" })
                 <div class="col-md-2 c_half_input">
-                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Sandwich - R75.00") <br />
-                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Sandwich - R75.00") <br />
-                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Sandwich - R75.00") <br />
-                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Sandwich - R75.00") <br />
-                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Sandwich - R75.00") <br />
-                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Sandwich - R75.00") <br />
+                    @foreach (var breakfast in Model.breakfastmeals)
+                    {
+                        var Ischecked = (Model.Addons != null && Model.Addons.AddOns.Contains(breakfast.Id.ToString())) ? true : false;
+                        <input type="checkbox" value="@breakfast.Id" name="selectedMeals" checked="@Ischecked" onchange="ChangeMenues('@breakfast.CostPerPerson', this.checked)" /> @Html.Raw($"{breakfast.Name} - {breakfast.CostPerPerson.ToString("C")}") <br />
+                    }
                 </div>
                 @Html.LabelFor(model => model.Hotel.Name, "Breakfast Menu", htmlAttributes: new { @class = "control-label col-md-1" })
                 <div class="col-md-2 c_half_input">
-                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Meat Meal - R250") <br />
-                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Meat Meal - R250") <br />
-                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Meat Meal - R250") <br />
-                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Meat Meal - R250") <br />
-                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Meat Meal - R250") <br />
-                    <input type="checkbox" value="Sandwich" name="Sandwich" /> @Html.Raw("Meat Meal - R250") <br />
+                    @foreach (var lunch in Model.lunchmeals)
+                    {
+                        var Ischecked = (Model.Addons != null && Model.Addons.AddOns.Contains(lunch.Id.ToString())) ? true : false;
+                        <input type="checkbox" value="@lunch.Id" name="selectedMeals" checked="@Ischecked" onchange="ChangeMenues('@lunch.CostPerPerson', this.checked)" /> @Html.Raw($"{lunch.Name} - {lunch.CostPerPerson.ToString("C")}") <br />
+                    }
                 </div>
             </div>
             <div class="form-group">
@@ -154,15 +144,19 @@
                 </div>
                 @Html.LabelFor(model => model.TotalCost, "Total Cost", htmlAttributes: new { @class = "control-label col-md-1" })
                 <div class="col-md-2 c_half_input">
-                    @Html.EditorFor(model => model.TotalCost, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                    @Html.EditorFor(model => model.AddOnsCost, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly", @Id = "addonscostId" } })
                     @Html.ValidationMessageFor(model => model.TotalCost, "", new { @class = "text-danger" })
                 </div>
             </div>
             <hr class="col-md-offset-2" />
             <div class="form-group text-right">
                 <div class="col-md-offset-2 col-md-4">
-                    <input type="submit" value="Update" class="btn btn-sm btn-warning" />
-                    <input type="submit" value="Remove" class="btn btn-sm btn-danger" />
+                    @if (!Model.PaymentApproved && !Model.Cancelled)
+                    {
+                        <input type="button" value="Update Details" onclick="UpdateBookedReservation('@Model.Id')"  class="btn btn-sm btn-outline-warning" />
+                        <input type="button" value="Cancel Reservation" onclick="CancelBookedReservation('@Model.Id')" class="btn btn-sm btn-outline-danger" />
+                    }
+                    <input type="button" value="Back To List" onclick="window.history.back()" class="btn btn-sm btn-outline-info" />
                 </div>
             </div>
         </div>
@@ -172,6 +166,123 @@
 </html>
 @Html.Partial("_eFooter")
 <script>
+    function ChangeMenues(price, status) {
+        debugger;
+        let totalCost = parseFloat(document.getElementById('addonscostId').value);
+        if (status == true) {
+            var local = parseInt(totalCost) + parseInt(price);
+            $("#addonscostId").val(local);
+        } else {
+            var local = parseInt(totalCost) - parseInt(price);
+            $("#addonscostId").val(parseInt(local));
+        }
+    }
+
+     function UpdateBookedReservation(id) {
+        Swal.fire({
+            title: 'Confirmation',
+            text: 'Are you sure you want to proceed?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                debugger;
+                let CheckeIndate = document.getElementById('CheckInId').value;
+                let CheckeOutdate = document.getElementById('CheckOutId').value;
+                let roomId = document.getElementById('roomsId').value;
+                let amount = document.getElementById('addonscostId').value;
+                let Rooms = document.getElementById('noOfroomsId').value;
+                var selectedCheckboxes = document.querySelectorAll('input[name="selectedMeals"]:checked');
+                var selectedValues = [];
+                selectedCheckboxes.forEach(function (checkbox) {
+                    selectedValues.push(checkbox.value);
+                });
+                var AddonsChecked = selectedValues;
+
+                $.ajax({
+                    url: '@Url.Action("UpdateReservationByRecept", "DeskService")',
+                    type: 'POST',
+                    data: { id: id, CheckIn: CheckeIndate, ChexkOut: CheckeOutdate, roomId: roomId, selectedAddons: AddonsChecked, amount: amount, rooms: Rooms},
+                    success: function (data) {
+                        if (data) {
+                            //Swal.fire('Confirmed!', 'The reservation has been cancelled successfully.', 'success');
+                            Swal.fire('Confirmed!', 'The reservation has been updated successfully.', 'success').then(() => {
+                                // Reload the window
+                                location.reload();
+                            });
+                        } else {
+                            //Swal.fire('Cancelled', 'An error has occured while trying to process your request.', 'error');
+                            Swal.fire('Cancelled', 'An error has occured while trying to process your request.', 'error').then(() => {
+                                // Reload the window
+                                location.reload();
+                            });
+                        }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error(errorThrown);
+                    }
+                })
+                /*Swal.fire('Confirmed!', 'Your action has been processed.', 'success');*/
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // The user clicked the "No" button or outside the modal
+                Swal.fire('Cancelled', 'Your action has been cancelled.', 'error');
+            }
+        });
+    }
+
+
+
+
+
+
+
+
+
+    function CancelBookedReservation(id) {
+        Swal.fire({
+            title: 'Confirmation',
+            text: 'Are you sure you want to proceed?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes',
+            cancelButtonText: 'No'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                $.ajax({
+                    url: '@Url.Action("CacelBookedReservation", "DeskService")',
+                    type: 'POST',
+                    data: { id: id},
+                    success: function (data) {
+                        if (data) {
+                            //Swal.fire('Confirmed!', 'The reservation has been cancelled successfully.', 'success');
+                            Swal.fire('Confirmed!', 'The reservation has been cancelled successfully.', 'success').then(() => {
+                                // Reload the window
+                                location.reload();
+                            });
+                        } else {
+                            //Swal.fire('Cancelled', 'An error has occured while trying to process your request.', 'error');
+                            Swal.fire('Cancelled', 'An error has occured while trying to process your request.', 'error').then(() => {
+                                // Reload the window
+                                location.reload();
+                            });
+                        }
+                    },
+                    error: function (xhr, textStatus, errorThrown) {
+                        console.error(errorThrown);
+                    }
+                })
+                /*Swal.fire('Confirmed!', 'Your action has been processed.', 'success');*/
+            } else if (result.dismiss === Swal.DismissReason.cancel) {
+                // The user clicked the "No" button or outside the modal
+                Swal.fire('Cancelled', 'Your action has been cancelled.', 'error');
+            }
+        });
+    }
+
+
+
     function formatdate(date) {
         var year = date.getFullYear();
         var month = (date.getMonth() + 1).toString().padStart(2, "0");

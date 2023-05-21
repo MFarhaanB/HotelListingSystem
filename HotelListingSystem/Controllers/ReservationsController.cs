@@ -148,7 +148,7 @@ namespace HotelListingSystem.Controllers
 
                     var adds = "";
                     foreach (var meal in selectedMeals)
-                        adds = (!String.IsNullOrEmpty(adds)) ? $"{adds},{meal}" : adds;
+                        adds = (!String.IsNullOrEmpty(adds)) ? $"{adds},{meal}" : meal;
                     if (!string.IsNullOrEmpty(adds))
                     {
                         var add = new AddOnsR { ReservationId = save.Id, AddOns = adds, HotelUserId = (int)save.HotelUserId };

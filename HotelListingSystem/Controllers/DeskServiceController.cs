@@ -52,6 +52,10 @@ namespace HotelListingSystem.Controllers
                 .Include(c => c.HotelUser)
                 .Include(c => c.CheckInRoom)
                 .FirstOrDefault(a => a.Id == Id);
+            results.breakfastmeals = db.Dinings.Include(d => d.MealTypes).Where(a => a.MealTypes.Name.Contains("Breakfast")).ToList();
+            results.lunchmeals = db.Dinings.Where(a => a.MealTypes.Name.Contains("lunch")).ToList();
+            if (results.AddOnsId != null)
+                results.Addons = db.AddOnsRs.Find(results.AddOnsId);
             ViewBag.ThisHotelRooms = new SelectList(db.Rooms.Where(a => a.HotelId == results.HotelId).ToList(), "Id", "Name");
             return View(results);
         }
@@ -64,6 +68,10 @@ namespace HotelListingSystem.Controllers
                 .Include(c => c.HotelUser)
                 .Include(c => c.CheckInRoom)
                 .FirstOrDefault(a => a.Id == Id);
+            results.breakfastmeals = db.Dinings.Include(d => d.MealTypes).Where(a => a.MealTypes.Name.Contains("Breakfast")).ToList();
+            results.lunchmeals = db.Dinings.Where(a => a.MealTypes.Name.Contains("lunch")).ToList();
+            if (results.AddOnsId != null)
+                results.Addons = db.AddOnsRs.Find(results.AddOnsId);
             results.Document = db.Documents.FirstOrDefault(a => ((int)a.ReservationId == results.Id) && (a.DocumentTypeKey == "a_customer_liveness_image"));
             ViewBag.ThisHotelRooms = new SelectList(db.Rooms.Where(a => a.HotelId == results.HotelId).ToList(), "Id", "Name");
             return View(results);
@@ -158,6 +166,78 @@ namespace HotelListingSystem.Controllers
 
             return $"{floorLetter}{roomInFloor:D2}";
         }
+
+        public ActionResult UpdateReservationByRecept(int id, DateTime CheckIn, DateTime ChexkOut, int roomId, string[] selectedAddons, decimal amount, int rooms)
+        {
+            try
+            {
+                using (ApplicationDbContext core = new ApplicationDbContext())
+                {
+                    var room = core.Rooms.Find(roomId);
+                    Reservation save = core.Reservations.Find(id);
+                    save.CheckInDate = CheckIn;
+                    save.CheckOutDate = ChexkOut;
+                    save.RoomId = room.Id;
+                    save.ModifiedOn = DateTime.Now;
+                    save.AddOnsCost = amount;
+                    save.NoOfRooms = rooms;
+                    save.TotalFees = (room.PricePerRoom * rooms);
+                    save.TotalCost = (room.PricePerRoom * rooms) + amount;
+                    core.Entry(save).State = EntityState.Modified;
+                    core.SaveChanges();
+
+                    var adds = "";
+                    foreach (var meal in selectedAddons)
+                        adds = (!String.IsNullOrEmpty(adds)) ? $"{adds},{meal}" : meal;
+                    if (!string.IsNullOrEmpty(adds))
+                    {
+                        if (save.AddOnsId != null)
+                        {
+                            var currentaads = core.AddOnsRs.Find(save.AddOnsId);
+                            currentaads.AddOns = adds;
+                            core.Entry(currentaads).State = EntityState.Modified;
+                            core.SaveChanges();
+                        }
+                        else
+                        {
+                            var add = new AddOnsR { ReservationId = save.Id, AddOns = adds, HotelUserId = (int)save.HotelUserId };
+                            core.AddOnsRs.Add(add);
+                            core.SaveChanges();
+
+                            save.AddOnsId = add.Id;
+                            core.Entry(save).State = EntityState.Modified;
+                            core.SaveChanges();
+                        }
+                    }
+                    var user = core.HotelUsers.Find(save.HotelUserId);
+                    var hotel = core.Hotels.Find(save.HotelId);
+                    new Email().SendEmail($"{user.EmailAddress}", $"Travix System: reservation update", $"{user.FullName}",
+                                $"Your reservation with {hotel.Name} hotel on {save.CheckInDate} has been updated by {AppHelper.CurrentHotelUser().FullName}. Please contact the hotels reception for more info.<br/>");
+
+                }
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+        }
+        public ActionResult CacelBookedReservation(int id)
+        {
+            var find = db.Reservations.Include(d => d.Hotel).Include(d => d.HotelUser).Where(a => a.Id == id).FirstOrDefault();
+            if (find == null)
+                return Json(false, JsonRequestBehavior.AllowGet);
+            find.Cancelled = true;
+            find.CancelledById = AppHelper.CurrentHotelUser().Id;
+            db.Entry(find).State = EntityState.Modified;
+            db.SaveChanges();
+
+            new Email().SendEmail($"{find.HotelUser.EmailAddress}", $"Travix System: reservation cancellation", $"{find.HotelUser.FullName}",
+                        $"Your reservation with {find.Hotel.Name} hotel on {find.CheckInDate} has been cancelled. Please contact the receptionist for more information.<br/>");
+
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
     }
 
     public class ResevationViewModel

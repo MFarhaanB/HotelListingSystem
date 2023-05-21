@@ -503,6 +503,7 @@ namespace HotelListingSystem.Controllers
 
                     reservation.Booked = true;
                     reservation.Updated = true;
+                    reservation.PaymentApproved = true;
                     reservation.UpdatedById = reservation.HotelUserId;
                     reservation.ModifiedOn = DateTime.Now;
                     context.Entry(reservation).State = EntityState.Modified;
