@@ -12,6 +12,7 @@ using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.Globalization;
 
+
 namespace HotelListingSystem.Controllers
 {
     public class HomeController : Controller
@@ -105,11 +106,65 @@ namespace HotelListingSystem.Controllers
             }
             return File(System.IO.File.ReadAllBytes(path), contentType, StatementName);
         }
+        public ActionResult ServicePaymentsPDFStatement(int businessUserId)
+        {
+            ApplicationDbContext context = new ApplicationDbContext();
+            var StatementName = $"SV{DateTime.Now.ToString("yyyyMMddHHmmss")}{businessUserId}.pdf";
+            var folderName = string.Format("businesspayments");
+            var root = HostingEnvironment.MapPath($"~/{folderName}/");
+            var path = Path.Combine(root, StatementName);
+            var contentType = "application/pdf";
+            path = System.IO.Path.GetFullPath(path);
+            iTextSharp.text.Document document = new iTextSharp.text.Document(PageSize.A4.Rotate());
+
+            var hotels = context.Hotels
+                .Where(a => a.HotelUserId == businessUserId || a.ReceptionistId == businessUserId)
+                .Select(a => new { ownerId = a.HotelUserId, receptId = a.ReceptionistId })
+                .ToList();
+            var ownerId = hotels.Select(a => a.ownerId).ToList();
+            var receptId = hotels.Select(a => a.receptId).ToList();
+
+            List<Payment> ServicePayments = context.Payments
+                                            .Include("HotelUser")
+                                            .Include("Hotel")
+                                            .Where(c => c.Servicepayment && (ownerId.Contains(c.HotelUserId) || receptId.Contains(c.HotelUserId)))
+                                            .ToList();
+
+            using (FileStream fileStream = new FileStream(path, FileMode.Create))
+            {
+                PdfWriter writer = PdfWriter.GetInstance(document, fileStream);
+
+                PdfPTable table = new PdfPTable(6);
+                document.Open();
+                // Set table properties
+                table.WidthPercentage = 100f;
+                float[] columnWidths = { 1f, 1f, 1f, 1f, 1f , 1f }; // Adjust column widths as needed
+                table.SetWidths(columnWidths);
+                //table.DefaultCell.Border = Rectangle.NO_BORDER; // Remove cell borders
+                table.DefaultCell.BorderColor = BaseColor.GRAY; // Set cell border color
+
+                // Add table headers
+                AddTableCell(table, "HOTEL NAME", bold: true);
+                AddTableCell(table, "PAYMENT DATE", bold: true);
+                AddTableCell(table, "PAYMENT BY", bold: true);
+                AddTableCell(table, "PAYMENT TYPE", bold: true);
+                AddTableCell(table, "PAYMENT REF", bold: true);
+                AddTableCell(table, "AMOUNT PAID", bold: true);
+                foreach (var payment in ServicePayments)
+                    AddTableRow2(table, (payment.Hotel == null) ? "Multiple Hotels" : payment.Hotel.Name, payment.CreatedDateTime, payment.HotelUser.FullName, payment.PaymentType, payment.RefNo, payment.Amount);
+                var businessUser = context.HotelUsers.Find(businessUserId);
+                Font headingFont = new Font(Font.FontFamily.HELVETICA, 20f, Font.BOLD);
+                Paragraph heading = new Paragraph($"Service Statement Of: {businessUser.FullName} : {StatementName.Replace(".pdf","")}", headingFont);
+                heading.Alignment = Element.ALIGN_CENTER;
+                heading.SpacingAfter = 20f; // Set spacing after the header
+                document.Add(heading);
+                document.Add(table);
+                document.Close();
+            }
+            return File(System.IO.File.ReadAllBytes(path), contentType, StatementName);
+        }
 
         #region  statement helpers
-
-      
-
         static void AddTableRow(PdfPTable table, string HotelName, DateTime? PaymentDate, string paymentBy, decimal amountpaid, decimal comission)
         {
             TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
@@ -118,6 +173,16 @@ namespace HotelListingSystem.Controllers
             table.AddCell(textInfo.ToTitleCase(paymentBy));
             table.AddCell(amountpaid.ToString("C"));
             table.AddCell((Convert.ToInt16(comission) * 0.02).ToString("C"));
+        }
+        static void AddTableRow2(PdfPTable table, string HotelName, DateTime? PaymentDate, string paymentBy, string PaymentType, string refNo, decimal amountpaid)
+        {
+            TextInfo textInfo = CultureInfo.CurrentCulture.TextInfo;
+            table.AddCell(textInfo.ToTitleCase(HotelName));
+            table.AddCell($"{PaymentDate}");
+            table.AddCell(textInfo.ToTitleCase(paymentBy));
+            table.AddCell(textInfo.ToTitleCase(PaymentType));
+            table.AddCell(textInfo.ToTitleCase(refNo));
+            table.AddCell(amountpaid.ToString("C"));
         }
 
         static void AddTableCell(PdfPTable table, string content, bool bold = false)
@@ -135,8 +200,6 @@ namespace HotelListingSystem.Controllers
             }
             table.AddCell(cell);
         }
-
-
         #endregion
     }
 }

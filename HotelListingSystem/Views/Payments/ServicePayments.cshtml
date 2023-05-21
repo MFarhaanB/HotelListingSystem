@@ -1,4 +1,4 @@
-﻿@model IEnumerable<IGrouping<int, HotelListingSystem.Models.Hotel>>
+﻿@model IEnumerable<HotelListingSystem.Models.Payment>
 @using HotelListingSystem.Models
 
 @{
@@ -25,7 +25,7 @@
         <div class="container_body">
             <h1>Travix Service Payments</h1>
             <p>
-                @Html.ActionLink("Monthly Payment History", "ServicePayments", "Payments", new { @class = "btn btn-outline-warning" })
+                @Html.ActionLink("Donload PDF Statement", "ServicePaymentsPDFStatement", "home", new { businessUserId = AppHelper.CurrentHotelUser().Id }, new { @class = "btn btn-outline-info" })
             </p>
             <br />
             <table class="table" width="90%" id="exampleId">
@@ -34,55 +34,30 @@
                         <th>ㅤㅤㅤㅤㅤ</th>
                         <th>OWNER</th>
                         <th>HOTEL</th>
-                        <th>PAYMENT DUE DATE</th>
-                        <th>UPDATED DATE</th>
-                        <th>AMOUNT DUE</th>
+                        <th>PAYMENT DATE</th>
+                        <th>PAYMENT BY</th>
+                        <th>PAYMENT TYPE</th>
+                        <th>PAYMENT REF</th>
+                        <th>AMOUNT PAID</th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        IGrouping<int, HotelListingSystem.Models.Hotel> notNullable = item;
-                        int groupId = notNullable.Key;
-                        List<HotelListingSystem.Models.Hotel> hotels = notNullable.ToList();
-                        bool YouGotAPriceToPay = (hotels.FirstOrDefault(a => a.AmountOwed > 1) != null) ? true : false;
-                        if (item.First().IsBlackListed || YouGotAPriceToPay)
-                        {
-                            <tr>
-                                <td></td>
-                                <td>@Html.DisplayFor(modelItem => item.First().HotelUser.FullName)</td>
-                                <td>@Html.DisplayFor(modelItem => item.First().Name)</td>
-                                <td>@Html.Raw(new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month), 23, 59, 59))</td>
-                                <td>@Html.Raw((item.First().ModifiedDate == null) ? "No updated date" : item.First().ModifiedDate.ToString())</td>
-                                <td>@Html.Raw(item.First().AmountOwed.ToString("C"))</td>
-                                <td>
-                                    @if (!User.IsInRole("Administrator"))
-                                    {
-                                        <button class="btn btn-outline-warning" onclick="PaySystemFeesSingle('@item.First().HotelUserId', '@item.First().Id', '@item.First().AmountOwed.ToString().Replace(',','.')', '@item.First().Name')">Debi/Credi Pay Now</button>
-                                    }
-                                    else
-                                    {
-                                        if (item.First().AmountOwed == 0)
-                                        {
-                                            <button class="btn btn-outline-success" onclick="WhitelistHotel('@item.First().Id')">Whitelist Now</button>
-                                        }
-                                        else
-                                        {
-                                            if (item.First().IsNotified)
-                                            {
-                                                <button class="btn btn-outline-danger" onclick="Blacklisthotel('@item.First().Id')">Blacklist Now</button>
-                                            }
-                                            else if (item.First().AmountOwed > 1 && (DateTime)item.First().HotelUser.LastPaymentDate < DateTime.Now.AddDays(-30))
-                                            {
-                                                <button class="btn btn-outline-warning" onclick="BlacklistNoticeMail('@item.First().Id')">Send Blacklist Notice</button>
-                                            }
-
-                                        }
-                                    }
-                                </td>
-                            </tr>
-                        }
+                        <tr>
+                            <td></td>
+                            <td>@Html.Raw(item.Hotel?.HotelUser.FullName??"-- no owner --")</td>
+                            <td>@Html.Raw(item.Hotel?.Name??"Multiple Hotels")</td>
+                            <td>@Html.Raw(new DateTime(((DateTime)item.CreatedDateTime).Year, ((DateTime)item.CreatedDateTime).Month, DateTime.DaysInMonth(((DateTime)item.CreatedDateTime).Year, ((DateTime)item.CreatedDateTime).Month), 23, 59, 59))</td>
+                            <td>@Html.Raw(item.HotelUser.FullName)</td>
+                            <td>@Html.Raw(item.PaymentType)</td>
+                            <td>@Html.Raw(item.RefNo)</td>
+                            <td>@Html.Raw(item.Amount.ToString("C"))</td>
+                            @*<td>
+                                <button class="btn btn-outline-warning">Download Recept</button>
+                            </td>*@
+                        </tr>
                     }
                 </tbody>
                 <tfoot>
@@ -90,57 +65,15 @@
                         <th>ㅤㅤㅤㅤㅤ</th>
                         <th>OWNER</th>
                         <th>HOTEL</th>
-                        <th>PAYMENT DUE DATE</th>
-                        <th>UPDATED DATE</th>
-                        <th>AMOUNT DUE</th>
+                        <th>PAYMENT DATE</th>
+                        <th>PAYMENT BY</th>
+                        <th>PAYMENT TYPE</th>
+                        <th>PAYMENT REF</th>
+                        <th>AMOUNT PAID</th>
                         <th></th>
                     </tr>
                 </tfoot>
             </table>
-            @if (Model.First().Count() > 0 && !User.IsInRole("Administrator"))
-            {
-                <br />
-                <table class="table" width="90%" id="exampleId">
-                    <thead>
-                        <tr>
-                            <th>ㅤㅤㅤㅤㅤ</th>
-                            <th>FULL NAME</th>
-                            <th>NUMBER OF HOTELS</th>
-                            <th>PAYMENT DUE DATE</th>
-                            <th>UPDATED DATE</th>
-                            <th>SUM AMOUNT DUE</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-
-                        <tr>
-                            <td></td>
-                            <td>@Html.DisplayFor(modelItem => Model.First().First().HotelUser.FullName)</td>
-                            <td>@Html.Raw(Model.First().Count())</td>
-                            <td>@Html.Raw(new DateTime(now.Year, now.Month, DateTime.DaysInMonth(now.Year, now.Month), 23, 59, 59))</td>
-                            <td>@Html.Raw((Model.First().First().HotelUser.LastPaymentDate == null) ? "No payment made" : Model.First().First().HotelUser.LastPaymentDate.ToString())</td>
-                            <td>@Html.Raw(((Model.First().First().HotelUser.SystemRates == null ? 0 : (decimal)Model.First().First().HotelUser.SystemRates).ToString("C")))</td>
-                            <td>
-                                <button id="BulkPaymentId" class="btn btn-outline-warning">Bulk Debi/Credi Pay Now</button>
-                                @*@Html.ActionLink(" Bulk Debi/Credi Pay Now", "CustomerQueryDetails", "CustomerQuery", new { Id = 0 }, new { @class = "btn btn-outline-warning", @Id = "BulkPaymentId" })*@
-                            </td>
-                        </tr>
-                    </tbody>
-                    <tfoot>
-                        <tr>
-                            <th>ㅤㅤㅤㅤㅤ</th>
-                            <th>FULL NAME</th>
-                            <th>NUMBER OF HOTELS</th>
-                            <th>PAYMENT DUE DATE</th>
-                            <th>UPDATED DATE</th>
-                            <th>SUM AMOUNT DUE</th>
-                            <th></th>
-                        </tr>
-                    </tfoot>
-                </table>
-            }
-
         </div>
     </main>
 </body>
@@ -153,7 +86,7 @@
         $('#exampleId').DataTable();
     });
 </script>
-<script>
+<!--<script>
     function BlacklistNoticeMail(id ) {
      $.ajax({
             url: '@Url.Action("SendBlacklistEmail", "Payments")', // Update with your controller and action method names
@@ -210,15 +143,15 @@
             }
         });
     }
-</script>
+</script>-->
 
 @*//Include the Yoco SDK in your web page*@
-<script src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>
+<!--<script src="https://js.yoco.com/sdk/v1/yoco-sdk-web.js"></script>-->
 
 @*Create a pay button that will open the popup
     <button id="checkout-button">Pay</button>*@
 
-<script type="text/javascript">
+<!--<script type="text/javascript">
     var yoco = new window.YocoSDK({
 
         publicKey: 'pk_test_ed3c54a6gOol69qa7f45',
@@ -284,7 +217,7 @@
                     } else {
                          debugger;
                         $.ajax({
-                            url: '@Url.Action("PaySystemFeesSingle", "Payments")',
+                            url: '@Url.Action("PaySystemFeesBulk", "Payments")',
                             type: 'POST',
                             data: { id: id, HotelId: hotelId, yocco_ref: result.id },
                             success: function (data) {
@@ -306,4 +239,4 @@
     }
 
 
-</script>
+</script>-->

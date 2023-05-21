@@ -57,6 +57,15 @@ namespace HotelListingSystem.Models
         public string InvoiceNumber { get; set; }
         public string YoccoReferrence { get; set; }
 
+        [Column(Order = 107)]
+        public int? HotelId { get; set; }
+        [ForeignKey("HotelId")]
+        public Hotel Hotel { get; set; }
+
+        public bool Servicepayment { get; set; }
+        public string PaymentType { get; set; }
+
+
         public string PaymentStatus
         {
             get { return this.IsPaid ? "Approved" : "Pending"; }

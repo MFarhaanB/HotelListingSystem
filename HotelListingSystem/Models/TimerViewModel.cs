@@ -40,4 +40,14 @@ namespace HotelListingSystem.Models
         public int PaymentId { get; set; }
     }
 
+    public class ServicePaymentPDFStatement
+    {
+        public string HotelName { get; set; }
+        public DateTime PaymentDate { get; set; }
+        public string PaymentBy { get; set; }
+        public decimal Amountpaid { get; set; }
+        public string paymentType { get; set; }
+        public string paymentRef { get; set; }
+    }
+
 }

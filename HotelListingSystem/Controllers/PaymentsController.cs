@@ -426,7 +426,7 @@ namespace HotelListingSystem.Controllers
                 {
                     var payment = context.Payments
                         .Include(a => a.Reservation.Hotel.HotelUser)
-                        .Where(c => c.IsActive)
+                        .Where(c => c.ReservationId != null)
                         .ToList();
 
                     if (User.IsInRole("Administrator"))
@@ -455,8 +455,26 @@ namespace HotelListingSystem.Controllers
                 // Handle exception
             }
 
+            ViewBag.Amount = ((owinghotels.Count() == 0) ? "0.00" : ((decimal)owinghotels.First().First().HotelUser.SystemRates).ToString().Replace(',', '.')).ToString();
+            ViewBag.Ownerid = (owinghotels.Count() == 0) ? 0 : owinghotels.First()?.First()?.HotelUser?.Id;
+            ViewBag.FullName = AppHelper.CurrentHotelUser()?.FullName ?? "";
             return View(owinghotels);
         }
+
+
+        public ActionResult ServicePayments()
+        {
+            var ReceptOrOwner = AppHelper.CurrentHotelUser().Id;
+            var hotels = db.Hotels
+                .Where(a => a.HotelUserId == ReceptOrOwner || a.ReceptionistId == ReceptOrOwner)
+                .Select(a => new { ownerId = a.HotelUserId, receptId = a.ReceptionistId })
+                .ToList();
+            var ownerId = hotels.Select(a => a.ownerId).ToList();
+            var receptId = hotels.Select(a => a.receptId).ToList();
+            var history = db.Payments.Include(c => c.Hotel.HotelUser).Include(c => c.HotelUser).Where(a => a.Servicepayment && (ownerId.Contains(a.HotelUserId) || receptId.Contains(a.HotelUserId))).ToList();
+            return View(history);
+        }
+
 
 
 
@@ -558,7 +576,7 @@ namespace HotelListingSystem.Controllers
                         h.ModifiedDate = DateTime.Now;
                         context.Entry(h).State = EntityState.Modified;
                     }
-
+                    _ = SaveBusinessPayment(context, $"Bulk Payment [{hotels.Count()}]", (decimal)owner.SystemRates, AppHelper.CurrentHotelUser().Id, null, yocco_ref);
                     owner.SystemRates = 0;
                     owner.LastPaymentDate = DateTime.Now;
                     context.Entry(owner).State = EntityState.Modified;
@@ -584,6 +602,7 @@ namespace HotelListingSystem.Controllers
                     hotel.PaymentDoneDate = DateTime.Now;
                     hotel.ModifiedDate = DateTime.Now;
                     owner.SystemRates = (owner.SystemRates - hotel.AmountOwed);
+                    _ = SaveBusinessPayment(context, "Single Payment", hotel.AmountOwed, AppHelper.CurrentHotelUser().Id, HotelId, yocco_ref);
                     hotel.AmountOwed = 0;
                     owner.LastPaymentDate = DateTime.Now;
                     context.Entry(hotel).State = EntityState.Modified;
@@ -598,6 +617,29 @@ namespace HotelListingSystem.Controllers
             }
             return Json(false, JsonRequestBehavior.AllowGet);
         }
+
+        public static Payment SaveBusinessPayment(ApplicationDbContext context, string type, decimal amount,int userId, int? hotelId, string yocco_ref)
+        {
+            Payment payment = new Payment();
+            payment.YoccoReferrence = yocco_ref;
+            payment.CreatedDateTime = DateTime.Now;
+            payment.HotelUserId = userId;
+            payment.HotelId = hotelId;
+            payment.Amount = amount;
+            payment.PaymentType = type;
+            payment.RefNo = GetpaymentReferrence("YC", context);
+            payment.IsActive = true;
+            payment.IsPaid = false;
+            payment.Servicepayment = true;
+            payment.PaymentMethod = "YOCCO Debit/Credit";
+            payment.InvoiceNumber = InvReferenceGenerator();
+            payment.IsPaid = true;
+            payment.ModifiedDateTime = DateTime.Now;
+            context.Payments.Add(payment);
+            context.SaveChanges();
+            return payment;
+        }
+
         public ActionResult SendBlacklistEmail(int id)
         {
             try
