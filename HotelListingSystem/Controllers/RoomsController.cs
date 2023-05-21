@@ -68,6 +68,8 @@ namespace HotelListingSystem.Controllers
             if (ModelState.IsValid)
             {
                 room.CreatedOn = DateTime.Now;
+                db.Rooms.Add(room);
+                db.SaveChanges();
                 if (documents != null)
                 {
                     int current = 0;
@@ -81,28 +83,107 @@ namespace HotelListingSystem.Controllers
                         switch (current)
                         {
                             case 0:
-                                room.RoomImageName1 = file.FileName;
-                                room.RoomImageContentType1 = file.ContentType;
-                                room.RoomImageContent1 = data;
-                                room.RoomImageFileSize1 = (Int64)file.ContentLength;
+                                #region old
+                                //room.RoomImageName1 = file.FileName;
+                                //room.RoomImageContentType1 = file.ContentType;
+                                //room.RoomImageContent1 = data;
+                                //room.RoomImageFileSize1 = (Int64)file.ContentLength;
+                                //room.RoomImageName2 = file.FileName;
+                                //room.RoomImageContentType2 = file.ContentType;
+                                //room.RoomImageContent2 = data;
+                                //room.RoomImageFileSize2 = (Int64)file.ContentLength;
+                                #endregion
+                                SaveHotelDocument(file.FileName, file.ContentType, data, (Int64)file.ContentLength, room.Id, "r_hotel_room_first");
                                 break;
                             case 1:
-                                room.RoomImageName2 = file.FileName;
-                                room.RoomImageContentType2 = file.ContentType;
-                                room.RoomImageContent2 = data;
-                                room.RoomImageFileSize2 = (Int64)file.ContentLength;
+                                SaveHotelDocument(file.FileName, file.ContentType, data, (Int64)file.ContentLength, room.Id, "r_hotel_room_2nd");
                                 break;
                         }
                         current++;
                     }
                 }
-                db.Rooms.Add(room);
-                db.SaveChanges();
+                
                 return RedirectToAction("Index");
             }
             ViewBag.HotelId = new SelectList(db.Hotels, "Id", "Name");
             return View(room);
         }
+
+
+
+        public static void SaveHotelDocument(string fileName, string fileType, byte[] fileBytes, Int64 fileSize, int roomId, string doc_key_type)
+        {
+            using (ApplicationDbContext context = new ApplicationDbContext())
+            {
+                Document document = context.Documents
+                    .FirstOrDefault(c => c.RoomId == roomId && c.DocumentTypeKey == doc_key_type);
+                if (document == null)
+                {
+                    document = new Document();
+                    File ofile = new File();
+                    ofile.ContentType = fileType;
+                    ofile.Content = fileBytes;
+                    ofile.FileName = fileName;
+                    ofile.FileSize = fileSize;
+                    ofile.IsActive = true;
+                    ofile.IsDeleted = false;
+                    ofile.CreatedDateTime = DateTime.Now;
+                    ofile.ModifiedDateTime = DateTime.Now;
+                    context.Files.Add(ofile);
+                    context.SaveChanges();
+
+                    document.IsActive = true;
+                    document.IsDeleted = false;
+                    document.CreatedDateTime = DateTime.Now;
+                    document.ModifiedDateTime = DateTime.Now;
+                    document.FileId = ofile.Id;
+                    document.DocumentTypeKey = doc_key_type;
+                    document.RoomId = roomId;
+                    context.Documents.Add(document);
+                    context.SaveChanges();
+                }
+                else
+                {
+                    File ofile = context.Files.Find(document.FileId);
+                    ofile.ContentType = fileType;
+                    ofile.Content = fileBytes;
+                    ofile.FileName = fileName;
+                    ofile.FileSize = fileSize;
+                    ofile.ModifiedDateTime = DateTime.Now;
+                    document.ModifiedDateTime = DateTime.Now;
+                    context.Entry(ofile).State = EntityState.Modified;
+                    context.Entry(document).State = EntityState.Modified;
+                    context.SaveChanges();
+                }
+
+            }
+        }
+        public ActionResult DownloadRoomImageFile(int Id, string doc_key_type)
+        {
+            try
+            {
+                using (ApplicationDbContext context = new ApplicationDbContext())
+                {
+                    Document document = context.Documents.FirstOrDefault(a => a.RoomId == Id && a.DocumentTypeKey == doc_key_type);
+                    File file = context.Files.Find(document.FileId);
+                    if (document.DocumentTypeKey == "a_customer_liveness_image")
+                    {
+                        Response.ContentType = "image/png";
+                        return File(file.Content, file.FileName);
+                    }
+                    return File(file.Content, file.ContentType, file.FileName);
+                }
+            }
+            catch
+            {
+
+            }
+            return null;
+        }
+
+
+
+
 
         public ActionResult DisplayImage(int roomId, int imageType)
         {

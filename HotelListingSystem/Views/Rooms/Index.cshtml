@@ -55,10 +55,10 @@
                             @Html.DisplayFor(modelItem => item.PricePerRoom)
                         </td>
                         <td>
-                            <img src="@Url.Action("DisplayImage", "Rooms", new { roomId = item.Id, imageType = 1 })" alt="Hotel Image" style="height: 150px;width: 150px;" />
+                            <img src="@Url.Action("DownloadRoomImageFile", "Rooms", new { Id = item.Id, doc_key_type = "r_hotel_room_first" })" alt="Hotel Image" style="height: 150px;width: 150px;" />
                         </td>
                         <td>
-                            <img src="@Url.Action("DisplayImage", "Rooms", new { roomId = item.Id, imageType = 2 })" alt="Hotel Image" style="height: 150px;width: 150px;" />
+                            <img src="@Url.Action("DownloadRoomImageFile", "Rooms", new { Id = item.Id, doc_key_type = "r_hotel_room_2nd" })" alt="Hotel Image" style="height: 150px;width: 150px;" />
                         </td>
                         <td>
                             @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-warning" }) |

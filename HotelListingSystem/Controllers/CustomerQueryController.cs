@@ -318,5 +318,44 @@ namespace HotelListingSystem.Controllers
             return Json(true, JsonRequestBehavior.AllowGet);
         }
 
+
+        public ActionResult BlaclistCustomer(string email, int queryId)
+        {
+            try
+            {
+                using (ApplicationDbContext context = new ApplicationDbContext())
+                {
+                    var customer = context.Users.Where(c => c.UserName == email).FirstOrDefault();
+                    customer.LockoutEnabled = true;
+                    customer.LockoutEndDateUtc = DateTime.UtcNow.AddYears(10);
+                    context.Entry(customer).State = EntityState.Modified;
+                    context.SaveChanges();
+
+                    var userManager = context.HotelUsers.FirstOrDefault(c => c.UserName == "Admin@hotelgroup.com");
+                    CustomerQuery queryUpdate = context.CustomerQueries.Find(queryId);
+                    queryUpdate.ModifiedDateTime = DateTime.Now;
+                    queryUpdate.Status = getQueryUpdateStatus("closed");
+                    queryUpdate.IsClosed = true;
+                    context.Entry(queryUpdate).State = EntityState.Modified;
+                    context.SaveChanges();
+
+                    var customer1 = context.HotelUsers.Find(queryUpdate.CustomerId);
+                    var receptionist = context.HotelUsers.Find(queryUpdate.ReceptionistId);
+
+                    new Email().SendEmail($"{customer.Email}", $"Travix System: {queryUpdate.CreatedDateTime}", $"{customer1.FullName}",
+                        $"You have been permanantly locked out of the system <br/>");
+
+                    new Email().SendEmail($"{receptionist.EmailAddress}", $"Travix System:  {queryUpdate.CreatedDateTime}", $"{receptionist.FullName}",
+                        $"The customer has been locked out of the system permananlty<br/>");
+                }
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            catch
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
     }
 }

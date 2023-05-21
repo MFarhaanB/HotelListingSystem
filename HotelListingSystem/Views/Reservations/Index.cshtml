@@ -21,10 +21,12 @@
     <main>
         <div class="container_body">
             <h1>all reservations </h1>
-            <p>@Html.ActionLink("Create New", "Create", new { id = 0 }, new { @class = "btn btn-sm btn-outline-dark back_btn" })
-            @Html.ActionLink("Payment History", "history", "Payments", new { }, new { @class = "btn btn-sm btn-outline-dark back_btn" })
-            
-            </p>
+            <p>
+                        @if (!User.IsInRole("Customer"))
+                        {
+                            @Html.ActionLink("Payment History", "history", "Payments", new { }, new { @class = "btn btn-sm btn-outline-dark back_btn" })
+                        }
+                    </p>
             <br />
             <table class="table" width="90%" id="example">
                 <tr>

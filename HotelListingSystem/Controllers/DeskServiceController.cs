@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using HotelListingSystem.Models;
+using HotelListingSystem.ViewModel;
 using static HotelListingSystem.Controllers.ReservationsController;
 
 namespace HotelListingSystem.Controllers
@@ -112,11 +113,14 @@ namespace HotelListingSystem.Controllers
             {
                 using (ApplicationDbContext context = new ApplicationDbContext())
                 {
-                    var reservation = context.Reservations.Find(id);
+                    var reservation = context.Reservations.Include(c=>c.Hotel).Include(c=>c.HotelUser).Where(a=>a.Id==id).FirstOrDefault();
                     reservation.CheckInConfirmed = true;
                     reservation.ModifiedOn = DateTime.Now;
                     context.Entry(reservation).State = EntityState.Modified;
                     context.SaveChanges();
+
+                    new Email().SendEmail($"{reservation.HotelUser.EmailAddress}", $"Travix System: reservation Confirmation", $"{reservation.HotelUser.FullName}",
+                        $"You have been chcked into {reservation.Hotel.Name} for the reservation on {reservation.CheckInDate}<br/>");
                 }
                 IsRoomAllocatedResults = true;
             }

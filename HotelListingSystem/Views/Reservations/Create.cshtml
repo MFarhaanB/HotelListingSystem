@@ -67,9 +67,9 @@
         }
 
             .right-column img {
-                width: 100%;
+                width: 99%;
                 height: auto;
-                padding-right: 10;
+                padding-right: 10px;
             }
 
         .img_a {
@@ -149,44 +149,20 @@
                 <div class="container_about ">
                     @{
                         var db = new HotelListingSystem.Models.ApplicationDbContext();
-                        var room = db.Rooms.FirstOrDefault(a => a.HotelId == Model.Id);
+                        var room = db.Rooms.FirstOrDefault(a => a.HotelId == Model.HotelId);
                     }
 
                     <div class="left-column">
-                        @if (room != null)
-                        {
                             <div class="row_a">
-                                <img class="img_a" src="data::@room.RoomImageContentType1;base64,@room.RoomImageContent1" alt="placeholder image1">
+                                <img class="img_a" src="@Url.Action("DownloadRoomImageFile", "Rooms", new { Id = room.Id, doc_key_type = "r_hotel_room_first" })" alt="placeholder image1">
                             </div>
                             <div class="row_a">
-                                <img class="img_a" src="data:@room.RoomImageContentType2;base64,@room.RoomImageContent2" alt="placeholder image4">
+                                <img class="img_a" src="@Url.Action("DownloadRoomImageFile", "Rooms", new { Id = room.Id, doc_key_type = "r_hotel_room_2nd" })" alt="placeholder image4">
                             </div>
-
-                        }
-                        else
-                        {
-                            <div class="row_a">
-                                <img class="img_a" src="https://lh4.googleusercontent.com/proxy/zZA09cFACVZPZzJFCXlnC1ieotdcS0sB_xq4_m2gGU9PFOcZyQfwS0h03Q08hCyyzPTBNQxX1pfOQwaBxGimGN4NHUvEs5NM8MKVNy1Ux1VtdLkX_-ses6MbswHuXZ0-7FOV0XlOktAjCeOWRGk6EFQy5OyF7OI=w253-h168-k-no" alt="placeholder image1">
-                            </div>
-                            <div class="row_a">
-                                <img class="img_a" src="https://lh4.googleusercontent.com/proxy/1IXepcM0G_86fzNZx4hXB1KVrC96YKMF_zTz7fWp8lW2dFDBq92XAYGY0qoeFbUhY7sgQ9kcOXgwk9M7jxPdWPZXE90Z8MavReYiCb2Eggbhn86hFOr_CxOQ0jTbDMZKgLWInqUG1Kdw3MSB2HE3PZtNgwlDKg=w253-h168-k-no" alt="placeholder image4">
-                            </div>
-                        }
-
                     </div>
-                    @if (Model.Hotel.HotelImageContent != null)
-                    {
                         <div class="right-column">
-                            <img class="img_a" src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fcity-lodge-va-waterfront.capetown-hotels-za.com%2Fen%2F&psig=AOvVaw2wLo85EfQZ8JGtQGhw5Cxi&ust=1684447489730000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCODlsYOu_f4CFQAAAAAdAAAAABAE" alt="placeholder image5">
+                            <img class="img_a" src="@Url.Action("DownloadHotelFile", "Hotels", new { Id = Model.HotelId, doc_key_type = "c_hotel_image_c" })" alt="placeholder image5">
                         </div>
-                    }
-                    else
-                    {
-                        <div class="right-column">
-                            <img class="img_a" src="https://www.google.com/url?sa=i&url=https%3A%2F%2Fcity-lodge-va-waterfront.capetown-hotels-za.com%2Fen%2F&psig=AOvVaw2wLo85EfQZ8JGtQGhw5Cxi&ust=1684447489730000&source=images&cd=vfe&ved=0CBEQjRxqFwoTCODlsYOu_f4CFQAAAAAdAAAAABAE" alt="placeholder image5">
-                        </div>
-                    }
-
                 </div>
                 <div class="temp_body">
                     <p>

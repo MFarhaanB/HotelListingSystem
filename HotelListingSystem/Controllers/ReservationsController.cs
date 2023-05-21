@@ -114,6 +114,7 @@ namespace HotelListingSystem.Controllers
                 breakfastmeals = db.Dinings.Where(a => a.MealTypes.Name.Contains("Breakfast")).ToList(),
                 lunchmeals = db.Dinings.Where(a => a.MealTypes.Name.Contains("lunch")).ToList()
             };
+            ViewBag.RoomImageId = db.Rooms.FirstOrDefault(a => a.HotelId == (int)id)?.Id;
             ViewBag.HotelId = new SelectList(db.Hotels, "Id", "Name");
             ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName");
             ViewBag.RoomId = new SelectList(db.Rooms, "Id", "Name");
