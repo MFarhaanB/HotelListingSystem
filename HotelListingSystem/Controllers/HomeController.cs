@@ -164,6 +164,11 @@ namespace HotelListingSystem.Controllers
             return File(System.IO.File.ReadAllBytes(path), contentType, StatementName);
         }
 
+
+     
+
+
+
         #region  statement helpers
         static void AddTableRow(PdfPTable table, string HotelName, DateTime? PaymentDate, string paymentBy, decimal amountpaid, decimal comission)
         {

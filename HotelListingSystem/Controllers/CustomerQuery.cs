@@ -104,6 +104,11 @@ namespace HotelListingSystem.Models
         public int? RoomId { get; set; }
         [ForeignKey("RoomId")]
         public Room Room { get; set; }
+
+        [Column(Order = 12)]
+        public int? HotelEventId { get; set; }
+        [ForeignKey("HotelEventId")]
+        public HotelEvent HotelEvent { get; set; }
     }
 
     public class BaseModel

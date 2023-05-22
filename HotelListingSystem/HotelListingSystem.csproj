@@ -283,6 +283,7 @@
     <Compile Include="Controllers\DiningReservationsController.cs" />
     <Compile Include="Controllers\DiningsController.cs" />
     <Compile Include="Controllers\DiningTableTypesController.cs" />
+    <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HotelsController.cs" />
     <Compile Include="Controllers\HotelUsersController.cs" />
@@ -302,6 +303,7 @@
     <Compile Include="Models\AppHelper.cs" />
     <Compile Include="Models\Business.cs" />
     <Compile Include="Models\CheckInRoom.cs" />
+    <Compile Include="Models\HotelEvent.cs" />
     <Compile Include="Models\Dining.cs" />
     <Compile Include="Models\DiningReservation.cs" />
     <Compile Include="Models\DiningTableTypes.cs" />
@@ -587,6 +589,12 @@
     <Content Include="Views\CustomerQuery\CustomerQueryDetails.cshtml" />
     <Content Include="Views\Payments\HotelPyaments.cshtml" />
     <Content Include="Views\Payments\ServicePayments.cshtml" />
+    <Content Include="Views\Event\Create.cshtml" />
+    <Content Include="Views\Event\Index.cshtml" />
+    <Content Include="Views\Event\Update.cshtml" />
+    <Content Include="Views\Event\Events.cshtml" />
+    <Content Include="Views\Event\book.cshtml" />
+    <Content Include="Views\Event\myevents.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

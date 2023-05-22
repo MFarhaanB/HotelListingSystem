@@ -65,6 +65,10 @@ namespace HotelListingSystem.Models
         public bool Servicepayment { get; set; }
         public string PaymentType { get; set; }
 
+        [Column(Order = 110)]
+        public int? HotelEventId { get; set; }
+        [ForeignKey("HotelEventId")]
+        public HotelEvent HotelEvent { get; set; }
 
         public string PaymentStatus
         {

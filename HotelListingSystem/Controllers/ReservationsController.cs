@@ -117,7 +117,7 @@ namespace HotelListingSystem.Controllers
             ViewBag.RoomImageId = db.Rooms.FirstOrDefault(a => a.HotelId == (int)id)?.Id;
             ViewBag.HotelId = new SelectList(db.Hotels, "Id", "Name");
             ViewBag.HotelUserId = new SelectList(db.HotelUsers, "Id", "FirstName");
-            ViewBag.RoomId = new SelectList(db.Rooms, "Id", "Name");
+            ViewBag.RoomId = new SelectList(db.Rooms.Where(a => a.HotelId == id), "Id", "Name");
             return View(reservation);
         }
 

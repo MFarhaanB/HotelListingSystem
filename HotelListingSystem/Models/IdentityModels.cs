@@ -45,5 +45,8 @@ namespace HotelListingSystem.Models
         public DbSet<CustomerQuery> CustomerQueries { get; set; }
         public DbSet<File> Files { get; set; }
         public DbSet<Document> Documents { get; set; }
+        public DbSet<HotelEvent>  HotelEvents{ get; set; }
+        public DbSet<EventReservation> EventReservations { get; set; }
+        public DbSet<Review> Reviews { get; set; }
     }
 }
