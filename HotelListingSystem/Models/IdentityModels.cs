@@ -48,5 +48,15 @@ namespace HotelListingSystem.Models
         public DbSet<HotelEvent>  HotelEvents{ get; set; }
         public DbSet<EventReservation> EventReservations { get; set; }
         public DbSet<Review> Reviews { get; set; }
+        public DbSet<Department> Departments { get; set; }
+        public DbSet<empDepartment> empDepartments { get; set; }
+        public DbSet<Vehicle> Vehicles { get; set; }
+        public DbSet<RideRequest> RideRequests { get; set; }
+        public DbSet<Inventory> Inventories { get; set; }
+        public DbSet<Product> Products { get; set; }
+        public DbSet<WaitingList> WaitingLists { get; set; }
+        public DbSet<ProductRequest> ProductRequests { get; set; }
+        public DbSet<CheckoutHistory> CheckoutHistories { get; set; }
+        public DbSet<Refund> Refunds { get; set; }  
     }
 }

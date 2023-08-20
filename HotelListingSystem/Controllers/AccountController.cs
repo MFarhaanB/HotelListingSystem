@@ -18,7 +18,7 @@ using HotelListingSystem.Engines;
 
 namespace HotelListingSystem.Controllers
 {
-    [Authorize]
+  
     public class AccountController : Controller
     {
         private ApplicationSignInManager _signInManager;
@@ -27,8 +27,8 @@ namespace HotelListingSystem.Controllers
 
         public AccountController()
         {
-        }
 
+        }
         public AccountController(SystemUserManager userManager, ApplicationSignInManager signInManager )
         {
             UserManager = userManager;
@@ -62,11 +62,23 @@ namespace HotelListingSystem.Controllers
         //
         // GET: /Account/Login
         [AllowAnonymous]
-        public ActionResult Login(string returnUrl)
+        public ActionResult Login(string returnUrl = null)
         {
-            ViewBag.ReturnUrl = returnUrl;
             return View();
         }
+
+        //public static async  Task<dynamic> PasswordSignInAsync(ApplicationDbContext core, UserManager<SystemUser> userManager, UserStore<SystemUser> store,  string email,string password)
+        //{
+        //    try
+        //    {
+        //        return  await SignInManager.PasswordSignInAsync(email, password, false, shouldLockout: false);
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
 
         //
         // POST: /Account/Login
@@ -106,23 +118,43 @@ namespace HotelListingSystem.Controllers
                             core.SaveChanges();
                         }
                     }
-                    if (User.IsInRole("Receptionist"))
+                    if (UserManager.IsInRole(user.Id, "Receptionist"))
                     {
-                        return RedirectToAction("Index", "Businesses");
+                        return RedirectToAction("", "Dashboard");
                     }
-                    else if (User.IsInRole("Business Owner"))
+                    else if (UserManager.IsInRole(user.Id, "Business Owner"))
                     {
-                        return RedirectToAction("Details", "Businesses");
+                        return RedirectToAction("", "Dashboard");
                     }
-                    else if (User.IsInRole("Customer"))
+                    else if (UserManager.IsInRole(user.Id, "Customer"))
                     {
-                        return RedirectToAction("Search", "Hotels");
+                        return RedirectToAction("FindHotel", "Hotels");
                     }
-                    else if (User.IsInRole("Administrator"))
+                    else if (UserManager.IsInRole(user.Id, "Administrator"))
                     {
-                        return RedirectToAction("Index", "Home");
+                        return RedirectToAction("", "Dashboard");
                     }
-                    return RedirectToLocal(returnUrl);
+                    else if (UserManager.IsInRole(user.Id, "Employee"))
+                    {
+                        empDepartment emp = db.empDepartments.FirstOrDefault(a => a.EmplyeeKey == user.Id.ToString());
+
+                        if (!emp.IsActive)
+                        {
+                            if (UserManager.IsInRole(user.Id, "Receptionist"))
+                            {
+                                return RedirectToAction("", "Dashboard");
+                            }
+                            else if (UserManager.IsInRole(user.Id, "Business Owner"))
+                            {
+                                return RedirectToAction("", "Dashboard");
+                            }
+                            return RedirectToAction("Details", "HotelUsers", new { id = user.HotelUserId });
+                        }
+                           
+                        else
+                            return RedirectToAction("Index", "Home");
+                    }
+                        return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:

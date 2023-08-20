@@ -60,14 +60,9 @@ namespace HotelListingSystem.Models
         [ForeignKey("CheckInRoomId")]
         public CheckInRoom CheckInRoom { get; set; }
 
-
-
         public string RoomNumber { get; set; }
         public bool RoomAllocated { get; set; }
         public bool CheckInConfirmed { get; set; }
-
-
-
 
         [Display(Name = "User")]
         public string FullName
@@ -85,5 +80,8 @@ namespace HotelListingSystem.Models
         public Document Document { get; set; }
         [NotMapped]
         public AddOnsR Addons { get; set; }
+
+        [NotMapped]
+        public string RefundTermsnConditions { get; set; }
     }
 }

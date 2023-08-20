@@ -117,6 +117,8 @@ namespace HotelListingSystem.Controllers
             {
                 db.Entry(hotelUsers).State = EntityState.Modified;
                 db.SaveChanges();
+                if(User.IsInRole("Employee"))
+                    return RedirectToAction("Index", "Home");
                 return RedirectToAction("Index");
             }
             return View(hotelUsers);

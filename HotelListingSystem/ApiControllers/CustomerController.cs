@@ -12,7 +12,7 @@ namespace HotelListingSystem.Controllers
     public class CustomerController : ApiController
     {
         [HttpGet]
-        [Route("api/customerapi/userlogin")]
+        [Route("api/customer/login")]
         public IHttpActionResult CheckNumberVaild(string Username, string Password)
         {
             MobileGenericReturn mobileGenericReturn = new MobileGenericReturn();
@@ -34,7 +34,7 @@ namespace HotelListingSystem.Controllers
         }
 
         [HttpGet]
-        [Route("api/customerapi/gethotelrooms")]
+        [Route("api/customer/gethotelrooms")]
         public IHttpActionResult ReturnAvailableHotelRooms()
         {
             MobileGenericReturn mobileGenericReturn = new MobileGenericReturn();

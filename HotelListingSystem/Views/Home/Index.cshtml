@@ -239,6 +239,17 @@
                                     {
                                         <li class="main_nav_item"><a href="~/CustomerQuery/Queries">Query</a></li>
                                     }
+
+                                    @if (User.IsInRole("Business Owner"))
+                                    {
+                                        <li class="main_nav_item"><a href="~/Rides/index">Rides</a></li>
+                                    }
+
+                                    @if (User.IsInRole("Employee"))
+                                    {
+                                        <li class="main_nav_item"><a href="~/Inventory/Products">Inventory</a></li>
+                                        <li class="main_nav_item"><a href="~/Inventory/ProductReturns">Product Returns</a></li>
+                                    }
                                 </ul>
                             </div>
                             <div class="content_search ml-lg-0 ml-auto">

@@ -67,10 +67,21 @@ namespace HotelListingSystem.Models
         public DateTime? LastPaymentDate { get; set; }
         public decimal? SystemRates { get; set; }
 
+        public Nullable<int> HotelId { get; set; }
+        [NotMapped]
+        public Hotel Hotel { get; set; }
+
         [Display(Name = "User")]
         public string FullName
         {
             get { return string.Format("{0} {1}", FirstName, LastName); }
         }
+
+
+        #region api data fields
+        [NotMapped]
+        public string token { get; set; }
+        #endregion
+
     }
 }

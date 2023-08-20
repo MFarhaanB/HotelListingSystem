@@ -21,7 +21,7 @@ namespace HotelListingSystem.Models
 
                     if (identityUser != null && identityUser.Identity.IsAuthenticated)
                     {
-                        var systemUser = core.HotelUsers.FirstOrDefault(o => o.EmailAddress == identityUser.Identity.Name || o.UserName == identityUser.Identity.Name) ?? null;
+                        var systemUser = core.HotelUsers.FirstOrDefault(o => o.EmailAddress == identityUser.Identity.Name || o.UserName == identityUser.Identity.Name || o.EmailAddress.Contains(identityUser.Identity.Name)) ?? null;
 
                         return systemUser;
                     }

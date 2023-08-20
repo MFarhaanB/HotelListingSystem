@@ -455,7 +455,7 @@ namespace HotelListingSystem.Controllers
                 // Handle exception
             }
 
-            ViewBag.Amount = ((owinghotels.Count() == 0) ? "0.00" : ((decimal)owinghotels.First().First().HotelUser.SystemRates).ToString().Replace(',', '.')).ToString();
+            ViewBag.Amount = ((owinghotels.Count() == 0 && owinghotels.First().First().HotelUser.SystemRates == null) ? "0.00" : ((decimal)owinghotels.First().First().HotelUser.SystemRates).ToString().Replace(',', '.')).ToString();
             ViewBag.Ownerid = (owinghotels.Count() == 0) ? 0 : owinghotels.First()?.First()?.HotelUser?.Id;
             ViewBag.FullName = AppHelper.CurrentHotelUser()?.FullName ?? "";
             return View(owinghotels);

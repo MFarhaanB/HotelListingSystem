@@ -1,14 +1,10 @@
-﻿
-@{
-    ViewBag.Title = "Home Page";
-}
-
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 @{
     Layout = "";
 }
 <html lang="en">
 <head>
+    <title>@ViewBag.Title | Travelix</title>
     <link rel="stylesheet" type="text/css" href="https://preview.colorlib.com/theme/travelix/styles/bootstrap4/bootstrap.min.css">
     <link href="https://preview.colorlib.com/theme/travelix/plugins/font-awesome-4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="https://preview.colorlib.com/theme/travelix/plugins/OwlCarousel2-2.2.1/owl.carousel.css">
@@ -16,7 +12,7 @@
     <link rel="stylesheet" type="text/css" href="https://preview.colorlib.com/theme/travelix/plugins/OwlCarousel2-2.2.1/animate.css">
     <link rel="stylesheet" type="text/css" href="https://preview.colorlib.com/theme/travelix/styles/main_styles.css">
     <link rel="stylesheet" type="text/css" href="https://preview.colorlib.com/theme/travelix/styles/responsive.css">
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap4.min.css">
@@ -207,11 +203,6 @@
                             </div>
                             <div class="main_nav_container ml-auto">
                                 <ul class="main_nav_list">
-
-                                    @if (!Request.IsAuthenticated || User.IsInRole("Customer"))
-                                    {
-                                        <li class="main_nav_item"><a href="~/">home</a></li>
-                                    }
                                     @if (User.IsInRole("Administrator"))
                                     {
                                         <li class="main_nav_item"><a href="~/Dinings/Index">Dining</a></li>
@@ -251,7 +242,20 @@
                                     @if (User.IsInRole("Customer") || User.IsInRole("Administrator") || User.IsInRole("Receptionist"))
                                     {
                                         <li class="main_nav_item"><a href="~/CustomerQuery/Queries">Query</a></li>
+                                        <li class="main_nav_item"><a href="~/Refunds/Refunds">Refunds</a></li>
                                     }
+
+                                    @if (User.IsInRole("Business Owner"))
+                                    {
+                                        <li class="main_nav_item"><a href="~/Rides/index">Rides</a></li>
+                                    }
+
+                                    @if (User.IsInRole("Employee"))
+                                    {
+                                        <li class="main_nav_item"><a href="~/Inventory/Products">Inventory</a></li>
+                                        <li class="main_nav_item"><a href="~/Inventory/ProductReturns">Product Returns</a></li>
+                                    }
+
                                 </ul>
                             </div>
                             <div class="content_search ml-lg-0 ml-auto">

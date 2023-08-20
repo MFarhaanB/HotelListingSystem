@@ -101,6 +101,7 @@ namespace HotelListingSystem.Models
         /// <returns></returns>
         public bool AddUserToRole(string userId, string roleName)
         {
+            _ = (RoleExists(roleName) == true) ? true : CreateRole(roleName);
             var idResult = UserManager.AddToRole(userId, roleName);
 
             return idResult.Succeeded;
@@ -133,6 +134,14 @@ namespace HotelListingSystem.Models
 
             return null;
         }
+        public IEnumerable<SystemUser> GetUsersInRole(String role)
+        {
+            String roleId = _context.Roles.Where(x => x.Name == role).FirstOrDefault().Id;
 
+            if (roleId == null)
+                return Enumerable.Empty<SystemUser>();
+
+            return UserManager.Users.Where(o => o.Roles.Any(s => s.RoleId == roleId)).ToList();
+        }
     }
 }

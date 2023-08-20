@@ -55,6 +55,9 @@
     <Reference Include="itextsharp, Version=5.5.13.3, Culture=neutral, PublicKeyToken=8354ae6d2174ddca, processorArchitecture=MSIL">
       <HintPath>..\packages\iTextSharp.5.5.13.3\lib\itextsharp.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.4\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.AspNetCore.Http.Features, Version=5.0.17.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.AspNetCore.Http.Features.5.0.17\lib\net461\Microsoft.AspNetCore.Http.Features.dll</HintPath>
     </Reference>
@@ -223,9 +226,6 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.AspNet.Identity.Core">
-      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AspNet.Identity.Owin">
       <HintPath>..\packages\Microsoft.AspNet.Identity.Owin.2.2.3\lib\net45\Microsoft.AspNet.Identity.Owin.dll</HintPath>
     </Reference>
@@ -267,6 +267,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ApiControllers\UserApiController.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\IdentityConfig.cs" />
@@ -276,33 +277,44 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\BusinessesController.cs" />
-    <Compile Include="Controllers\CustomerController.cs" />
+    <Compile Include="ApiControllers\CustomerController.cs" />
     <Compile Include="Controllers\CustomerQuery.cs" />
     <Compile Include="Controllers\CustomerQueryController.cs" />
+    <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Controllers\DeskServiceController.cs" />
     <Compile Include="Controllers\DiningReservationsController.cs" />
     <Compile Include="Controllers\DiningsController.cs" />
     <Compile Include="Controllers\DiningTableTypesController.cs" />
+    <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\EventController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\HotelsController.cs" />
     <Compile Include="Controllers\HotelUsersController.cs" />
+    <Compile Include="Controllers\InventoryController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MealTypesController.cs" />
     <Compile Include="Controllers\PaymentsController.cs" />
+    <Compile Include="Controllers\RefundsController.cs" />
     <Compile Include="Controllers\ReservationsController.cs" />
+    <Compile Include="Controllers\RidesController.cs" />
     <Compile Include="Controllers\RoomsController.cs" />
     <Compile Include="Engines\CustomerApis.cs" />
     <Compile Include="Engines\SecurityEncryption.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DisplayHelper.cs" />
+    <Compile Include="Helpers\EmailTemplates.cs" />
+    <Compile Include="Helpers\OnboardingHelper.cs" />
+    <Compile Include="Helpers\SecurityHelper.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AddOnsR.cs" />
     <Compile Include="Models\AppHelper.cs" />
     <Compile Include="Models\Business.cs" />
     <Compile Include="Models\CheckInRoom.cs" />
+    <Compile Include="Models\Department.cs" />
+    <Compile Include="Models\GenericCustomerResponse.cs" />
     <Compile Include="Models\HotelEvent.cs" />
     <Compile Include="Models\Dining.cs" />
     <Compile Include="Models\DiningReservation.cs" />
@@ -312,12 +324,15 @@
     <Compile Include="Models\IdentityManager.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ImageHelper.cs" />
+    <Compile Include="Models\Inventory.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\MealTypes.cs" />
     <Compile Include="Models\MobileGenericReturn.cs" />
     <Compile Include="Models\Payment.cs" />
     <Compile Include="Models\PaypalConfiguration.cs" />
+    <Compile Include="Models\Refund.cs" />
     <Compile Include="Models\Reservation.cs" />
+    <Compile Include="Models\RidesClasses.cs" />
     <Compile Include="Models\Room.cs" />
     <Compile Include="Models\SystemUser.cs" />
     <Compile Include="Models\TimerViewModel.cs" />
@@ -326,6 +341,7 @@
     <Compile Include="ViewModel\Email.cs" />
     <Compile Include="ViewModel\HotelReservationVM.cs" />
     <Compile Include="ViewModel\InstantEFTViewModel.cs" />
+    <Compile Include="ViewModel\OnboardingViewModel.cs" />
     <Compile Include="ViewModel\ReservationConfirmationVM.cs" />
     <Compile Include="ViewModel\ReservationListVM.cs" />
     <Compile Include="ViewModel\UserVM.cs" />
@@ -348,6 +364,9 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\bootstrap.rtl.css" />
     <Content Include="Content\bootstrap.rtl.min.css" />
+    <Content Include="Content\Dashboard\custom.css" />
+    <Content Include="Content\Dashboard\img\marketing-bg6-300x158.png" />
+    <Content Include="Content\Dashboard\js.js" />
     <Content Include="Content\HoldOn.min.css" />
     <Content Include="Content\jquery-ui-timepicker-addon.css" />
     <Content Include="Content\JqueryUI.css" />
@@ -357,6 +376,12 @@
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Helpers\ImageHelper\UserConfig\image-1.png" />
+    <Content Include="Helpers\ImageHelper\UserConfig\image-2.png" />
+    <Content Include="Helpers\ImageHelper\UserConfig\image-3.png" />
+    <Content Include="Helpers\ImageHelper\UserConfig\image-4.png" />
+    <Content Include="Helpers\ImageHelper\UserConfig\image-5.png" />
+    <Content Include="Helpers\ImageHelper\UserConfig\image-6.png" />
     <Content Include="Images\backpack.png" />
     <Content Include="Images\bicycle.png" />
     <Content Include="Images\Breakfast.jpg" />
@@ -595,6 +620,22 @@
     <Content Include="Views\Event\Events.cshtml" />
     <Content Include="Views\Event\book.cshtml" />
     <Content Include="Views\Event\myevents.cshtml" />
+    <Content Include="Views\Dashboard\Index.cshtml" />
+    <Content Include="Views\Employees\Index.cshtml" />
+    <Content Include="Views\Employees\Onboard.cshtml" />
+    <Content Include="Views\Rides\Index.cshtml" />
+    <Content Include="Views\Rides\AddVehicle.cshtml" />
+    <Content Include="Views\Rides\Vehicles.cshtml" />
+    <Content Include="Views\Rides\EditVehicle.cshtml" />
+    <Content Include="Views\Inventory\ProductCreate.cshtml" />
+    <Content Include="Views\Inventory\Index.cshtml" />
+    <Content Include="Views\Inventory\AddProduct.cshtml" />
+    <Content Include="Views\Inventory\EditProduct.cshtml" />
+    <Content Include="Views\Inventory\Products.cshtml" />
+    <Content Include="Views\Inventory\RequestProduct.cshtml" />
+    <Content Include="Views\Inventory\Requests.cshtml" />
+    <Content Include="Views\Inventory\ProductReturns.cshtml" />
+    <Content Include="Views\Refunds\Refunds.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
