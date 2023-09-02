@@ -1,4 +1,5 @@
 ﻿<!DOCTYPE html>
+@using HotelListingSystem.Models
 @{
     Layout = "";
 }
@@ -252,8 +253,12 @@
 
                                     @if (User.IsInRole("Employee"))
                                     {
-                                        <li class="main_nav_item"><a href="~/Inventory/Products">Inventory</a></li>
-                                        <li class="main_nav_item"><a href="~/Inventory/ProductReturns">Product Returns</a></li>
+                                        var employee = AppHelper.CurrentHotelUser();
+                                        if (employee.FaceVerified != false)
+                                        {
+                                            <li class="main_nav_item"><a href="~/Inventory/Products">Inventory</a></li>
+                                            <li class="main_nav_item"><a href="~/Inventory/ProductReturns">Product Returns</a></li>
+                                        }
                                     }
 
                                 </ul>

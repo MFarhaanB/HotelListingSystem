@@ -20,8 +20,6 @@ namespace HotelListingSystem.Controllers
         public ActionResult Index(string message)
         {
             ViewBag.Message = message;
-            //new Email().SendEmail("farhaanhotd1@gmail.com", "Hotel Validation", "Iqsaan", "Verified");
-
             return View();
         }
 

@@ -15,6 +15,7 @@ using HotelListingSystem.ViewModel;
 using System.Net.Http;
 using System.Data.Entity;
 using HotelListingSystem.Engines;
+using System.Web.UI.WebControls;
 
 namespace HotelListingSystem.Controllers
 {
@@ -79,6 +80,83 @@ namespace HotelListingSystem.Controllers
         //        throw;
         //    }
         //}
+
+
+
+        #region mobile app region
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<JsonResult> jsonlogin(LoginViewModel model)
+        {
+            try
+            {
+                using (ApplicationDbContext _context = new ApplicationDbContext())
+                {
+                    SystemUser user = _context.Users.FirstOrDefault(a => a.Email == model.Email || a.UserName == model.Email);
+                    SignInStatus result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, false, shouldLockout: false);
+                    if (result == SignInStatus.Success)
+                    {
+                        HotelUsers _user = _context.HotelUsers.FirstOrDefault(a => a.Id == user.HotelUserId);
+                        return new JsonResult
+                        {
+                            Data = _user,
+                            JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                        };
+                    }
+                    else
+                    {
+                        return new JsonResult
+                        {
+                            Data = "Invalid username or password.",
+                            JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                        };
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return new JsonResult
+                {
+                    Data = "Error 404",
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+            }
+            
+        }
+
+        [HttpGet]
+        [AllowAnonymous]
+        public JsonResult jsonusers()
+        {
+            try
+            {
+                using (ApplicationDbContext _context = new ApplicationDbContext())
+                {
+                    return new JsonResult
+                    {
+                        Data = _context.Users.ToList(),
+                        JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                    };
+                }
+            }
+            catch (Exception)
+            {
+                return new JsonResult
+                {
+                    Data = "Error 404",
+                    JsonRequestBehavior = JsonRequestBehavior.AllowGet
+                };
+            }
+        }
+        #endregion
+
+
+
+
+
+
+
+
 
         //
         // POST: /Account/Login

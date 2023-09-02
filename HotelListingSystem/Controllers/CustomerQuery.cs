@@ -109,6 +109,8 @@ namespace HotelListingSystem.Models
         public int? HotelEventId { get; set; }
         [ForeignKey("HotelEventId")]
         public HotelEvent HotelEvent { get; set; }
+
+        public int? UserId { get; set; }
     }
 
     public class BaseModel

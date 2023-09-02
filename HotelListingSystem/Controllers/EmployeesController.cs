@@ -61,7 +61,7 @@ namespace HotelListingSystem.Controllers
             {
                 // Retrieve the cookie by its name
                 HttpCookie myCookie = Request.Cookies["ImageCookie"];
-
+                Document document = new Document();
                 if (Session["ImageCookie"] != null)
                 {
                     string imageBase64 = Session["ImageCookie"].ToString();
@@ -78,7 +78,7 @@ namespace HotelListingSystem.Controllers
                     db.Files.Add(ofile);
                     db.SaveChanges();
 
-                    Document document = new Document();
+                    
                     document.IsActive = true;
                     document.IsDeleted = false;
                     document.CreatedDateTime = DateTime.Now;
@@ -116,6 +116,9 @@ namespace HotelListingSystem.Controllers
                 var result =  UserManager.Create(user, password);
                 if (result.Succeeded)
                 {
+                    document.UserId = user.HotelUserId;
+                    db.Entry(document).State = EntityState.Modified;
+                    db.SaveChanges();
                     OnboardingHelper.AddUserToEmpDepartment(db, collection, user);
 
                     var roleResult = identityManager.AddUserToRole(user.Id, "Employee");

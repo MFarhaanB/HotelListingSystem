@@ -13,7 +13,7 @@ namespace HotelListingSystem.Controllers
     {
         [HttpGet]
         [Route("api/customer/login")]
-        public IHttpActionResult CheckNumberVaild(string Username, string Password)
+        public IHttpActionResult LogiMobileApp(string Username, string Password)
         {
             MobileGenericReturn mobileGenericReturn = new MobileGenericReturn();
             try

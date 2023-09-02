@@ -83,5 +83,8 @@ namespace HotelListingSystem.Models
 
         [NotMapped]
         public string RefundTermsnConditions { get; set; }
+        public bool isVehicleoffered { get; set; }
     }
 }
+
+

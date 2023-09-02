@@ -9,13 +9,48 @@ using System.Web.Mvc;
 using HotelListingSystem.Models;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
+using HotelListingSystem.Helpers.API;
+using HotelListingSystem.Models.FacialRecognition;
 
 namespace HotelListingSystem.Controllers
 {
     public class HotelUsersController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        private ApplicationSignInManager _signInManager;
+        private SystemUserManager _userManager;
+        public HotelUsersController(SystemUserManager userManager, ApplicationSignInManager signInManager)
+        {
+            UserManager = userManager;
+            SignInManager = signInManager;
+        }
+        public HotelUsersController()
+        {
 
+        }
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
+
+        public SystemUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<SystemUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
         // GET: HotelUsers
         public ActionResult Index()
         {
@@ -111,12 +146,19 @@ namespace HotelListingSystem.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,FirstName,LastName,UserName,CompanyName,Designation,EmailAddress,HotelUserType,StatusId,IsPasswordReset,IdentificationNumber,MobileNumber,CreatedOn")] HotelUsers hotelUsers)
+        public ActionResult Edit( HotelUsers hotelUsers)
         {
             if (ModelState.IsValid)
             {
                 db.Entry(hotelUsers).State = EntityState.Modified;
                 db.SaveChanges();
+
+                if(!String.IsNullOrEmpty(hotelUsers.Password))
+                {
+                    HotelUsers _user = AppHelper.CurrentHotelUser();
+                    var user = _userManager.FindByName(_user.UserName);
+                    _ = _userManager.AddPassword(user.Id, hotelUsers.Password);
+                }
                 if(User.IsInRole("Employee"))
                     return RedirectToAction("Index", "Home");
                 return RedirectToAction("Index");
@@ -149,6 +191,24 @@ namespace HotelListingSystem.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
+
+        public ActionResult VerifyUserWithMXFaceAi(int UserId, String Image)
+        {
+            HotelUsers _employee = AppHelper.CurrentHotelUser();
+            MXFaceAi mXFaceAi = new MXFaceAi();
+            Document _doc = db.Documents.Include(x=>x.File).FirstOrDefault(a => a.UserId == UserId && a.DocumentTypeKey == "d_user_image_reg");
+            Boolean _await = mXFaceAi.CompareImageWithStored(
+                new MXFaceFacialRequest
+                {
+                    encoded_image1 = Convert.ToBase64String(_doc.File.Content),
+                    encoded_image2 = Image.Split(',').ToList()[1]
+                });
+            _employee.FaceVerified = _await;
+            db.Entry(_employee).State = EntityState.Modified;
+            db.SaveChanges();
+            return Json(_await, JsonRequestBehavior.AllowGet);
+        }
+
 
         protected override void Dispose(bool disposing)
         {

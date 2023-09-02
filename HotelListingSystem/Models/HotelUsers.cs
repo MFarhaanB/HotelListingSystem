@@ -66,6 +66,7 @@ namespace HotelListingSystem.Models
         public string MobileAppPassword { get; set; }
         public DateTime? LastPaymentDate { get; set; }
         public decimal? SystemRates { get; set; }
+        public Boolean FaceVerified { get; set; }
 
         public Nullable<int> HotelId { get; set; }
         [NotMapped]
@@ -77,6 +78,17 @@ namespace HotelListingSystem.Models
             get { return string.Format("{0} {1}", FirstName, LastName); }
         }
 
+        [NotMapped]
+        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
+        public string Password { get; set; }
+
+        [NotMapped]
+        [DataType(DataType.Password)]
+        [Display(Name = "Confirm password")]
+        [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        public string ConfirmPassword { get; set; }
 
         #region api data fields
         [NotMapped]
