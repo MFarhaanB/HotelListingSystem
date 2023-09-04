@@ -256,7 +256,58 @@
         .round_corner {
             border-radius: 30px;
         }
+        /* Star icon style */
+        .fa-star {
+            color: #f5ce42; /* Default color of stars */
+            font-size: 16px; /* Adjust the size of the stars */
+            margin-right: 3px; /* Reduce spacing between stars */
+        }
+
+            /* Checked (filled) star style */
+            .fa-star.checked {
+                color: #ffbb00; /* Color for filled stars */
+                font-size: 16px; /* Adjust the size of the filled stars */
+                margin-right: 3px; /* Reduce spacing between filled stars */
+            }
+
+        /* Rating and stars container */
+        .rating {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end; /* Align stars to the far right */
+            background-color: transparent; /* Make the background transparent */
+        }
+
+        /* Rating value style */
+        .rating-value {
+            font-size: 18px;
+            margin-left: 5px;
+            color: black; /* Set the rating number color to black */
+        }
+
+        /* Style for star icons */
+        .star-icons i {
+            font-size: 16px; /* Adjust the size of the stars */
+            margin-right: 3px; /* Reduce spacing between stars */
+            background-color: transparent; /* Make star icons transparent */
+        }
+
+            /* Style for checked stars */
+            .star-icons i.checked {
+                color: #ffd800; /* Yellow color for checked stars */
+                font-size: 16px; /* Adjust the size of the checked stars */
+                margin-right: 3px; /* Reduce spacing between checked stars */
+            }
+
+            /* Style for unchecked stars */
+            .star-icons i.unchecked {
+                color: darkgrey; /* Color of unchecked stars */
+                font-size: 16px; /* Adjust the size of the unchecked stars */
+                margin-right: 3px; /* Reduce spacing between unchecked stars */
+                outline: 1px solid darkgrey; /* Add an outline to unchecked stars */
+            }
     </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 
 <body>
@@ -483,61 +534,116 @@
 
             foreach (var hotel in Model)
             {
-                <div class="container_s container">
-                    <div class="left-section">
-                        <img src="@Url.Action("DownloadHotelFile", "Hotels", new { Id = hotel.HotelId, doc_key_type = "c_hotel_image_c" })" alt="Image description">
-                        
-                        @*<img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Image description">*@
-                    </div>
-                    <div class="middle-section">
-                        @{
-                            var db = new ApplicationDbContext();
-                            var h = db.Hotels.Find(hotel.HotelId);
-                        }
-                        @if (!string.IsNullOrEmpty(h.LayoutKeyValue))
+    <div class="container_s container">
+        <div class="left-section">
+            <img src="@Url.Action("DownloadHotelFile", "Hotels", new { Id = hotel.HotelId, doc_key_type = "c_hotel_image_c" })" alt="Image description">
+
+            @*<img src="https://images.unsplash.com/photo-1575936123452-b67c3203c357?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="Image description">*@
+        </div>
+        <div class="middle-section">
+            @{
+                var db = new ApplicationDbContext();
+                var h = db.Hotels.Find(hotel.HotelId);
+            }
+            @if (!string.IsNullOrEmpty(h.LayoutKeyValue))
+            {
+                switch (h.LayoutKeyValue)
+                {
+                    case "_layout_2":
+                        <h2><a href="~/Hotels/About2?Id=@hotel.HotelId" style="color:darkblue;">@hotel.HotelName : @h.City</a></h2>
+                        break;
+                    default:
+                        <h2><a href="~/Hotels/About?Id=@hotel.HotelId" style="color:darkblue;"> @hotel.HotelName :@h.City</a></h2>
+                        break;
+                }
+            }
+            else
+            {
+                <h2><a href="#" style="color:darkblue;"> @hotel.HotelName : @h.City</a></h2>
+            }
+
+            @if (ViewBag.CheckInDate != null)
+            {
+                <h6><strong>@ViewBag.CheckInDate</strong> - <strong>@ViewBag.CheckOutDate</strong></h6>
+            }
+            <p>@h.StreetNumber @h.StreetName, @h.Suburb, @h.City <span class="f4bd0794db b4273d69aa"><a href="https://www.google.com/maps/search/?api=1&query= @h.StreetNumber @h.StreetName @h.Suburb @h.City">Show Map</a></span></p>
+            <h6><strong>Double Room</strong></h6>
+            <h7 class="room">1 double bed</h7><br />
+
+            <h7>FREE cancellation • No prepayment needed</h7>
+            <br />
+
+            <h8>You can cancel later, so lock in this great price today.</h8>
+
+        </div>
+
+
+
+
+
+        @*<div class="right-section">
+            <div class="container_right">
+                <span class="rating">@(hotel.Rating??0)</span>
+                <h6 style="text-align:right; margin-right:35px;"><strong>Review score</strong></h6>
+                <h6 class="reviews">749 reviews</h6>
+
+                <h6 class="reviews_2">2 Nights, 2 adults</h6>
+                <h3 class="price_placeholder">ZAR @string.Format($"{hotel.PricePerRoom}") </h3>
+                <h6 class="reviews_3">+ ZAR (0) taxes and charges</h6>
+                <button class="button_see_holtel" onclick="reserveRoomConfirmation(@hotel.HotelId, '@hotel.RoomName', @hotel.RoomId, '@hotel.PricePerRoom')">Reserve Room</button>
+            </div>
+        </div>*@
+
+        <div class="right-section">
+            <div class="container_right">
+                <div class="rating text-center">
+                    <span class="star-icons">
+                        @for (int i = 1; i <= 5; i++)
                         {
-                            switch (h.LayoutKeyValue)
+                            <i class="fas fa-star @((i <= HotelListingSystem.Helper.RatingHelper.GetRatingById(new ApplicationDbContext(), hotel.HotelId)) ? "checked" : "unchecked")"></i>
+                        }
+                    </span>
+                    <br>
+                    <span class="rating-value">
+                        @{
+                            double averageRating = HotelListingSystem.Helper.RatingHelper.GetRatingById(new ApplicationDbContext(), hotel.HotelId);
+                            if (averageRating == 0)
                             {
-                                case "_layout_2":
-                                    <h2><a href="~/Hotels/About2?Id=@hotel.HotelId" style="color:darkblue;">@hotel.HotelName : @h.City</a></h2>
-                                    break;
-                                default:
-                                    <h2><a href="~/Hotels/About?Id=@hotel.HotelId" style="color:darkblue;"> @hotel.HotelName :@h.City</a></h2>
-                                    break;
+                                <text>Not Yet Reviewed</text>
+                            }
+                            else
+                            {
+                                @averageRating
                             }
                         }
-                        else
-                        {
-                            <h2><a href="#" style="color:darkblue;"> @hotel.HotelName : @h.City</a></h2>
-                        }
-
-                        @if (ViewBag.CheckInDate != null)
-                        {
-                            <h6><strong>@ViewBag.CheckInDate</strong> - <strong>@ViewBag.CheckOutDate</strong></h6>
-                        }
-                    <p>@h.StreetNumber @h.StreetName, @h.Suburb, @h.City <span class="f4bd0794db b4273d69aa"><a href="https://www.google.com/maps/search/?api=1&query= @h.StreetNumber @h.StreetName @h.Suburb @h.City">Show Map</a></span></p>
-                        <h6><strong>Double Room</strong></h6>
-                        <h7 class="room">1 double bed</h7><br />
-
-                        <h7>FREE cancellation • No prepayment needed</h7>
-                        <br />
-
-                        <h8>You can cancel later, so lock in this great price today.</h8>
-
-                    </div>
-                    <div class="right-section">
-                        <div class="container_right">
-                            <span class="rating">@(hotel.Rating??0)</span>
-                            <h6 style="text-align:right; margin-right:35px;"><strong>Review score</strong></h6>
-                            <h6 class="reviews">749 reviews</h6>
-
-                            <h6 class="reviews_2">2 Nights, 2 adults</h6>
-                            <h3 class="price_placeholder">ZAR @string.Format($"{hotel.PricePerRoom}") </h3>
-                            <h6 class="reviews_3">+ ZAR (0) taxes and charges</h6>
-                            <button class="button_see_holtel" onclick="reserveRoomConfirmation(@hotel.HotelId, '@hotel.RoomName', @hotel.RoomId, '@hotel.PricePerRoom')">Reserve Room</button>
-                        </div>
-                    </div>
+                    </span>
                 </div>
+                <br /><br />
+                <div> <button class="btn btn-custom button_see_hotel mt-3" onclick="reserveRoomConfirmation(@hotel.HotelId, '@hotel.RoomName', @hotel.RoomId, '@hotel.PricePerRoom')">Reserve Room</button></div>
+                <div><a href="@Url.Action("StoreHotelReviews", "ReviewRatings", new { hotelId = hotel.HotelId })" class="btn btn-primary mt-2">View Reviews</a>    </div>
+              
+            </div>
+        </div>
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+
+
+
+
+
 
                 <div hidden>
 

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HotelListingSystem.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -22,6 +23,10 @@ namespace HotelListingSystem.ViewModel
         public byte[] HotelImageContent { get; set; }
         public bool? IsSearchResults { get; set; }
         public decimal PricePerRoom { get; set; }
+
+        public HotelRatingVM HotelRatingVM { get; set; }
+
+        public Hotel Hotel { get; set; }
 
     }
 }

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml.Linq;
+using HotelListingSystem.Helper;
 using HotelListingSystem.Models;
 using HotelListingSystem.ViewModel;
 
@@ -193,16 +194,35 @@ namespace HotelListingSystem.Controllers
             return Json(new { success = savechanges > 0, message = "Hotel updated successfully" });
         }
 
-
-        // GET: Hotels
+        //GET: Hotels
         public ActionResult FindHotel()
         {
+            // Assuming the Search method returns a list of hotels based on the search criteria
+            var hotels = Search(string.Empty, string.Empty, null, null);
+
+            // Create a dictionary to store the average rating for each hotel ID
+            var averageRatings = new Dictionary<int, double>();
+
+            // Calculate and set the average rating for each hotel
+            foreach (var hotel in hotels)
+            {
+                RatingHelper.UpdateAverageRating(db, hotel.HotelId);
+
+                // Get the updated average rating from the database and store it in the dictionary
+                var updatedHotel = db.Hotels.Find(hotel.HotelId);
+                averageRatings[hotel.HotelId] = updatedHotel.AverageRating;
+            }
+
             ViewBag.City = new SelectList(db.Hotels.Select(h => h.City).Distinct().ToList());
             ViewBag.Suburb = new SelectList(db.Hotels.Select(h => h.Suburb).Distinct().ToList());
 
-            var hotels = db.Hotels.Include(h => h.HotelUser);
-            return View(Search(string.Empty, string.Empty, null, null));
+            // Pass the list of hotels and the dictionary of average ratings to the view
+            ViewBag.Hotels = hotels;
+            ViewBag.AverageRatings = averageRatings;
+
+            return View(hotels);
         }
+
 
         [HttpPost]
         public ActionResult FindHotel(string suburb, string city, DateTime? checkin, DateTime? checkout)

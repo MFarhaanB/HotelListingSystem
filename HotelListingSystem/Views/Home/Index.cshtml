@@ -255,6 +255,10 @@
                                             <li class="main_nav_item"><a href="~/Inventory/ProductReturns">Product Returns</a></li>
                                         }
                                     }
+                                    @if (User.IsInRole("Customer") || User.IsInRole("Administrator") || User.IsInRole("Receptionist"))
+                                    {
+                                        <li class="main_nav_item"><a href="@Url.Action("ResReview", "Reservations")">ResReview</a></li>
+                                    }
                                 </ul>
                             </div>
                             <div class="content_search ml-lg-0 ml-auto">

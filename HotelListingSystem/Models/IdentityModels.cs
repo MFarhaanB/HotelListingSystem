@@ -57,6 +57,8 @@ namespace HotelListingSystem.Models
         public DbSet<WaitingList> WaitingLists { get; set; }
         public DbSet<ProductRequest> ProductRequests { get; set; }
         public DbSet<CheckoutHistory> CheckoutHistories { get; set; }
-        public DbSet<Refund> Refunds { get; set; }  
+        public DbSet<Refund> Refunds { get; set; }
+
+        public System.Data.Entity.DbSet<HotelListingSystem.Models.ReviewRating> ReviewRatings { get; set; }
     }
 }
