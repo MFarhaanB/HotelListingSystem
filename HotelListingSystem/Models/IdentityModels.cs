@@ -64,6 +64,6 @@ namespace HotelListingSystem.Models
         public DbSet<Driverprofile> Driverprofile { get; set; }  
         public DbSet<RecentlyViewedHotel> RecentlyViewedHotels { get; set; }  
         public DbSet<Cupon> Cupons { get; set; } 
-        public DbSet<CuponUsage> CuponUsages { get; set; } 
+        public DbSet<CuponUsage> CuponUsages { get; set; }
     }
 }
