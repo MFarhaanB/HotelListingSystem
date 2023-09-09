@@ -63,6 +63,10 @@ namespace HotelListingSystem.Models
         public string RoomNumber { get; set; }
         public bool RoomAllocated { get; set; }
         public bool CheckInConfirmed { get; set; }
+        public bool CheckOutConfirmed { get; set; }
+
+        public bool ChkInReminder { get; set; }
+        public bool ChkOutReminder { get; set; }
 
         [Display(Name = "User")]
         public string FullName

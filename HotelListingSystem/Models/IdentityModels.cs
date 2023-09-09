@@ -1,6 +1,8 @@
 ﻿using System.Data.Entity;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using HotelListingSystem.Models.CuponsOrDiscount;
+using HotelListingSystem.Models.Driver;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using static HotelListingSystem.Controllers.ReservationsController;
@@ -58,5 +60,10 @@ namespace HotelListingSystem.Models
         public DbSet<ProductRequest> ProductRequests { get; set; }
         public DbSet<CheckoutHistory> CheckoutHistories { get; set; }
         public DbSet<Refund> Refunds { get; set; }  
+        public DbSet<Trip> Trips{ get; set; }  
+        public DbSet<Driverprofile> Driverprofile { get; set; }  
+        public DbSet<RecentlyViewedHotel> RecentlyViewedHotels { get; set; }  
+        public DbSet<Cupon> Cupons { get; set; } 
+        public DbSet<CuponUsage> CuponUsages { get; set; } 
     }
 }

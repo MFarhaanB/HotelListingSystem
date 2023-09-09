@@ -109,7 +109,8 @@ namespace HotelListingSystem.Controllers
                     MobileNumber = collection.Mobile,
                     CreatedOn = DateTime.Now,
                     HotelUserType = "Employee",
-                    HotelId=collection.HotelId,
+                    HotelId = collection.HotelId,
+                    FaceVerified = false
                 };
 
                 password = "P@ssw0rd0#"; //remove this when deploying to azure

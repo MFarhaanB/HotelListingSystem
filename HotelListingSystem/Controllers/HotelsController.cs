@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using System.Xml.Linq;
+using HotelListingSystem.Helpers;
 using HotelListingSystem.Models;
 using HotelListingSystem.ViewModel;
 
@@ -15,7 +16,11 @@ namespace HotelListingSystem.Controllers
     public class HotelsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
-
+        private readonly RecentlyViewedHotelHelper viewedHotelHelper;
+        public HotelsController()
+        {
+            viewedHotelHelper = new RecentlyViewedHotelHelper(db);
+        }
         // GET: Hotels
         public ActionResult Index()
         {
@@ -25,11 +30,21 @@ namespace HotelListingSystem.Controllers
         public ActionResult About(int Id)
         {
             var hotels = db.Hotels.Find(Id);
+            if (Request.IsAuthenticated)
+            {
+                viewedHotelHelper.RecordView(hotels, AppHelper.CurrentHotelUser().Id);
+                ViewBag.FindRecentlyViewdHotels = viewedHotelHelper.FindRecentlyViewdHotels(AppHelper.CurrentHotelUser().Id);
+            }
             return View(hotels);
         }
         public ActionResult About2(int Id)
         {
             var hotels = db.Hotels.Find(Id);
+            if (Request.IsAuthenticated)
+            {
+                viewedHotelHelper.RecordView(hotels, AppHelper.CurrentHotelUser().Id);
+                ViewBag.FindRecentlyViewdHotels = viewedHotelHelper.FindRecentlyViewdHotels(AppHelper.CurrentHotelUser().Id);
+            }
             return View(hotels);
         }
 

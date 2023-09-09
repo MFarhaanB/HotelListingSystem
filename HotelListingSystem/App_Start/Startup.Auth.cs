@@ -6,14 +6,26 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using HotelListingSystem.Models;
+using Hangfire;
+using Hangfire.SqlServer;
+using HotelListingSystem.BackgroundTask;
 
 namespace HotelListingSystem
 {
     public partial class Startup
     {
         // For more information on configuring authentication, please visit https://go.microsoft.com/fwlink/?LinkId=301864
+        [Obsolete]
         public void ConfigureAuth(IAppBuilder app)
         {
+
+            //background service job
+            JobStorage.Current = new SqlServerStorage("DefaultConnection");
+            TaskController taskController = new TaskController();
+            RecurringJob.AddOrUpdate(() => taskController.Execute(), Cron.Minutely);
+            app.UseHangfireServer();
+
+
             // Configure the db context, user manager and signin manager to use a single instance per request
             app.CreatePerOwinContext(ApplicationDbContext.Create);
             app.CreatePerOwinContext<SystemUserManager>(SystemUserManager.Create);

@@ -105,6 +105,18 @@ namespace HotelListingSystem.ViewModel
                         refund = refund.Replace("[Current Date]", DateTime.Now.ToLongDateString());
                         mail.Body = refund;
                         break;
+                    case "e_checkin_reminder":
+                        String checkin = EmailTemplates.CheckinOrOutReminder;
+                        checkin = checkin.Replace("[Hotel Name]", Hotel);
+                        checkin = checkin.Replace("September", DateTime.Now.ToLongDateString());
+                        mail.Body = checkin;
+                        break;
+                    case "e_checkout_reminder":
+                        String checkout = EmailTemplates.CheckinOrOutReminder;
+                        checkout = checkout.Replace("[Hotel Name]", Hotel);
+                        checkout = checkout.Replace("September", DateTime.Now.ToLongDateString());
+                        mail.Body = checkout;
+                        break;
                     default:
                         mail.Body = String.Format("Dear {0}, <br/> {1} <br/><br/>Your's Sincerely<br/><strong>Hotel Listing Team</strong>", Name, body);
                         break;

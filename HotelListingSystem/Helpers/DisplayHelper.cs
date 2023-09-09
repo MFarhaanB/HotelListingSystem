@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Data.Entity;
 using HotelListingSystem.Models;
+using Tavis.UriTemplates;
 
 namespace HotelListingSystem.Helpers
 {
@@ -33,6 +34,14 @@ namespace HotelListingSystem.Helpers
                     result = true;
             }
             return result;
+        }
+
+        public static Document GetHotelImage(Int32 Id, String Key)
+        {
+            using (ApplicationDbContext _context = new ApplicationDbContext())
+            {
+                return _context.Documents.Include(c => c.File).OrderByDescending(a => a.Id).Where(a => a.HotelId == Id && a.DocumentTypeKey == Key).FirstOrDefault();
+            }
         }
     }
 }

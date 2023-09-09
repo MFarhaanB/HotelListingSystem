@@ -105,7 +105,8 @@
             <form action="/DeskService/SearchReservations" method="get">
                 <input type="text" name="IdentityNumber" required class="form-control col-md-2 text-right" min="13" maxlength="13" style="margin-right: 5px" />
                 <input type="submit" value="Search" class="btn btn-primary form-control col-md-1" style="margin-right: 5px" />
-                <input type="button" value="Refresh" onclick="window.location.href='/DeskService/Index'" class="btn btn-outline-info form-control col-md-1" />
+                <input type="button" value="Refresh" onclick="window.location.href='/DeskService/Index'" class="btn btn-outline-info form-control col-md-1" style="margin-right: 5px"/>
+                <input type="button" value="Check-Out" onclick="window.location.href='/DeskService/CurrentActiveReservations'" class="btn btn-outline-secondary form-control col-md-1" />
             </form>
         </div>
         <div class="product-list">

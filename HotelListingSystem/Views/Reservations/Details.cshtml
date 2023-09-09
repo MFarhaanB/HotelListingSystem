@@ -176,6 +176,10 @@
                                 }, htmlAttributes: new { @class = "form-control", @onchange = "ChangePaymentMethod(this.value)" })
                                 @Html.ValidationMessageFor(model => model.RoomId, "", new { @class = "text-danger" })
                             </div>
+                            @Html.LabelFor(model => model.RoomId, "Cupon Code", htmlAttributes: new { @class = "control-label col-md-1" })
+                            <div class="col-md-2 c_half_input">
+                                @Html.Editor("Cupon", new { htmlAttributes = new { @class = "form-control", @Id = "Cupon", @onfocusout= "ValidatePromoOrCupon(this.value)" } })
+                            </div>
                         </div>
                     </div>
                     <hr class="col-md-offset-2" />
@@ -184,8 +188,8 @@
                             <input type="button" value="Paypal Pay Now" onclick="window.location.href='@Url.Action("Create", "Payments", new { id = Model.Id })'" class="btn btn-sm btn-primary" id="paypalPayment" />
                             <button class="btn btn-sm btn-warning" id="cardPaymentButton" style="display:none;">Debit/Credit Card Payment</button>
                         </div>
-
                     </div>
+                    <input type="text" style="display:none" id="totalhidden" />
                 </div>
 
                 <div id="FacialRecognitionId">
@@ -198,7 +202,17 @@
             }
             else
             {
+
+
                 <hr class="col-md-offset-2" />
+                if (Model.CheckInConfirmed)
+                {
+                    <div class="form-group text-right">
+                        <div class="col-md-offset-2 col-md-4">
+                            <input type="button" value="Back To List" onclick="goBack()" class="btn btn-sm btn-outline-warning" />
+                        </div>
+                    </div>
+                }
                 <div class="form-group text-right">
                     <div class="col-md-offset-2 col-md-4">
                         <input type="button" value="Back To List" onclick="goBack()" class="btn btn-sm btn-outline-warning" />
@@ -207,7 +221,8 @@
 
             }
 
-</main>
+
+    </main>
 </body>
 </html>
 
@@ -380,7 +395,7 @@
 
 <script>
 
-   
+
 
     function StratMeetingKYCModal() {
         $('#SubmitModal').modal({
@@ -448,7 +463,12 @@
     var checkoutButton = document.querySelector('#cardPaymentButton');
     checkoutButton.addEventListener('click', function () {
         debugger;
-        let amount = '@Model.TotalCost.ToString().Split('.').ToList()[0].Replace(',','.')';
+        const totalhidden = document.getElementById('totalhidden').value;
+        let amount = '';
+        if (totalhidden !== null && totalhidden !== '') 
+            amount = totalhidden
+        else
+            amount = '@Model.TotalCost.ToString().Split('.').ToList()[0].Replace(',','.')';
         amount = amount * 100;
         yoco.showPopup({
             amountInCents: amount,
@@ -497,7 +517,34 @@
     function goBack() {
         window.history.back();
     }
+    function ValidatePromoOrCupon(cupon) {
+        if (cupon !== '' && cupon !== null) {
+            $.ajax({
+                url: '@Url.Action("ValidateCupon", "Cupons")',
+                type: 'POST',
+                data: { Code: cupon, id: '@Model.Id' },
+                success: function (data) {
+                    if (data.status) {
+                        alert("Cupon Activated")
+                        let amount = '@Model.TotalCost.ToString().Split('.').ToList()[0].Replace(',','.')';
+                        if (data.cupon.IsPercentage) {
+                            amount -= amount * (data.cupon.Amount / 100);
+                        } else {
+                            amount -= data.cupon.Amount;
+                        }
 
+                        $('#totalhidden').val(amount);
+                    } else {
+                        $('#Cupon').val('');
+                        alert(data.message);
+                    }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error(errorThrown);
+                }
+            })
+        }
+    }
 
     function ChangeMenues(price, status) {
         debugger;

@@ -31,6 +31,36 @@ namespace HotelListingSystem.Controllers
         }
 
 
+        public ActionResult CurrentActiveReservations()
+        {
+            var user = AppHelper.CurrentHotelUser().Id;
+            var reservations = db.Reservations
+                .Include(c => c.Hotel)
+                .Include(c => c.Room)
+                .Include(c => c.HotelUser)
+                .Where(a => a.Hotel.ReceptionistId == user && a.CheckInConfirmed && !a.CheckOutConfirmed).ToList();
+            foreach (var r in reservations)
+                r.payment = db.Payments.FirstOrDefault(b => (int)b.ReservationId == r.Id);
+            return View(reservations);
+        }
+
+        public ActionResult CheckoutReservation(Int32 id)
+        {
+            try
+            {
+                Reservation reservation = db.Reservations.Find(id);
+                reservation.CheckOutConfirmed = true;
+                db.Entry(reservation).State = EntityState.Modified;
+                db.SaveChanges();
+                return Json(true, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception)
+            {
+                return Json(false, JsonRequestBehavior.AllowGet);
+            }
+
+        }
+
         public ActionResult SearchReservations(string IdentityNumber)
         {
             var user = AppHelper.CurrentHotelUser().Id;
@@ -42,6 +72,18 @@ namespace HotelListingSystem.Controllers
             foreach (var r in reservations)
                 r.payment = db.Payments.FirstOrDefault(b => (int)b.ReservationId == r.Id);
             return View("Index", reservations);
+        }
+        public ActionResult SearchReservations2(string IdentityNumber)
+        {
+            var user = AppHelper.CurrentHotelUser().Id;
+            var reservations = db.Reservations
+                .Include(c => c.Hotel)
+                .Include(c => c.Room)
+                .Include(c => c.HotelUser)
+                .Where(a => a.Hotel.ReceptionistId == user && a.HotelUser.IdentificationNumber == IdentityNumber).ToList();
+            foreach (var r in reservations)
+                r.payment = db.Payments.FirstOrDefault(b => (int)b.ReservationId == r.Id);
+            return View("CurrentActiveReservations", reservations);
         }
 
         public ActionResult Update(int Id)
@@ -237,6 +279,10 @@ namespace HotelListingSystem.Controllers
 
             return Json(true, JsonRequestBehavior.AllowGet);
         }
+
+
+
+
 
     }
 

@@ -12,4 +12,4 @@ namespace HotelListingSystem.Models.Driver
         public double Latitude { get; set; }
         public double Longitude { get; set; }
     }
-}
+}   
