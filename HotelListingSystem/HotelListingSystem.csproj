@@ -412,6 +412,7 @@
     <Compile Include="Controllers\PaymentsController.cs" />
     <Compile Include="Controllers\RefundsController.cs" />
     <Compile Include="Controllers\ReservationsController.cs" />
+    <Compile Include="Controllers\ReviewRatingsController.cs" />
     <Compile Include="Controllers\RidesController.cs" />
     <Compile Include="Controllers\RoomsController.cs" />
     <Compile Include="Engines\CustomerApis.cs" />
@@ -425,6 +426,7 @@
     <Compile Include="Helpers\EmailTemplates.cs" />
     <Compile Include="Helpers\ICuponHelper.cs" />
     <Compile Include="Helpers\OnboardingHelper.cs" />
+    <Compile Include="Helpers\RatingHelper.cs" />
     <Compile Include="Helpers\RecentlyViewedHotelHelper.cs" />
     <Compile Include="Helpers\SecurityHelper.cs" />
     <Compile Include="Migrations\Configuration.cs" />
@@ -458,6 +460,7 @@
     <Compile Include="Models\RecentlyViewedHotel.cs" />
     <Compile Include="Models\Refund.cs" />
     <Compile Include="Models\Reservation.cs" />
+    <Compile Include="Models\ReviewRating.cs" />
     <Compile Include="Models\RidesClasses.cs" />
     <Compile Include="Models\Room.cs" />
     <Compile Include="Models\SystemUser.cs" />
@@ -466,11 +469,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
     <Compile Include="ViewModel\Email.cs" />
+    <Compile Include="ViewModel\HotelRatingVM.cs" />
     <Compile Include="ViewModel\HotelReservationVM.cs" />
     <Compile Include="ViewModel\InstantEFTViewModel.cs" />
     <Compile Include="ViewModel\OnboardingViewModel.cs" />
     <Compile Include="ViewModel\ReservationConfirmationVM.cs" />
     <Compile Include="ViewModel\ReservationListVM.cs" />
+    <Compile Include="ViewModel\ResReviewViewModel.cs" />
     <Compile Include="ViewModel\UserVM.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -769,6 +774,15 @@
     <Content Include="Views\Cupons\Create.cshtml" />
     <Content Include="Views\Cupons\Edit.cshtml" />
     <Content Include="Views\Cupons\Delete.cshtml" />
+    <Content Include="Views\ReviewRatings\Average.cshtml" />
+    <Content Include="Views\ReviewRatings\Create.cshtml" />
+    <Content Include="Views\ReviewRatings\Delete.cshtml" />
+    <Content Include="Views\ReviewRatings\Details.cshtml" />
+    <Content Include="Views\ReviewRatings\Edit.cshtml" />
+    <Content Include="Views\ReviewRatings\HotelReviews.cshtml" />
+    <Content Include="Views\ReviewRatings\Index.cshtml" />
+    <Content Include="Views\ReviewRatings\StoreHotelReviews.cshtml" />
+    <Content Include="Views\ReviewRatings\ThankYou.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
