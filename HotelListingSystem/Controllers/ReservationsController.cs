@@ -10,6 +10,7 @@ using System.Web;
 using System.Web.Mvc;
 using HotelListingSystem.Models;
 using HotelListingSystem.ViewModel;
+using Microsoft.AspNet.Identity;
 
 namespace HotelListingSystem.Controllers
 {
@@ -428,7 +429,35 @@ namespace HotelListingSystem.Controllers
             }
             return Json(ImageSubmitedResults, JsonRequestBehavior.AllowGet);
         }
+        public ActionResult ResReview()
+        {
+            var user = AppHelper.CurrentHotelUser();
+            var currentUser = User.Identity.GetUserId();
 
+            var reservations = db.Reservations
+                .Include(r => r.Hotel)
+                .Include(r => r.HotelUser)
+                .Include(r => r.Room)
+                .Where(r => r.HotelUserId == user.Id)
+                .ToList();
+
+            var ratedHotelIds = db.ReviewRatings
+                .Where(r => r.ReviewerId == currentUser)
+                .Select(r => r.HotelId)
+                .ToList();
+
+            var userRatings = db.ReviewRatings
+                .Where(r => r.ReviewerId == currentUser && ratedHotelIds.Contains(r.HotelId))
+                .ToList();
+
+            var viewModel = new ResReviewViewModel
+            {
+                Reservations = reservations,
+                UserRatings = userRatings
+            };
+
+            return View(viewModel);
+        }
 
     }
 }

@@ -134,6 +134,15 @@
                                 }
                                 @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-sm btn-success" })
                             </td>
+
+                            <td>
+                                @if (item.PaymentApproved)
+                                {
+
+                                    @Html.ActionLink("Rate Hotel", "Create", "ReviewRatings", new { hotelId = item.HotelId }, new { @class = "btn btn-sm btn-outline-primary" })
+                                }
+
+                            </td>
                         </tr>
                     }
                 </tbody>

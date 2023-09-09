@@ -87,6 +87,11 @@ namespace HotelListingSystem.Models
         public bool IsNotified { get; set; }
         public DateTime? NotificationDate { get; set; }
 
+        public double AverageRating { get; set; }
+
+        public virtual ICollection<Reservation> Reservations { get; set; }
+        public virtual ICollection<ReviewRating> ReviewRatings { get; set; }
+
 
 
     }
