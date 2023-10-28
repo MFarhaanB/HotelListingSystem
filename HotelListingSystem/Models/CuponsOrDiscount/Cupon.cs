@@ -26,5 +26,9 @@ namespace HotelListingSystem.Models.CuponsOrDiscount
 
         [Display(Name = "Deleted Flag")]
         public Boolean IsDeleted { get; set; }
+
+        public int HotelId { get; set; }
+        [ForeignKey("HotelId")]
+        public Hotel Hotel { get; set; }
     }
 }

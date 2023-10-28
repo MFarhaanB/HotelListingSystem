@@ -20,10 +20,10 @@ namespace HotelListingSystem
         {
 
             //background service job
-            JobStorage.Current = new SqlServerStorage("DefaultConnection");
-            TaskController taskController = new TaskController();
-            RecurringJob.AddOrUpdate(() => taskController.Execute(), Cron.Minutely);
-            app.UseHangfireServer();
+            //JobStorage.Current = new SqlServerStorage("DefaultConnection");
+            //TaskController taskController = new TaskController();
+            //RecurringJob.AddOrUpdate(() => taskController.Execute(), Cron.Minutely);
+            //app.UseHangfireServer();
 
 
             // Configure the db context, user manager and signin manager to use a single instance per request
