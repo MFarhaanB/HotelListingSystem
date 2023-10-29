@@ -88,6 +88,7 @@ namespace HotelListingSystem.Models
         public DateTime? NotificationDate { get; set; }
 
         public double AverageRating { get; set; }
+        public String Tour360Id { get; set; }
 
         public virtual ICollection<Reservation> Reservations { get; set; }
         public virtual ICollection<ReviewRating> ReviewRatings { get; set; }

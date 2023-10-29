@@ -68,6 +68,8 @@ namespace HotelListingSystem.Models
         public bool ChkInReminder { get; set; }
         public bool ChkOutReminder { get; set; }
 
+       
+
         [Display(Name = "User")]
         public string FullName
         {
