@@ -415,6 +415,7 @@
     <Compile Include="Controllers\ReviewRatingsController.cs" />
     <Compile Include="Controllers\RidesController.cs" />
     <Compile Include="Controllers\RoomsController.cs" />
+    <Compile Include="Controllers\Tour360RequestController.cs" />
     <Compile Include="Engines\CustomerApis.cs" />
     <Compile Include="Engines\PointSystem\PointHelper.cs" />
     <Compile Include="Engines\SecurityEncryption.cs" />
@@ -466,6 +467,7 @@
     <Compile Include="Models\Room.cs" />
     <Compile Include="Models\SystemUser.cs" />
     <Compile Include="Models\TimerViewModel.cs" />
+    <Compile Include="Models\Tour360Request.cs" />
     <Compile Include="Models\Trip.cs" />
     <Compile Include="Models\UserPoints.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -785,6 +787,11 @@
     <Content Include="Views\ReviewRatings\Index.cshtml" />
     <Content Include="Views\ReviewRatings\StoreHotelReviews.cshtml" />
     <Content Include="Views\ReviewRatings\ThankYou.cshtml" />
+    <Content Include="Views\Tour360Request\Create.cshtml" />
+    <Content Include="Views\Tour360Request\Delete.cshtml" />
+    <Content Include="Views\Tour360Request\Details.cshtml" />
+    <Content Include="Views\Tour360Request\Edit.cshtml" />
+    <Content Include="Views\Tour360Request\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

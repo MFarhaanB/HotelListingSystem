@@ -55,5 +55,6 @@ namespace HotelListingSystem.Models
         public DbSet<CuponUsage> CuponUsages { get; set; }
         public DbSet<ReviewRating> ReviewRatings { get; set; }
         public DbSet<UserPoints> UserPoints { get; set; }
+        public DbSet<Tour360Request> Tour360Requests { get; set; }
     }
 }
