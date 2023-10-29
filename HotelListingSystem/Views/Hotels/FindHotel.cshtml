@@ -619,9 +619,40 @@
                     </span>
                 </div>
                 <br /><br />
-                <div> <button class="btn btn-custom button_see_hotel mt-3" onclick="reserveRoomConfirmation(@hotel.HotelId, '@hotel.RoomName', @hotel.RoomId, '@hotel.PricePerRoom')">Reserve Room</button></div>
-                <div><a href="@Url.Action("StoreHotelReviews", "ReviewRatings", new { hotelId = hotel.HotelId })" class="btn btn-primary mt-2">View Reviews</a>    </div>
-              
+                <style>
+                    .purple-link {
+                        color: purple;
+                        transition: color 0.3s ease;
+                    }
+
+                    .purple-button {
+                        background-color: purple;
+                        color: white;
+                        transition: background-color 0.3s ease;
+                    }
+                </style>
+
+                <script>
+                    function animateButton(buttonId) {
+                        var button = document.getElementById(buttonId);
+                        button.classList.add('purple-button');
+                        setTimeout(function () {
+                            button.classList.remove('purple-button');
+                        }, 500);
+                    }
+                </script>
+
+                <div>
+                    <button id="reserveButton" class="btn btn-custom button_see_hotel mt-3 purple-button" onclick="reserveRoomConfirmation('@hotel.HotelId', '@hotel.RoomName', '@hotel.RoomId', '@hotel.PricePerRoom'); animateButton('reserveButton');">Reserve Room</button>
+                </div>
+
+                <div>
+                    <a href="@Url.Action("StoreHotelReviews", "ReviewRatings", new { hotelId = @hotel.HotelId })" class="btn btn-primary mt-2 purple-link purple-button">View Reviews</a>
+                </div>
+
+
+
+
             </div>
         </div>
 
