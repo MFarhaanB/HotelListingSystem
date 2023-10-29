@@ -88,6 +88,15 @@ namespace HotelListingSystem.Controllers
         }
 
 
+        public ActionResult ActivateTour360(Int32 Id)
+        {
+            Hotel hotel = db.Hotels.Find(Id);
+            hotel.Tour360 = !hotel.Tour360;   
+            db.Entry(hotel).State = EntityState.Modified;
+            db.SaveChanges();   
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
 
         [HttpGet]
         [Authorize]

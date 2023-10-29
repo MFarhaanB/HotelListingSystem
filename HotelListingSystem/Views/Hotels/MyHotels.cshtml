@@ -41,12 +41,6 @@
                                 <td>
                                     <img src="@Url.Action("DownloadHotelFile", "Hotels", new { Id = item.Id, doc_key_type = "c_hotel_image_c" })" alt="Hotel Image" style="height: 150px;width: 150px;" />
                                 </td>
-                                @*<td>
-                                        <img src="@Url.Action("DisplayImage", "Hotels", new { hotelId = item.Id, imageType = 2 })" alt="Hotel Image" style="height: 150px;width: 150px;" />
-                                    </td>
-                                    <td>
-                                        <img src="@Url.Action("DisplayImage", "Hotels", new { hotelId = item.Id, imageType = 3 })" alt="Hotel Image" style="height: 150px;width: 150px;" />
-                                    </td>*@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.Name)
                                 </td>
@@ -55,32 +49,22 @@
                                 </td>
                                 <td>
                                     @string.Format($"{item.StreetNumber} {item.StreetName}, {item.Suburb}, {item.PhysicalAddressCode}")
-                                    @*@Html.DisplayFor(modelItem => item.StreetNumber)*@
                                 </td>
-                                @*<td>
-                                        @Html.DisplayFor(modelItem => item.StreetName)
-                                    </td>
-                                    <td>
-                                        @Html.DisplayFor(modelItem => item.Suburb)
-                                    </td>*@
                                 <td>
                                     @Html.DisplayFor(modelItem => item.City)
                                 </td>
-                                @*<td>
-                                        @Html.DisplayFor(modelItem => item.PhysicalAddressCode)
-                                    </td>*@
-                                @*<td>
-                                        @Html.DisplayFor(modelItem => item.HotelImageFileSize)
-                                    </td>*@
-                                @*<td>
-                                        @Html.DisplayFor(modelItem => item.IsVerified)
-                                    </td>*@
                                 <td>
-
+                                    @if (User.IsInRole("Business Owner") && !item.Tour360 && !String.IsNullOrEmpty(item.Tour360Id))
+                                    {
+                                        <button class="btn btn-sm btn-warning" onclick="Tour360Activate('@item.Id')">Activate 360 Tour</button>
+                                    }
+                                    @if (User.IsInRole("Business Owner") && item.Tour360)
+                                    {
+                                        <button class="btn btn-sm btn-warning" onclick="Tour360Deactivate('@item.Id')">Deactivate 360 Tour</button>
+                                    }
                                     @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-warning" }) |
                                     @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-info" }) |
                                     @Html.ActionLink("Layout", "HotelLayout", new { id = item.Id }, new { @class = "btn btn-info" })
-                                    @*@Html.ActionLink("Delete", "Delete", new { id=item.Id })*@
                                 </td>
                             </tr>
                         }
@@ -218,4 +202,34 @@
     $(document).ready(function () {
         $('#example').DataTable();
     });
+
+    function Tour360Activate(id) {
+        $.ajax({
+            url: '@Url.Action("ActivateTour360", "Hotels")',
+            type: 'GET',
+            data: { Id: id },
+            success: function (data) {
+                alert("Tour 360 has been activated, now available on hotel preview..");
+                location.reload();
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.error(errorThrown);
+            }
+        })
+    }
+
+    function Tour360Deactivate(id) {
+        $.ajax({
+            url: '@Url.Action("ActivateTour360", "Hotels")',
+            type: 'GET',
+            data: { Id: id },
+            success: function (data) {
+                alert("Tour 360 has been deactivated, its not available on hotel preview..");
+                location.reload();
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.error(errorThrown);
+            }
+        })
+    }
 </script>

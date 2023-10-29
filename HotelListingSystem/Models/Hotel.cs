@@ -89,6 +89,7 @@ namespace HotelListingSystem.Models
 
         public double AverageRating { get; set; }
         public String Tour360Id { get; set; }
+        public bool Tour360 { get; set; }
 
         public virtual ICollection<Reservation> Reservations { get; set; }
         public virtual ICollection<ReviewRating> ReviewRatings { get; set; }

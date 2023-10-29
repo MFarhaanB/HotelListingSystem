@@ -141,7 +141,7 @@
                         <h2>@Model.Hotel.Name.ToString().ToUpper()</h2>
                         <div class="top_sec_hot">
                             <p style="color:dimgrey;">@string.Format($"{Model.Hotel.StreetNumber} {Model.Hotel.StreetName},{Model.Hotel.Suburb}") <span class="f4bd0794db b4273d69aa"><a href="https://www.google.com/maps/search/?api=1&query= @string.Format($"{Model.Hotel.StreetNumber} {Model.Hotel.StreetName},{Model.Hotel.Suburb}")" target="_blank">Show Map</a></span></p>
-                            @if (!String.IsNullOrEmpty(Model.Hotel.Tour360Id))
+                            @if (!String.IsNullOrEmpty(Model.Hotel.Tour360Id) && Model.Hotel.Tour360)
                             {
                                 <button class="button_see_holtel" onclick="ShowModal()"> 360 Tour</button>
                             }
