@@ -165,23 +165,52 @@
 
                 <div id="paymentId" class="hidden">
                     <br />
+
                     <div class="form-group">
-                        <div class="form-group">
-                            @Html.LabelFor(model => model.RoomId, "Payment Method", htmlAttributes: new { @class = "control-label col-md-1 col-md-offset-1" })
-                            <div class="col-md-2 c_half_input">
-                                @Html.DropDownListFor(model => model.RoomId, new List<SelectListItem>
-                                {
-                                    new SelectListItem { Value = "a_paypal_payment", Text = "Paypal" },
-                                    new SelectListItem { Value = "a_yoco_payment_method", Text = "Credit/Debit" }
-                                }, htmlAttributes: new { @class = "form-control", @onchange = "ChangePaymentMethod(this.value)" })
-                                @Html.ValidationMessageFor(model => model.RoomId, "", new { @class = "text-danger" })
-                            </div>
-                            @Html.LabelFor(model => model.RoomId, "Cupon Code", htmlAttributes: new { @class = "control-label col-md-1" })
-                            <div class="col-md-2 c_half_input">
-                                @Html.Editor("Cupon", new { htmlAttributes = new { @class = "form-control", @Id = "Cupon", @onfocusout= "ValidatePromoOrCupon(this.value)" } })
-                            </div>
+                        @Html.LabelFor(model => model.RoomId, "Discount Method: ", htmlAttributes: new { @class = "control-label col-md-offset-1 col-md-1" })
+                        <div class="col-md-2 c_half_input">
+                            <label>
+                                <input type="radio" name="discountSelect" value="None" onclick="changediscount('none')" checked />
+                                None
+                            </label>
+                            <label>
+                                <input type="radio" name="discountSelect" value="Cupon" onclick="changediscount('cupon')" />
+                                Cupon
+                            </label>
+                            <label>
+                                <input type="radio" name="discountSelect" value="Points" onclick="changediscount('point')" />
+                                Points
+                            </label>
                         </div>
                     </div>
+
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.RoomId, "Payment Method", htmlAttributes: new { @class = "control-label col-md-1 col-md-offset-1" })
+                        <div class="col-md-2 c_half_input">
+                            @Html.DropDownListFor(model => model.RoomId, new List<SelectListItem>
+                            {
+                                new SelectListItem { Value = "a_paypal_payment", Text = "Paypal" },
+                                new SelectListItem { Value = "a_yoco_payment_method", Text = "Credit/Debit" }
+                            }, htmlAttributes: new { @class = "form-control", @onchange = "ChangePaymentMethod(this.value)" })
+                            @Html.ValidationMessageFor(model => model.RoomId, "", new { @class = "text-danger" })
+                        </div>
+                        <div id="cuponDivHidden" style="display:none">
+                            @Html.LabelFor(model => model.RoomId, "Cupon Code", htmlAttributes: new { @class = "control-label col-md-1" })
+                            <div class="col-md-2 c_half_input">
+                                @Html.Editor("Cupon", new { htmlAttributes = new { @class = "form-control", @Id = "Cupon", @onfocusout = "ValidatePromoOrCupon(this.value)" } })
+                            </div>
+                        </div>
+                        <div id="pointDivHidden" style="display:none">
+                            @Html.LabelFor(model => model.RoomId, "Enter points", htmlAttributes: new { @class = "control-label col-md-1" })
+                            <div class="col-md-2 c_half_input">
+                                @Html.Editor("Cupon", new { htmlAttributes = new { @class = "form-control", @Id = "Cupon", @onfocusout = "ValidatePromoOrCupon(this.value)", @placeholder = "Enter points" } })
+                            </div>
+                        </div>
+
+                    </div>
+
+
+
                     <hr class="col-md-offset-2" />
                     <div class="form-group text-right">
                         <div class="col-md-offset-2 col-md-4">
@@ -268,7 +297,22 @@
     </div>
 </div>
 @Html.Partial("_eFooter")
-
+<script>
+    function changediscount(choice) {
+        if (choice == 'none') {
+            $('#pointDivHidden').hide();
+            $('#cuponDivHidden').hide();
+        }
+        if (choice == 'cupon') {
+            $('#pointDivHidden').hide();
+            $('#cuponDivHidden').show();
+        }
+        if (choice == 'point') {
+            $('#pointDivHidden').show();
+            $('#cuponDivHidden').hide();
+        }
+    }
+</script>
 <script>
     const selfievideo = document.getElementById('Selfievideo');
     const canvas = document.getElementById('Selfiecanvas');

@@ -141,7 +141,8 @@
                         <h2>@Model.Hotel.Name.ToString().ToUpper()</h2>
                         <div class="top_sec_hot">
                             <p style="color:dimgrey;">@string.Format($"{Model.Hotel.StreetNumber} {Model.Hotel.StreetName},{Model.Hotel.Suburb}") <span class="f4bd0794db b4273d69aa"><a href="https://www.google.com/maps/search/?api=1&query= @string.Format($"{Model.Hotel.StreetNumber} {Model.Hotel.StreetName},{Model.Hotel.Suburb}")" target="_blank">Show Map</a></span></p>
-                            <button class="button_see_holtel" id=".button_see_holtel" @*onclick="window.location.href='#mainId'"*@> Book Now</button>
+                            <button class="button_see_holtel" onclick="ShowModal()" > 360 Tour</button>
+                            <button class="button_see_holtel" id=".button_see_holtel" > Book Now</button>
                         </div>
 
                     </div>
@@ -357,6 +358,23 @@
     </main>
 </body>
 </html>
+
+
+<div id="TourModal" class="modal fade" role="dialog">
+    <div class="modal-dialog" style="width:80%">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="modalTitleText">360 Tour - @Model.Hotel.Name.ToString().ToUpper()</h4>
+            </div>
+            <div class="modal-body">
+                <iframe width="100%" height="640" style="width: 100%; height: 640px; border: none; max-width: 100%;" allow="xr-spatial-tracking; vr; gyroscope; accelerometer; fullscreen; autoplay; xr" scrolling="no" allowfullscreen="true" frameborder="0" src="https://webobook.com/public/653cf013febd9b28374a72c2,en?ap=true&si=true&sm=false&sp=true&sfr=false&sl=false&sop=false&" allowvr="yes"></iframe>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @Html.Partial("_eFooter")
 
 
@@ -393,6 +411,10 @@
             }
         })
     });
+
+    function ShowModal() {
+        $('#TourModal').modal('show');
+    }
 </script>
 
 
