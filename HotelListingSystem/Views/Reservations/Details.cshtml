@@ -527,7 +527,7 @@
                     const errorMessage = result.error.message;
                     alert("error occured: " + errorMessage);
                 } else {
-                    alert('Hi @Model.HotelUser.FullName, thank you for your payment')
+
                     debugger
                     $('#pointDivHidden').hide();
                     $('#cuponDivHidden').hide();
@@ -541,6 +541,7 @@
                             if (!data) {
                                 alert('An error has occurd!');
                             } else {
+                                alert('Hi @Model.HotelUser.FullName, thank you for your payment')
                                 window.location.reload();
                             }
                         },
