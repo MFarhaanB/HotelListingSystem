@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Data;
 using System.Web.Mvc;
+using HotelListingSystem.Engines.PointSystem;
 
 namespace HotelListingSystem.Controllers
 {
@@ -95,6 +96,13 @@ namespace HotelListingSystem.Controllers
             else if (!cuponHelper.ValidateCuponUsage(cupon.Id, id)) return Json(new { status = false, message = "the cupon has used for this reservation" }, JsonRequestBehavior.AllowGet);
             else cuponHelper.AddCuponUsage(cupon.Id, id);
             return Json(new { status = true, message = "activated", cupon = cupon }, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ValidatePoints(Int32 points)
+        {
+            var user = AppHelper.CurrentHotelUser().Id;
+            new PointHelper(context).AddOrDeductPoints(user, (-points));
+            return Json(true,JsonRequestBehavior.AllowGet);
         }
     }
 }

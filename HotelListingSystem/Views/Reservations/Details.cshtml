@@ -166,7 +166,7 @@
                 <div id="paymentId" class="hidden">
                     <br />
 
-                    <div class="form-group">
+                    <div class="form-group" id="promoOptions" style="display:block">
                         @Html.LabelFor(model => model.RoomId, "Discount Method: ", htmlAttributes: new { @class = "control-label col-md-offset-1 col-md-1" })
                         <div class="col-md-2 c_half_input">
                             <label>
@@ -207,7 +207,7 @@
                         <div id="pointDivHidden" style="display:none">
                             @Html.LabelFor(model => model.RoomId, "Enter points", htmlAttributes: new { @class = "control-label col-md-1" })
                             <div class="col-md-2 c_half_input">
-                                @Html.Editor("Cupon", new { htmlAttributes = new { @class = "form-control", @Id = "Cupon", @onfocusout = "ValidatePromoOrCupon(this.value)", @placeholder = "Enter points" } })
+                                @Html.Editor("Cupon", new { htmlAttributes = new { @class = "form-control",@type="number", @Id = "pointsystem", @onfocusout = "ValidatePoints(this.value)", @placeholder = "Enter points" } })
                             </div>
                         </div>
                     </div>
@@ -529,6 +529,10 @@
                 } else {
                     alert('Hi @Model.HotelUser.FullName, thank you for your payment')
                     debugger
+                    $('#pointDivHidden').hide();
+                    $('#cuponDivHidden').hide();
+                    $('#promoOptions').hide();
+
                     $.ajax({
                         url: '@Url.Action("CreditDebitPaymentYoco", "Payments")',
                         type: 'POST',
@@ -577,12 +581,41 @@
                         } else {
                             amount -= data.cupon.Amount;
                         }
-
+                        $('#pointDivHidden').hide();
+                        $('#cuponDivHidden').hide();
+                        $('#promoOptions').hide();
                         $('#totalhidden').val(amount);
                     } else {
                         $('#Cupon').val('');
                         alert(data.message);
                     }
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.error(errorThrown);
+                }
+            })
+        }
+    }
+
+    function ValidatePoints(cupon) {
+        if (cupon !== '' && cupon !== null) {
+            if (cupon < 500) {
+                alert('The minumum points to use is 500')
+                return false;
+            }
+
+            $.ajax({
+                url: '@Url.Action("ValidatePoints", "Cupons")',
+                type: 'POST',
+                data: { points: cupon },
+                success: function (data) {
+                    alert('Points have been applied to your payment');
+                    let amount = '@Model.TotalCost.ToString().Split('.').ToList()[0].Replace(',','.')';
+                    amount -= (cupon / 10);
+                    $('#totalhidden').val(amount);
+                    $('#pointDivHidden').hide();
+                    $('#cuponDivHidden').hide();
+                    $('#promoOptions').hide();
                 },
                 error: function (xhr, textStatus, errorThrown) {
                     console.error(errorThrown);

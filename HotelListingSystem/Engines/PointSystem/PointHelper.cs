@@ -24,7 +24,23 @@ namespace HotelListingSystem.Engines.PointSystem
         {
             UserPoints userpoints = _context.UserPoints.FirstOrDefault(b => b.SystemUserId == UserId);
             userpoints.AvailablePoints += currentpoints;
-            if (currentpoints > 0) userpoints.PointsAccumulated += currentpoints;
+            if (currentpoints > 0)
+            {
+                userpoints.PointsAccumulated += currentpoints;
+                var user = _context.HotelUsers.Find(UserId);
+                new Email()
+                    .SendEmail(user.EmailAddress, "Hotel Point System", String.Format("{0} {1}", user.FirstName, user.LastName),
+                    $"Travelix point system, you have earned {currentpoints} points," +
+                    $" more points when you spent.\nYou currently have {userpoints.AvailablePoints} points.", false);
+            }
+            else
+            {
+                var user = _context.HotelUsers.Find(UserId);
+                new Email()
+                   .SendEmail(user.EmailAddress, "Hotel Point System", String.Format("{0} {1}", user.FirstName, user.LastName),
+                   $"Travelix point system, you have used {currentpoints*-1} points," +
+                   $" more points when you spent.\nYou currently have {userpoints.AvailablePoints} points.", false);
+            }
             _context.Entry(userpoints).State = EntityState.Modified;
             _context.SaveChanges();
         }

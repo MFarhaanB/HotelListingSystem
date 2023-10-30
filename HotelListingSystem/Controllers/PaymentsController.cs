@@ -6,8 +6,10 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using HotelListingSystem.Engines.PointSystem;
 using HotelListingSystem.Models;
 using HotelListingSystem.ViewModel;
+using Microsoft.Graph.Models;
 using PayPal.Api;
 using Payment = HotelListingSystem.Models.Payment;
 
@@ -508,7 +510,7 @@ namespace HotelListingSystem.Controllers
                     reservation.ModifiedOn = DateTime.Now;
                     context.Entry(reservation).State = EntityState.Modified;
                     context.SaveChanges();
-
+                    new PointHelper(context).AddOrDeductPoints(AppHelper.CurrentHotelUser().Id, ((Int32)reservation.TotalCost / 100) * 10);
                     UpdateHotelFees((int)reservation.HotelId, reservation.TotalCost);
 
                     return Json(true, JsonRequestBehavior.AllowGet);
