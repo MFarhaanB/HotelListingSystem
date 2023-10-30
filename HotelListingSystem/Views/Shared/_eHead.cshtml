@@ -245,14 +245,11 @@
                                         <li class="main_nav_item"><a href="~/CustomerQuery/Queries">Query</a></li>
                                         <li class="main_nav_item"><a href="~/Refunds/Refunds">Refunds</a></li>
                                     }
-                                    @if (User.IsInRole("Administrator"))
-                                    {
-                                        <li class="main_nav_item"><a href="~/Analytics">Anaytics</a></li>
-                                    }
-
+        
                                     @if (User.IsInRole("Business Owner"))
                                     {
                                         <li class="main_nav_item"><a href="~/Rides/index">Rides</a></li>
+                                        <li class="main_nav_item"><a href="~/Analytics">Anaytics</a></li>
                                     }
 
                                     @if (User.IsInRole("Employee"))
