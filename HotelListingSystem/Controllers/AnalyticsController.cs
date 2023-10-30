@@ -18,6 +18,5 @@ namespace HotelListingSystem.Controllers
             
             return Json(true, JsonRequestBehavior.AllowGet);
         }
-             
     }
 }

@@ -1246,8 +1246,6 @@
     <Content Include="Content\Analytics\assets\js\page\widget-chart.js" />
     <Content Include="Content\Analytics\assets\js\page\widget-data.js" />
     <Content Include="Content\Analytics\assets\js\scripts.js" />
-    <Content Include="Content\Analytics\js\apexcharts\apexcharts.min.js" />
-    <Content Include="Content\Analytics\js\chart-apexcharts.js" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-grid.rtl.css" />
