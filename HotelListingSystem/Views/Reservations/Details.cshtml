@@ -1,5 +1,5 @@
 ﻿@model HotelListingSystem.Models.Reservation
-
+@using HotelListingSystem.Helpers
 @{
     Layout = null;
 }
@@ -177,10 +177,14 @@
                                 <input type="radio" name="discountSelect" value="Cupon" onclick="changediscount('cupon')" />
                                 Cupon
                             </label>
-                            <label>
-                                <input type="radio" name="discountSelect" value="Points" onclick="changediscount('point')" />
-                                Points
-                            </label>
+                            @if (ReservationHelper.GetMinumumUserPoints() > 50)
+                            {
+                                <label>
+                                    <input type="radio" name="discountSelect" value="Points" onclick="changediscount('point')" />
+                                    Points
+                                </label>
+                            }
+
                         </div>
                     </div>
 
@@ -206,10 +210,7 @@
                                 @Html.Editor("Cupon", new { htmlAttributes = new { @class = "form-control", @Id = "Cupon", @onfocusout = "ValidatePromoOrCupon(this.value)", @placeholder = "Enter points" } })
                             </div>
                         </div>
-
                     </div>
-
-
 
                     <hr class="col-md-offset-2" />
                     <div class="form-group text-right">
@@ -509,7 +510,7 @@
         debugger;
         const totalhidden = document.getElementById('totalhidden').value;
         let amount = '';
-        if (totalhidden !== null && totalhidden !== '') 
+        if (totalhidden !== null && totalhidden !== '')
             amount = totalhidden
         else
             amount = '@Model.TotalCost.ToString().Split('.').ToList()[0].Replace(',','.')';

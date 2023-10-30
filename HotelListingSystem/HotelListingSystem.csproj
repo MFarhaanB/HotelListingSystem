@@ -431,6 +431,7 @@
     <Compile Include="Helpers\OnboardingHelper.cs" />
     <Compile Include="Helpers\RatingHelper.cs" />
     <Compile Include="Helpers\RecentlyViewedHotelHelper.cs" />
+    <Compile Include="Helpers\ReservationHelper.cs" />
     <Compile Include="Helpers\SecurityHelper.cs" />
     <Compile Include="Helpers\VisitorsHelper.cs" />
     <Compile Include="Migrations\Configuration.cs" />
