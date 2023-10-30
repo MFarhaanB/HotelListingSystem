@@ -4,7 +4,7 @@ using HotelListingSystem.Models.CuponsOrDiscount;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
+using System.Data;
 using System.Web.Mvc;
 
 namespace HotelListingSystem.Controllers
@@ -31,6 +31,8 @@ namespace HotelListingSystem.Controllers
 
         public ActionResult Create()
         {
+            var user = AppHelper.CurrentHotelUser()?.Id;
+            ViewBag.Hotels = new SelectList(context.Hotels.Where(x => x.HotelUserId == user), "Id", "Name");
             return View();
         }
 

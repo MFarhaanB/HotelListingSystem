@@ -11,7 +11,7 @@ using System.Xml.Linq;
 using iTextSharp.text;
 using iTextSharp.text.pdf;
 using System.Globalization;
-
+using HotelListingSystem.Helpers;
 
 namespace HotelListingSystem.Controllers
 {
@@ -19,8 +19,39 @@ namespace HotelListingSystem.Controllers
     {
         public ActionResult Index(string message)
         {
-            ViewBag.Message = message;
+            var today = DateTime.Now.Date.DayOfWeek;
+
+            VisitorsHelper.AddVisit(Session, Request);
             return View();
+        }
+
+        public static String GetDayWithNum(Int32 day, String value = null)
+        {
+            switch (day)
+            {
+                case 1:
+                    value = "Mon";
+                    break;
+                case 2:
+                    value = "Tue";
+                    break;
+                case 3:
+                    value = "Wed";
+                    break;
+                case 4:
+                    value = "Thu";
+                    break;
+                case 5:
+                    value = "Fri";
+                    break;
+                case 6:
+                    value = "Sat";
+                    break;
+                default:
+                    value = "Sun";
+                    break;
+            }
+            return value;
         }
 
         public ActionResult About()
@@ -46,7 +77,7 @@ namespace HotelListingSystem.Controllers
         }
 
 
-        public ActionResult GenerateBusinessPDFStatement(int businessUserId)
+        public ActionResult GenerateBusinessPDFStatement(int businessUserId)    
         {
             ApplicationDbContext context = new ApplicationDbContext();
             var StatementName = $"B{DateTime.Now.ToString("yyyyMMddHHmmss")}{businessUserId}.pdf";

@@ -111,6 +111,13 @@
                         @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
                     </div>
                 </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.HotelId,"Hotel", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-2">
+                        @Html.DropDownListFor(model => model.HotelId, (SelectList)ViewBag.Hotels, new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.HotelId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
 
                 <div class="form-group">
                     @Html.LabelFor(model => model.IsPercentage, htmlAttributes: new { @class = "control-label col-md-2" })
