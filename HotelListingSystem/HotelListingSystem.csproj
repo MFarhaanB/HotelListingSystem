@@ -1420,6 +1420,9 @@
     <Content Include="Content\Analytics\assets\fonts\webfonts\fa-solid-900.woff2" />
     <None Include="Properties\PublishProfiles\2023GRP23 - FTP.pubxml" />
     <None Include="Properties\PublishProfiles\2023GRP23 - Web Deploy.pubxml" />
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\TravelixGroup23 - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\TravelixGroup23 - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.4.1.intellisense.js" />
     <Content Include="Scripts\HoldOn.min.js" />
     <Content Include="Scripts\jquery-2.2.0.js" />

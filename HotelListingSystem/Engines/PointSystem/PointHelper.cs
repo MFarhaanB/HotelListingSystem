@@ -17,7 +17,8 @@ namespace HotelListingSystem.Engines.PointSystem
 
         Boolean UserPointRegistered(Int32 UserId)
         {
-            return _context.UserPoints.FirstOrDefault(c => c.SystemUserId == UserId) != null;
+            var user = _context.UserPoints.FirstOrDefault(c => c.SystemUserId == UserId);
+            return user  != null;
         }
 
         public void AddOrDeductPoints(Int32 UserId, Int32 currentpoints)
@@ -64,7 +65,7 @@ namespace HotelListingSystem.Engines.PointSystem
         }
         public void AddUserPoints(Int32 UserId, Decimal PurchaseAmount)
         {
-            Int32 accumulated = (Int32)(PurchaseAmount / 20);
+            Int32 accumulated = ((Int32)PurchaseAmount / 100) * 10;
 
             if (!UserPointRegistered(UserId))
                 PointSystemRegistration(UserId, accumulated);

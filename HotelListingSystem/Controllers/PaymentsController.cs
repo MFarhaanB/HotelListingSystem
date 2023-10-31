@@ -510,7 +510,7 @@ namespace HotelListingSystem.Controllers
                     reservation.ModifiedOn = DateTime.Now;
                     context.Entry(reservation).State = EntityState.Modified;
                     context.SaveChanges();
-                    new PointHelper(context).AddOrDeductPoints(AppHelper.CurrentHotelUser().Id, ((Int32)reservation.TotalCost / 100) * 10);
+                    new PointHelper(context).AddUserPoints(AppHelper.CurrentHotelUser().Id, (Int32)reservation.TotalCost);
                     UpdateHotelFees((int)reservation.HotelId, reservation.TotalCost);
 
                     return Json(true, JsonRequestBehavior.AllowGet);
