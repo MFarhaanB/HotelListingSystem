@@ -124,6 +124,7 @@
                             <td> @Html.DisplayFor(modelItem => item.IsActive) </td>
                             <td> @Html.DisplayFor(modelItem => item.IsDeleted) </td>
                             <td>
+                                <button type="button" class="btn btn-sm btn-outline-dark" onclick="SendCuponToCustomers('@item.Id')">Send Cupon<span class="fa fa-send" style="margin:3px;"></span></button> |
                                 <button type="button" class="btn btn-sm btn-outline-secondary" onclick="window.location.href='/Cupons/Edit?id=@item.Id'">Edit<span class="fa fa-edit" style="margin:3px;"></span></button> |
                                 <button type="button" class="btn btn-sm btn-outline-success" onclick="window.location.href='/Cupons/Details?id=@item.Id'">Details<span class="fa fa-info" style="margin:3px;"></span></button> |
                                 <button type="button" class="btn btn-sm btn-outline-danger" onclick="window.location.href='/Cupons/Delete?id=@item.Id'">Delete<span class="fa fa-trash" style="margin:3px;"></span></button>
@@ -150,3 +151,19 @@
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css">
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap4.min.css">
 @Html.Partial("_eFooter")
+
+<script>
+    function SendCuponToCustomers(id) {
+        $.ajax({
+            url: '@Url.Action("SendCuponSmsEmail", "Cupons")',
+            type: 'GET',
+            data: { Id: id },
+            success: function (data) {
+                alert('Cupon has been sent out to registred customers')
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.error(errorThrown);
+            }
+        })
+    }
+</script>

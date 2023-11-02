@@ -433,6 +433,7 @@
     <Compile Include="Helpers\RecentlyViewedHotelHelper.cs" />
     <Compile Include="Helpers\ReservationHelper.cs" />
     <Compile Include="Helpers\SecurityHelper.cs" />
+    <Compile Include="Helpers\SMSHelper.cs" />
     <Compile Include="Helpers\VisitorsHelper.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />

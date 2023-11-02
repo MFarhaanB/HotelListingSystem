@@ -7,6 +7,10 @@ using System.Linq;
 using System.Data;
 using System.Web.Mvc;
 using HotelListingSystem.Engines.PointSystem;
+using HotelListingSystem.ViewModel;
+using PayPal.Api;
+using static Azure.Core.HttpHeader;
+using System.Threading.Tasks;
 
 namespace HotelListingSystem.Controllers
 {
@@ -104,5 +108,29 @@ namespace HotelListingSystem.Controllers
             new PointHelper(context).AddOrDeductPoints(user, (-points));
             return Json(true,JsonRequestBehavior.AllowGet);
         }
+
+        public async Task< ActionResult> SendCuponSmsEmail(Int32 Id)
+        {
+            var context = new ApplicationDbContext();
+            var cupon = cuponHelper.GetCuponDetils(Id);
+            var users = new IdentityManager().GetUsersInRole("Customer").Select(a => a.HotelUserId).ToList();
+            var aUsers = context.HotelUsers.Where(a => users.Contains((Int32)a.Id)).ToList();
+            var str = cupon.IsPercentage ? "percent" : "ZAR";
+            foreach (var t_user in aUsers)
+            {
+                new Email()
+                    .SendEmail(
+                    t_user.EmailAddress,
+                    "Travelix: Promotion",
+                    $"{t_user.FullName}",
+                    $"You have been gifted with {cupon.Amount} {str} and here is your promotional code {cupon.Code}. ");
+
+                string subject = "Get a Discount with Travelix. Use our Coupon to get discount on your purchase -  " + cupon.Code;
+                SMSHelper _helper = new SMSHelper(context);
+                await _helper.SMSSend(subject, t_user.MobileNumber);
+            }
+            return Json(true, JsonRequestBehavior.AllowGet);
+        }
+
     }
 }
